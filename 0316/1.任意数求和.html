@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/*
+		 * 创建函数，实现任意数求和的功能 
+		 * 
+		 * 函数的组成：
+		 *    创建函数
+		 *        function 函数名(){  }  创建的普通函数
+		 *        let 变量(函数名)=()=>{  }  ES6中的箭头函数
+		 *    执行函数
+		 *        函数名()
+		 * 
+		 * 函数存在的意义在于“封装”：把实现一个功能的代码封装到函数中，后期再想实现这样的功能，无需重新编写代码，只需要函数执行即可，达到“低耦合、高内聚”的效果！
+		 * 
+		 * 真实项目中，我们想把一个私有的执行上下文中的值（或者变量的值）暴露给外面，也就是在当前上下文以外的地方，也想获取到这个值 =>“return 返回值机制”
+		 * 
+		 * 真实项目中，我们创建一个函数，实现某个功能，但是发现创建的时候，很多东西是不知道的，只有执行的时候告诉我，我才能知道 =>“形参和实参机制”：形参是创建函数时候定义的变量(预留的入口)，实参是执行函数时候给形参传递的具体值；
+		 * 
+		 * 还有可能遇到类似的情况：我们无法准确获知，执行函数的时候会传递多少实参，此时也就无法定义形参的个数了 =>“函数内置的实参集合 arguments”  =>类数组集合（不是数组，不能直接用数组中方法）
+		 */
+
+		function sum() {
+			let total = 0,
+				arg = arguments;
+			for (let i = 0; i < arg.length; i++) {
+				let item = Number(arg[i]);
+				// 如果ITEM是非有效数字，就不累加求和了
+				if (isNaN(item)) continue;
+				total += item;
+			}
+			return total;
+		}
+		let total = sum(10, 20, '30', '珠峰', '40');
+		console.log(total);
+
+		/* function sum(n, m) {
+			//=> n, m 形参变量：代表存储未来要求和的两个数
+			if (typeof m === 'undefined') {
+				//说明执行函数的时候没有传递值，此时我们可以设置默认值
+				m = 0;
+			}
+			return n + m;
+		}
+		console.log(sum(10, 20)); //=>10,20是实参：给形参传递的具体值
+		console.log(sum(10)); //=>n=10  m=undefined */
+
+
+		/* function sum() {
+			let x = 100; //=>私有变量
+			// console.log(x); //100
+
+			return x; //return的永远是当前上下文中的某个值：此处是把x私有的变量的值暴露给外面 return 100; （函数体中遇到return，return下面的代码都不在执行；如果不设置return默认返回的结果是undefined；）
+		}
+		// console.log(sum()); //=>函数执行的返回结果就是RETURN后面的值
+		let x = sum(); //=>此处的x是全局变量
+		console.log(x); //100 */
+	</script>
+</body>
+
+</html>

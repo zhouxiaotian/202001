@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+	<style>
+		.licensePlate {
+			box-sizing: border-box;
+			padding: 0 10px;
+			width: 200px;
+			height: 40px;
+			line-height: 40px;
+			background: lightblue;
+			font-size: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="box">
+		<p class="licensePlate"></p>
+		<button class="shakeBtn">摇号</button>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script>
+		let licensePlate = document.querySelector('.licensePlate'),
+			shakeBtn = document.querySelector('.shakeBtn');
+
+		let count = 0;
+		shakeBtn.onclick = function () {
+			// 1.限制次数
+			count++;
+			if (count >= 4) {
+				alert('只能摇号三次，您已经摇过三次了！');
+				return;
+			}
+			// 2.随机生成车牌号，放置到页面指定容器中
+			let result = '京',
+				area1 = 'ABCEFGHJK', //=>索引范围0~8
+				area2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; //=>索引范围0~35
+			result += area1.charAt(Math.round(Math.random() * 8));
+			for (let i = 1; i <= 5; i++) {
+				result += area2.charAt(Math.round(Math.random() * 35));
+			}
+			licensePlate.innerHTML = result;
+		};
+
+		/* 
+		 * 一听都明白，自己写不出来（没有编程思想）
+		 *   【主关原因】
+		 *      零基础入门，到目前为止，脑子中的知识还太少（学过的掌握不扎实，还有很多不知道的基础知识），不能融汇贯通和灵活应用  =>定期看笔记
+		 *   【客观原因】
+		 *      容易自己把自己否定，或者对未知事物的恐惧和排斥 =>脑子一过，不会，也就一点都不写了；编程开发人员应该具备的基本素质：敢于尝试和思考；
+		 * 
+		 * 练习案例的方式：
+		 *   1.对照我的代码写一遍，边写代码边写注释（最后每一步都加注释），大步骤拆成小步骤，然后加注释....初期越细越好
+		 *   2.删掉代码，保留注释，自己开始写代码，遇到不会写的代码，瞟两眼我的代码（记录下来哪块是瞟我的）... 重复多遍，一直到自己能独立跟着注释写下来
+		 *   3.把注释都去掉，自己按照思维去写
+		 * ======多动脑子
+		 */
+	</script>
+</body>
+
+</html>

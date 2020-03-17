@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/* 
+		 * 把当前一个URL地址栏问号传参部分后面的值（或者#哈希后面的值）获取到，组成一个对象的格式 => URL问号传参解析
+		 */
+		/* function queryURLParameter(url) {
+			// 1.分别获取问号和井号后面的内容
+			let askIndex = url.indexOf('?'),
+				polIndex = url.lastIndexOf('#'),
+				askText = '',
+				polText = '';
+			askText = url.substring(askIndex + 1, polIndex);
+			polText = url.substring(polIndex + 1);
+
+			// 2.处理井号后面的值
+			let obj = {};
+			polText ? obj['HASH'] = polText : null;
+
+			// 3.处理问号后面的值
+			if (askText) {
+				let arr = askText.split('&');
+				for (let i = 0; i < arr.length; i++) {
+					let item = arr[i];
+					item = item.split('=');
+					obj[item[0]] = item[1];
+				}
+			}
+
+			return obj;
+		} */
+
+		function queryURLParameter(url) {
+			// 1.分别获取问号和井号后面的内容
+			let askIndex = url.indexOf('?'),
+				polIndex = url.lastIndexOf('#'),
+				askText = '',
+				polText = '';
+			// 没有井号则截取到末尾
+			polIndex === -1 ? polIndex = url.length : null;
+			// 没有问号则不用截取
+			askIndex > -1 ? askText = url.substring(askIndex + 1, polIndex) : null;
+			polText = url.substring(polIndex + 1);
+
+			// 2.处理井号后面的值
+			let obj = {};
+			polText ? obj['HASH'] = polText : null;
+			
+			// 3.处理问号后面的值
+			if (askText) {
+				askText.split('&').forEach(function (item) {
+					item = item.split('=');
+					obj[item[0]] = item[1];
+				});
+			}
+			return obj;
+		}
+
+		let str = 'http://www.zhufengpeixun.com/stu/?name=zxt&age=28&sex=0#teacher';
+		let result = queryURLParameter(str);
+		console.log(result);
+		/*
+		{
+		 	name:'zxt',
+			age:28,
+			sex:0,
+			HASH:'teacher'
+		}
+		*/
+	</script>
+</body>
+
+</html>
