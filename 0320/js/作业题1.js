@@ -36,7 +36,7 @@
 
 //==============================================
 
-console.log(a, b, c);
+/* console.log(a, b, c);
 var a = 12,
 	b = 13,
 	c = 14;
@@ -48,4 +48,37 @@ function fn(a) {
 	console.log(a, b, c);
 }
 b = fn(10);
-console.log(a, b, c);
+console.log(a, b, c); */
+
+//==================================================
+/* var ary = [12, 23];
+
+function fn(ary) {
+	//=> ary是私有的，此时私有ary存储的值(地址)和全局的一致
+	console.log(ary);
+	ary[0] = 100;
+	ary = [100]; //=>让私有的ary指向一个新堆，和全局不是一个堆
+	ary[0] = 0;
+	console.log(ary);
+}
+fn(ary);
+console.log(ary); */
+
+//===================================================
+var i = 0;
+function A() {
+	/* EC(A1) */
+	var i = 10;
+	function x() { //=>作用域链只和函数在哪创建有关系  x[[scope]]=EC(A1)
+		console.log(i);
+	}
+	return x;
+}
+var y = A();  //=>y占用了EC(A1)中的x，EC(A1)则不会出栈释放
+y();
+
+function B() {
+	var i = 20;
+	y();
+}
+B();
