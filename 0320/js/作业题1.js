@@ -65,9 +65,9 @@ fn(ary);
 console.log(ary); */
 
 //===================================================
-var i = 0;
+/* var i = 0;
 function A() {
-	/* EC(A1) */
+	/!* EC(A1) *!/
 	var i = 10;
 	function x() { //=>作用域链只和函数在哪创建有关系  x[[scope]]=EC(A1)
 		console.log(i);
@@ -81,4 +81,64 @@ function B() {
 	var i = 20;
 	y();
 }
-B();
+B(); */
+
+//========================================
+/* var a=1;
+var obj ={
+   "name":"tom"
+}
+function fn(){
+   var a2 = a;
+   obj2 = obj;
+   a2 =a;
+   obj2.name ="jack";
+}
+fn();
+console.log(a);
+console.log(obj); */
+
+
+/* var x = 100,
+	y = 100;
+
+function fn() {
+	// 私有上下文 EC(FN)
+	//   AO(FN)  y=200
+	var y = 200;
+	console.log(x); //=>100 全局变量
+	x=1000;  //=>把全局的x修改为1000
+	console.log(y); //=>200 私有变量
+	// console.log(z); //=>Uncaught ReferenceError: z is not defined
+	z = 300; //=>window.z=300
+}
+fn();
+console.log(window.z); //=>300 */
+
+/*
+ * EC(G)全局上下文
+ *   VO(G)全局变量对象 
+ *      var a;
+ *      function fn(a){...};  fn[[scope]]=EC(G)
+ */
+var a = 1; //=>全局a=1
+function fn(a) {
+	/*
+	 * 私有上下文 EC(FN) 
+	 *    AO(FN)私有变量对象
+	 *       a = 1
+	 *         = 函数
+	 *         = 2
+	 * SCOPE-CHAIN:<EC(FN),EC(G)>
+	 * 形参赋值: a=1
+	 * 变量提升：
+	 *    var a;（没用了，因为此时AO中有a了）
+	 *    a = 函数;  此处的操作，又把AO中的a的值修改为函数了
+	 */
+	console.log(a); //=>函数a
+	var a = 2; //=>a=2  让私有的a改为2
+	function a() {}
+	console.log(a); //=>2
+}
+fn(a); //=>全局函数fn执行，传递实参“全局变量a的值”  //=>fn(1)
+console.log(a); //=>1
