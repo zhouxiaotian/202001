@@ -181,7 +181,7 @@ var foo = 'hello'; //全局foo='hello'
 	 * SCOPE-CHAIN:<EC(AN),EC(G)>
 	 * 初始THIS/ARGUMENTS
 	 * 形参赋值:给foo赋值
-	 * 变量提升:var foo;
+	 * 变量提升:var foo;（已经声明了）
 	 * 代码执行
 	 *!/
 	console.log(foo); //=>'hello'
