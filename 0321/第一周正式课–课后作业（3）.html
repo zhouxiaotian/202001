@@ -1,0 +1,169 @@
+<!DOCTYPE html><html><head><title>第一周正式课–课后作业（3）</title><meta charset='utf-8'><link href='https://cdn.maxiang.io/res-min/themes/marxico.css' rel='stylesheet'><style>
+.note-content  {font-family: "Helvetica Neue", Arial, "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, Song, sans-serif;}
+
+</style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h3 id="第一周正式课课后作业3">第一周正式课–课后作业（3）</h3>
+
+<ol start="1"><li rel="1"><p>写出下面代码输出的结果（画图）</p></li>
+</ol>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> obj = {
+</div><div class="hljs-line">    <span class="hljs-attr">fn</span>: (<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">            <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>);
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">    })()
+</div><div class="hljs-line">};
+</div><div class="hljs-line">obj.fn();
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> fn = obj.fn;
+</div><div class="hljs-line">fn();
+</div></code></pre>
+
+<ol start="2"><li rel="2"><p>写出下面代码输出的结果  </p></li>
+</ol>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">var</span> fullName = <span class="hljs-string">'language'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">var</span> obj = {
+</div><div class="hljs-line">    <span class="hljs-attr">fullName</span>: <span class="hljs-string">'javascript'</span>,
+</div><div class="hljs-line">    <span class="hljs-attr">prop</span>: {
+</div><div class="hljs-line">        <span class="hljs-attr">getFullName</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.fullName;
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">};
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(obj.prop.getFullName());
+</div><div class="hljs-line"><span class="hljs-keyword">var</span> test = obj.prop.getFullName;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(test());
+</div></code></pre>
+
+<ol start="3"><li rel="3"><p>写出下面代码输出的结果  </p></li>
+</ol>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">var</span> name = <span class="hljs-string">'window'</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">var</span> Tom = {
+</div><div class="hljs-line">    <span class="hljs-attr">name</span>: <span class="hljs-string">"Tom"</span>,
+</div><div class="hljs-line">    <span class="hljs-attr">show</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">        <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.name);
+</div><div class="hljs-line">    },
+</div><div class="hljs-line">    <span class="hljs-attr">wait</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">        <span class="hljs-keyword">var</span> fun = <span class="hljs-keyword">this</span>.show;
+</div><div class="hljs-line">        fun();
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">};
+</div><div class="hljs-line">Tom.wait();
+</div></code></pre>
+
+<ol start="4"><li rel="4"><p>写出下面代码输出的结果   （画图）</p></li>
+</ol>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-built_in">window</span>.val = <span class="hljs-number">1</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">var</span> json = {
+</div><div class="hljs-line">    <span class="hljs-attr">val</span>: <span class="hljs-number">10</span>,
+</div><div class="hljs-line">    <span class="hljs-attr">dbl</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.val *= <span class="hljs-number">2</span>;
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line">json.dbl();
+</div><div class="hljs-line"><span class="hljs-keyword">var</span> dbl = json.dbl;
+</div><div class="hljs-line">dbl();
+</div><div class="hljs-line">json.dbl.call(<span class="hljs-built_in">window</span>);
+</div><div class="hljs-line">alert(<span class="hljs-built_in">window</span>.val + json.val);
+</div></code></pre>
+
+<ol start="5"><li rel="5"><p>写出下面代码输出的结果  </p></li>
+</ol>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">var</span> val = <span class="hljs-number">1</span>;
+</div><div class="hljs-line">    <span class="hljs-keyword">var</span> json = {
+</div><div class="hljs-line">        <span class="hljs-attr">val</span>: <span class="hljs-number">10</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">dbl</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">            val *= <span class="hljs-number">2</span>;
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">    };
+</div><div class="hljs-line">    json.dbl();
+</div><div class="hljs-line">    alert(json.val + val);
+</div><div class="hljs-line">})();
+</div></code></pre>
+
+<ol start="6"><li rel="6"><p>写出下面代码输出的结果   （画图）</p></li>
+</ol>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">var</span> num = <span class="hljs-number">10</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">var</span> obj = {
+</div><div class="hljs-line">    <span class="hljs-attr">num</span>: <span class="hljs-number">20</span>
+</div><div class="hljs-line">};
+</div><div class="hljs-line">obj.fn = (<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">num</span>) </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">this</span>.num = num * <span class="hljs-number">3</span>;
+</div><div class="hljs-line">    num++;
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">n</span>) </span>{
+</div><div class="hljs-line">        <span class="hljs-keyword">this</span>.num += n;
+</div><div class="hljs-line">        num++;
+</div><div class="hljs-line">        <span class="hljs-built_in">console</span>.log(num);
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">})(obj.num);
+</div><div class="hljs-line"><span class="hljs-keyword">var</span> fn = obj.fn;
+</div><div class="hljs-line">fn(<span class="hljs-number">5</span>);
+</div><div class="hljs-line">obj.fn(<span class="hljs-number">10</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(num, obj.num);
+</div></code></pre>
+
+<ol start="7"><li rel="7"><p>以下代码的功能是要实现为5个input按钮循环绑定click点击事件，绑定完成后点击1、2、3、4、5五个按钮分别会alert输出0、1、2、3、4五个字符。（腾讯）</p>
+
+<ul>
+<li><p>请问如下代码是否能实现？</p></li>
+<li><p>如果不能实现那么现在的效果是什么样的？</p></li>
+<li><p>应该做怎样的修改才能达到我们想要的效果，并说明原理？  </p></li></ul></li>
+</ol>
+
+<pre class="prettyprint hljs-dark"><code class="hljs xml"><div class="hljs-line"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"btnBox"</span>&gt;</span>
+</div><div class="hljs-line">    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"button_1"</span> /&gt;</span>
+</div><div class="hljs-line">    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"button_2"</span> /&gt;</span>
+</div><div class="hljs-line">    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"button_3"</span> /&gt;</span>
+</div><div class="hljs-line">    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"button_4"</span> /&gt;</span>
+</div><div class="hljs-line">    <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"button_5"</span> /&gt;</span>
+</div><div class="hljs-line"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+</div><div class="hljs-line">​
+</div><div class="hljs-line"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span>&gt;</span><span class="javascript"></span>
+</div><div class="hljs-line"><span class="javascript">    <span class="hljs-keyword">var</span> btnBox=<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'btnBox'</span>),</span>
+</div><div class="hljs-line"><span class="javascript">        inputs=btnBox.getElementsByTagName(<span class="hljs-string">'input'</span>);</span>
+</div><div class="hljs-line"><span class="javascript">    <span class="hljs-keyword">var</span> l=inputs.length;</span>
+</div><div class="hljs-line"><span class="javascript">    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>;i&lt;l;i++){</span>
+</div><div class="hljs-line"><span class="javascript">        inputs[i].onclick=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</span>
+</div><div class="hljs-line"><span class="javascript">            alert(i);</span>
+</div><div class="hljs-line"><span class="javascript">        }</span>
+</div><div class="hljs-line"><span class="javascript">    }</span>
+</div><div class="hljs-line"><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+</div></code></pre>
+
+<ol start="8"><li rel="8"><p>你理解的闭包作用是什么，优缺点？</p></li>
+<li rel="9"><p>简述let和var的区别</p></li>
+<li rel="10"><p>改造下面代码，使之输出0-9</p></li>
+</ol>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+</div><div class="hljs-line">    setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+</div><div class="hljs-line">        <span class="hljs-built_in">console</span>.log(i);
+</div><div class="hljs-line">    }, <span class="hljs-number">1000</span>);
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<ol start="11"><li rel="11"><p>下面代码输出的结果是多少，为什么？如何改造一下，就能让其输出 20 10？</p></li>
+</ol>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">var</span> b = <span class="hljs-number">10</span>;
+</div><div class="hljs-line">(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">b</span>(<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">    b = <span class="hljs-number">20</span>;
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(b);
+</div><div class="hljs-line">})();
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(b);
+</div></code></pre></div></body></html>
