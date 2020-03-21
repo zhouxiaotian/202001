@@ -13,6 +13,13 @@ function changeTab(index) {
 	conList[index].className = 'active';
 }
 
+for (let i = 0; i < navList.length; i++) {
+	// 利用ES6中块上下文（作用域）的概念，每一轮循环都会形成一个私有的上下文，里面记录了私有变量的i，i的值分别是每一轮循环的结果 0/1/2... 
+	navList[i].onclick = function () {
+		changeTab(i);
+	};
+}
+
 
 /* for (var i = 0; i < navList.length; i++) {
 	navList[i].onclick = function () {
@@ -31,11 +38,11 @@ function changeTab(index) {
 } */
 
 // 这种方案的原理就是闭包，和上面没有啥区别
-[].forEach.call(navList, function (item, index) {
+/* [].forEach.call(navList, function (item, index) {
 	item.onclick = function () {
 		changeTab(index);
 	}
-});
+}); */
 
 /* for (var i = 0; i < navList.length; i++) {
 	navList[i].onclick = (function (n) {
