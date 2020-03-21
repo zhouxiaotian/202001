@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		.tabBox {
+			margin: 20px auto;
+			width: 500px;
+		}
+
+		.tabBox .tab {
+			position: relative;
+			top: 1px;
+		}
+
+		.tabBox .tab li {
+			float: left;
+			margin-right: 10px;
+			padding: 0 10px;
+			height: 35px;
+			line-height: 35px;
+			font-size: 14px;
+			border: 1px solid #AAA;
+			background: #f6f7fb;
+			cursor: pointer;
+		}
+
+		.tabBox .tab li.active {
+			background: #FFF;
+			border-bottom-color: #FFF;
+		}
+
+		.tabBox div {
+			display: none;
+			padding: 10px;
+			height: 100px;
+			border: 1px solid #AAA;
+			background: #FFF;
+		}
+
+		.tabBox div.active {
+			display: block;
+		}
+	</style>
+</head>
+
+<body>
+	<section class="tabBox" id="tabBox">
+		<ul class="tab clearfix">
+			<li class="active">编程</li>
+			<li>读书</li>
+			<li>运动</li>
+		</ul>
+		<div class="active">编程可以使我“赚取高薪”</div>
+		<div>读书可以使我“修身养性”</div>
+		<div>运动可以使我“身体健康”</div>
+	</section>
+
+	<!-- IMPORT JS -->
+	<script src="js/选项卡.js"></script>
+</body>
+
+</html>
