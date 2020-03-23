@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<div id="btnBox">
+		<input type="button" value="按钮1">
+		<input type="button" value="按钮2">
+		<input type="button" value="按钮3">
+		<input type="button" value="按钮4">
+		<input type="button" value="按钮5">
+	</div>
+
+	<!-- IMPORT JS -->
+	<script>
+		var btnBox = document.getElementById('btnBox'),
+			inputs = btnBox.getElementsByTagName('input');
+		/* for (var i = 0; i < inputs.length; i++) {
+			inputs[i].onclick = function () {
+				alert(i);
+			}
+		} */
+		/*
+		 * 不能实现，目前点击任意一个按钮，最后输出的结果都是5（循环最后的结果），原因：
+		 *   1.循环元素集合中的每一项，给每一项（按钮元素对象）的CLICK事件行为绑定方法。此时方法并不会执行，只有循环结束（全局变量i=5），触发点击事件行为的时候，才会把对应绑定的方法执行； =>突出函数是在循环之后才会执行的（异步编程）
+		 *   2.当事件绑定的方法执行，会形成新的私有上下文EC(AN)，上下文中的代码执行，遇到的变量i并不是当前上下文EC(AN)中的私有变量，此时会基于作用域链，向上级上下文中进行查找，也就是找到的是全局上下文EC(G)中的全局变量i，但是已经知道此时的i变为了循环最后一次的结果5 =>突出私有上下文/全局上下文和作用域链的机制
+		 */
+
+		/* 解决办法1：在循环绑定的时候，把后续方法执行中所需要用到的当前按钮的索引，以自定义属性的方式存储给当前的元素对象；这样后期方法执行，再需要用到它的索引，直接从自定义属性中获取即可； */
+		/* for (var i = 0; i < inputs.length; i++) {
+			// 把每一个按钮的索引赋值给它的index自定义属性
+			inputs[i].index = i;
+			inputs[i].onclick = function () {
+				// this：当前操作的元素，我们从其自定义属性上获取索引值即可
+				alert(this.index);
+			}
+		} */
+
+		/* 解决方案2：之前不能实现的主要原因在于方法执行的时候，遇到的变量i不是自己私有的，是上级作用域（全局）中的，全局的i已经是5了；此时我们可以在每一次循环的时候，形成一个私有的上下文（闭包），把需要的索引存储起来（存储为每一个闭包中的私有变量），点击再次执行对应函数的时候，让遇到的变量i向上级上下文（也就是之前每一次循环形成的私有上下文）中查找，不找全局的即可 =>但是这种办法不好，因为循环多少次，就会产生多少个不销毁的私有上下文，比较浪费性能*/
+		/* for (var i = 0; i < inputs.length; i++) {
+			~ function (i) {
+				// 每一次循环都形成一个闭包（私有上下文），我们需要在当前上下文中，把后续需要用到的索引保存起来
+				inputs[i].onclick = function () {
+					alert(i);
+				}
+			}(i);
+		} */
+
+		/*for (var i = 0; i < inputs.length; i++) {
+			inputs[i].onclick = (function (i) {
+				return function () {
+					alert(i);
+				}
+			})(i);
+		} */
+
+		/* 解决方案三：在ES6新语法规范中，基于LET/CONST创建变量，会把当前所在的代码块(就是大括号，例如：循环体和判断体)变为私有的上下文（块级作用域），我们利用这个机制，也可以轻松的把每一次循环的索引保存起来；原理和闭包类似，只不过不需要我们自己执行自执行函数形成闭包存储i了； */
+		for (let i = 0; i < inputs.length; i++) {
+			// 每一轮循环都会形成一个全新的私有的块级作用域，并且都有一个私有变量i，分别存储每一轮循环的值（索引）
+			inputs[i].onclick = function () {
+				alert(i);
+			}
+		}
+
+		/* 综述：三种解决方案实现的原理不一样，自定义属性方案是性能最好的，推荐更多的使用这种方案；ES6这种方案虽然性能有所消耗，但是实现起来最方便；闭包的解决方案不推荐大家使用，复杂而且非常消耗性能； */
+	</script>
+</body>
+
+</html>
