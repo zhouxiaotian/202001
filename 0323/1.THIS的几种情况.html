@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+	<style>
+		#box {
+			width: 100px;
+			height: 100px;
+			background: red;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="box"></div>
+
+	<!-- IMPORT JS -->
+	<script>
+		// var box = document.getElementById('box');
+		/* box.onclick = function () {
+			// 事件绑定期间，函数是不执行的，只是创建了一个函数；只有当事件触发，浏览器才会把绑定的方法执行（不是自己执行的，是浏览器帮我们执行的，所以我们无法直接传递一些实参信息给函数）
+			console.log(this); //=>当函数执行的时候，THIS是#BOX元素对象
+		}; */
+
+		/* function func() {
+			console.log(this);
+			return function anonymous() {};
+		}
+		box.onclick = func; //=>把func函数本身赋值给元素的事件行为，从而完成事件绑定；当点击元素的时候，执行的是func这个方法
+		box.onclick = func(); //=>先把func执行，把函数执行返回的结果赋值给元素的点击行为 =>box.onclick=function anonymous() {}  点击元素执行的是anonymous方法 */
+	</script>
+
+	<script>
+		/* function func() {
+			console.log(this);
+		}
+		var obj = {
+			fn: func
+		};
+
+		func(); //=>方法中的THIS是WINDOW
+		obj.fn(); //=>方法中的THIS是OBJ */
+
+		// (function () {}) 创建一个匿名函数
+		// ...() 把创建的匿名函数执行
+		// 创建和执行都是在一起的，所以称为“自执行函数”：这里面的THIS一般都是WINDOW
+		/* (function () {
+			console.log(this);
+		})(); */
+
+		/* "use strict";
+		(function () {
+			console.log(this); //=>undefined
+		})();
+
+		function func() {
+			console.log(this);
+		}
+		var obj = {
+			fn: func
+		};
+		func(); //=>方法中的THIS是UNDEFINED
+		obj.fn(); //=>方法中的THIS是OBJ  */
+	</script>
+
+	<script>
+		/* function func() {
+			console.log(this.name);
+		}
+		var box = document.getElementById('box');
+		box.name = "#BOX";
+		var name = "WINDOW"; //=>window.name = "WINDOW"
+		var obj = {
+			name: "OBJ",
+			func: func
+		};
+
+		func(); //=>"WINDOW"
+		obj.func(); //=>"OBJ"
+		box.onclick = func; //=>点击BOX触发FUNC执行  "#BOX"
+		box.onmouseenter = function () {
+			// 鼠标进入盒子，触发匿名函数执行，匿名函数中的THIS=>BOX
+			// 匿名函数执行过程中，才执行的FUNC函数，此时FUNC中的THIS=>WINDOW
+			func();
+		}; */
+	</script>
+</body>
+
+</html>
