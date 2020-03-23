@@ -71,6 +71,163 @@
 
 		/* 综述：三种解决方案实现的原理不一样，自定义属性方案是性能最好的，推荐更多的使用这种方案；ES6这种方案虽然性能有所消耗，但是实现起来最方便；闭包的解决方案不推荐大家使用，复杂而且非常消耗性能； */
 	</script>
+
+	<script>
+		/*
+		 * 闭包：函数执行形成的私有上下文，即能保护里面的私有变量不受外界干扰，也能在当前上下文中保存一些信息（前提：形成的上下文不销毁），上下文中的这种保存和保护机制，就是闭包机制
+		 *   1. 保存
+		 *   2. 保护
+		 *  
+		 * =>真实项目中，团队协作开发（或者封装公共的组件和类库），为了避免全局变量的污染，我们每个人都会把自己的代码放到闭包中，保护起来
+		 * =>再某些需求中，我们经常需要形成一个闭包，存储一些值（而且不能销毁），这样来供后面的程序运行使用（例如：惰性函数、柯理化函数、compose函数等JS高阶编程技巧中，就是基于闭包的保存机制实现的）
+		 * 
+		 * 因为闭包会产生不销毁的上下文，这样导致栈/堆内存消耗过大，有时候也会导致内存泄漏等，影响页面的运行性能，所以在真实项目中，要合理应用闭包（不要滥用）
+		 */
+		// 耿子涵组长：写公共方法
+		// =>utils对象中包含了需要供别人调取使用的方法；此时我们把utils称之为“命名空间”，而对象就是一个空间，空间中包含了当前版块中的内容，或者是把当前版块中的内容按照命名空间进行了分组，每一个分组都是一个单独的个体
+		// =>下面这种设计代码的思想：单例设计模式 （避免了全局变量的污染，也同时实现了不同闭包之间方法的公用性）
+		let utils = (function () {
+			function queryElement() {
+				// ...
+			}
+
+			function setStyle() {
+				// ...
+			}
+
+			return {
+				queryElement: queryElement,
+				setStyle: setStyle
+			}
+		})();
+
+		//  朱光翼同学写的代码：天气版块的处理
+		let wetherModule = (function () {
+			let time = "2020/03/23";
+
+			// 调取其它版块下的方法
+			utils.queryElement();
+
+			function queryData() {
+				// ...
+			}
+
+			return {
+				queryData: queryData
+			};
+		})();
+
+		// 张硕同学些的代码：新闻页卡版块处理
+		let newsModule = (function () {
+			let time = "2020/03/22";
+
+			function queryData() {
+				// ...
+			}
+
+			return {
+				queryData: queryData
+			};
+		})();
+	</script>
+
+
+	<script>
+		/*
+		 * LET 和 VAR 的区别
+		 *   + LET不存在变量提升
+		 *   + LET不允许重复声明
+		 *   + LET在全局下声明的变量只是全局变量，和全局对象GO没有任何的关系；而VAR在全局下声明的全局变量，也相当于给全局对象GO设置了对应的属性，而且存在映射关系；
+		 *   + LET解决了 typeof 检测没有声明过的变量 的时候，结果是undefined而不是报错的 这种暂时性死区问题
+		 *   + LET会产生块级私有作用域
+		 */
+
+		/* console.log(1);
+		setTimeout(function () {
+			// 设置一个定时器，让其1000MS后在执行这个方法
+			console.log(2);
+		}, 1000);
+		console.log(3);
+		// => 1 3  1秒后输出2 */
+
+
+		/* for (var i = 0; i < 10; i++) {
+			// 每一轮循环，都会设置一个定时器，规定1秒后做啥事情；但是此时我们不会等，继续执行下一轮循环...  =>10轮循环都结束了（全局变量i===10），此时再等到已经到1000MS了，才会把对应的方法执行
+			setTimeout(() => {
+				// 方法执行的时候，循环已经结束了
+				console.log(i); //=>全局下已经变为循环结束后的10了
+			}, 1000);
+		} */
+
+
+		/* for (let i = 0; i < 10; i++) {
+			setTimeout(() => {
+				console.log(i);
+			}, 1000);
+		} */
+
+		/* for (var i = 0; i < 10; i++) {
+			~ function (i) {
+				setTimeout(() => {
+					console.log(i);
+				}, 1000);
+			}(i);
+		} */
+
+
+		// 按照常理，一般自执行函数都是匿名函数；但是我们可以给其设置为实名函数（具名函数），只不过及时设置了函数名，和平时普通的具名函数还是有区别的
+		// 1.匿名函数具名化之后，设置的函数名，只能在函数内部的上下文中使用（和外界上下文中的变量没有关系），相当于当前私有上下文中的一个私有变量
+		/* (function func() {
+			console.log(func); //=>当前函数
+		})();
+		console.log(func); //=>Uncaught ReferenceError: func is not defined */
+
+		// 2.这个设置的函数名，不仅只能在私有上下文中用，而且还不能修改其值
+		/* "use strict";
+		(function func() {
+			console.log(func); //=>函数
+			func = 100; //=>修改这个操作不会起到作用，而且在严格模式下会报错 Uncaught TypeError: Assignment to constant variable.
+			console.log(func); //=>函数
+		})(); */
+
+		// 3.我们可以基于重新声明这个变量的方法，修改它的值（相当于我们自己声明的优先级会很高，告诉浏览器，以我们自己声明的为主）
+		/* (function func() {
+			// 变量提升阶段：var func;
+			console.log(func); //=>undefined
+			var func = 100;
+			console.log(func); //=>100
+		})(); */
+
+		/* (function func() {
+			// func设置的函数名字，类似于私有变量，但是本质上不是私有变量
+			let func = 100;
+			console.log(func); //=>100
+		})(); */
+
+		/* (function func() {
+			// 变量提升阶段：声明+定义过func函数，此时就把之前给匿名函数设置的函数名给替换了
+			console.log(func); //=>OK函数
+			function func() {
+				console.log('OK');
+			}
+			console.log(func); //=>OK函数
+		})(); */
+
+
+		/* var b = 10;
+		(function b() { //=>具名化的名字和全局上下文中的变量没有关系
+			b = 20;
+			console.log(b); //=>匿名函数（修改值没用）
+		})();
+		console.log(b); //=>10 */
+
+		/* var b = 10;
+		(function b() {
+			var b = 20;
+			console.log(b); //=>20
+		})();
+		console.log(b); //=>10 */
+	</script>
 </body>
 
 </html>
