@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/*
+		 * ES3语法中：new 函数() => 这种方式就是基于构造函数的方式来执行
+		 *   1. Func不在被誉为普通函数，而是叫做构造函数（也就是我们所谓的自定义类）
+		 *   2. 返回的结果也不再基于RETURN来判断返回值，返回的结果是当前类的一个实例
+		 * 
+		 * 想创建自定义类和创建类的实例，只需要在执行的时候 不在 "函数()" 普通函数执行；而是 "new 函数()" 执行，也就是构造函数执行，这样方法被称为类，返回结果被称为类的实例；
+		 */
+		/* function Func(name, age) {
+			/!*
+			 * 代码执行之前，创建一个实例对象（堆）
+			 * 让THIS指向实例对象
+			 *!/
+			this.name = name; //=>this.xxx=xxx 都是在给实例对象设置私有的属性和方法
+			this.age = age;
+			/!*
+			 * 如果函数没有return，默认会把创建的实例对象返回 
+			 *!/
+		}
+		let f1 = new Func('珠峰培训', 10);
+		let f2 = new Func('周啸天', 30);
+		console.log(f1);
+		console.log(f2);
+		console.log(f1 === f2); //=>FALSE 每次都是创建一个新的实例，每一个实例和其他实例都是一个单独的对象(个体)，互相之间不冲突 */
+
+		/* 
+		//=>把Func函数执行（当做普通函数执行） 
+		//=>方法中的THIS:window
+		function Func(name, age) {
+			//=>this:window
+			this.name = name;
+			this.age = age;
+		}
+		let f1 = Func('珠峰培训', 10);
+		console.log(f1); //=>undefined 
+		console.log(window.name, window.age); //=>珠峰培训 10
+
+		let f2 = Func('周啸天',30);
+		console.log(f2); //=>undefined 
+		console.log(window.name, window.age); //=>周啸天 30
+		*/
+	</script>
+
+	<script>
+		// 约定规范：类名的第一个字母一般都是大写的
+		// 1.构造函数执行，由于具备普通函数特征，所以在私有上下文中可能会出现一些私有变量，但是这些私有变量和实例没有必然的联系，私有上下文中的THIS才是实例，所以只有写THIS.XXX=XXX的操作，才是给实例设置私有属性； 
+		// => 实例的私有属性和上下文中的私有变量不是一个东西
+		// 2. 当前类的每一个实例都是单独的一个对象，实例和实例之间是独立的
+		// 3. 在构造函数的函数体中，基于 THIS.XXX=XXX 给实例设置的属性和方法都是自己私有的，和其它实例中的属性和方法不冲突
+		function Fn(x) {
+			let y = 20;
+			this.total = x + y;
+			this.say = function () {
+				console.log(`${x} + ${y} = ${this.total}`);
+			};
+		}
+		let f1 = Fn(10); //=>f1=undefined
+		let f2 = new Fn(10); //=>f2实例对象
+		let f3 = new Fn(20); //=>f3实例对象
+
+		console.log(f2.total); //=>30
+		console.log(f2.x); //=>undefined
+		console.log(f3.y); //=>undefined
+		console.log(f1 === f2); //=>FALSE
+		console.log(f2 === f3); //=>FALSE
+		console.log(f2.say()); //=>"10+20=30"
+		console.log(f2.say === f3.say); //=>FALSE  都是当前实例的私有属性和方法（所有出现在构造函数的函数体中的 this.xxx=xxx 操作，都是设置私有的属性和方法）
+		console.log(f1.total); //=>Uncaught TypeError: Cannot read property 'total' of undefined  f1不是对象，只有对象才能操作键值对
+		console.log(window.total); //=>30
+		console.log(window.say()); //=>"10+20=30"
+	</script>
+</body>
+
+</html>
