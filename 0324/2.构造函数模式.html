@@ -60,7 +60,7 @@
 		// => 实例的私有属性和上下文中的私有变量不是一个东西
 		// 2. 当前类的每一个实例都是单独的一个对象，实例和实例之间是独立的
 		// 3. 在构造函数的函数体中，基于 THIS.XXX=XXX 给实例设置的属性和方法都是自己私有的，和其它实例中的属性和方法不冲突
-		function Fn(x) {
+		/* function Fn(x) {
 			let y = 20;
 			this.total = x + y;
 			this.say = function () {
@@ -76,11 +76,109 @@
 		console.log(f3.y); //=>undefined
 		console.log(f1 === f2); //=>FALSE
 		console.log(f2 === f3); //=>FALSE
-		console.log(f2.say()); //=>"10+20=30"
+		f2.say(); //=>"10+20=30"
 		console.log(f2.say === f3.say); //=>FALSE  都是当前实例的私有属性和方法（所有出现在构造函数的函数体中的 this.xxx=xxx 操作，都是设置私有的属性和方法）
 		console.log(f1.total); //=>Uncaught TypeError: Cannot read property 'total' of undefined  f1不是对象，只有对象才能操作键值对
 		console.log(window.total); //=>30
-		console.log(window.say()); //=>"10+20=30"
+		window.say(); //=>"10+20=30" */
+	</script>
+
+	<script>
+		/*
+		 * 普通函数
+		 *    Fn 是函数本身（不是执行）
+		 *    Fn() 函数执行
+		 * 构造函数
+		 *    new Fn(); 构造函数执行   =>有参数new
+		 *    new Fn; 构造函数执行（这种方式不能给函数传递实参了） =>无参数new
+		 */
+		/* function Fn() {
+			this.x = 100;
+			this.y = 200;
+		}
+		let f1 = new Fn();
+		console.log(f1);
+		let f2 = new Fn;
+		console.log(f2); */
+
+		/*
+		 * 构造函数执行的时候，函数体中
+		 *   1.没有return，默认返回当前类的实例对象（对象数据类型）
+		 *   2.有return，并且返回基本类型值，最后的返回结果还是类的实例，不会有影响
+		 *   3.如果返回的是一个引用数据类型，则会把默认返回的实例给覆盖掉，这样我们接收结果就不在是当前类的实例了，而是自己返回的值  => 真实项目中，如果想创建类的实例，则建议大家不要在手动写return了，防止实例被覆盖
+		 */
+		/* function Fn() {
+			this.x = 100;
+			this.y = 200;
+			return {
+				name: 'xxx'
+			};
+		}
+		let f1 = new Fn;
+		console.log(f1); //=>{name:'xxx'} 不再是Fn类的实例 */
+
+		/*
+		 * instanceof：检测当前实例是否属于这个类（或者检测当前值是否为某个类的实例） 
+		 *   => 值 instanceof 类
+		 *   => 是它的实例返回TRUE，反之返回FALSE
+		 */
+		/* function Fn() {}
+		let f1 = new Fn;
+		console.log(f1 instanceof Fn); //=>TRUE
+		console.log(f1 instanceof Array); //=>FALSE */
+
+		// 局限1：instanceof不适用于基本数据类型检测
+		// console.log(100 instanceof Number); //=>FALSE
+
+		// 应用场景：区分对象中的特殊数据格式，例如数组或者正则
+		// let arr = [10, 20];
+		// let reg = /^$/;
+		// // console.log(typeof arr); //=>"object"  typeof不能具体检测对象类型的细分
+		// // console.log(typeof reg); //=>"object"
+		// console.log(arr instanceof Array); //=>TRUE
+		// console.log(arr instanceof RegExp); //=>FALSE
+
+		/* 
+		 * hasOwnProperty：检测当前的某一个属性是否为实例(或者对象)的私有属性
+		 *    => 对象.hasOwnProperty(属性)
+		 *    => 是私有的属性返回TRUE，如果不是对象的属性或者不是私有的属性都返回FALSE
+		 * 
+		 * in：这个操作符也是检测当前属性是否为对象的属性
+		 *    => 属性 in 对象
+		 *    => 只要是对象的属性（不管是公有还是私有的属性）结果都是TRUE
+		 */
+		function Fn() {
+			// 构造函数体中出现的 this.xxx = xxx 都是给当前实例设置的私有属性
+			this.x = 100;
+			this.y = 200;
+			this.say = function () {
+				console.log(x + y);
+			};
+		}
+		let f1 = new Fn;
+		// let f2 = new Fn;
+		// console.log(f1.say === f2.say); //=>false
+
+		// console.log(f1.hasOwnProperty('say')); //=>true
+		// console.log(f1.hasOwnProperty('name')); //=>false 因为你连这个属性都没有
+		// console.log(f1.toString()); //=>"[object Object]"  toString一定是f1对象的属性，否则f1也不可能调用这个方法
+		// console.log(f1.hasOwnProperty('toString')); //=>false  toString不是它的私有属性，是他的公有属性
+
+		// console.log('say' in f1); //=>true
+		// console.log('toString' in f1); //=>true
+		// console.log('name' in f1); //=>false
+
+		// 需求：检测某一个属性是否为当前对象的公共属性（是他的属性，但是还不是私有的）
+		// 检测ATTR是否为OBJ的公有属性
+		/* function myHasPublicProperty(attr, obj) {
+			// 1.需要是它的属性 =>IN检测为TRUE
+			// 2.不是它的私有属性 =>HASOWNPROPERTY检测为FALSE
+			// return ((attr in obj) === true) && (obj.hasOwnProperty(attr) === false);
+			return (attr in obj) && !obj.hasOwnProperty(attr);
+		}
+		console.log(myHasPublicProperty('say', f1)); //=>false
+		console.log(myHasPublicProperty('name', f1)); //=>false
+		console.log(myHasPublicProperty('toString', f1)); //=>true */
 	</script>
 </body>
 
