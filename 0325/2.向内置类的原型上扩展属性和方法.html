@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/*
+		 * 虽然内置类的原型上有很多的方法，但是不一定完全够项目开发所用，所以真实项目中，需要我们自己向内置类原型扩展方法，来实现更多的功能操作 
+		 *    数组的原型上有SORT实现数组排序的方法，但是没有实现数组去重的方法，我们接下里向内置类原型扩展方法：myUnique，以后arr.myUnique执行可以把数组去重
+		 */
+		Array.prototype.myUnique = function myUnique() {
+			// this:当前要操作的数组实例
+			let obj = {};
+			for (let i = 0; i < this.length; i++) {
+				let item = this[i];
+				if (typeof obj[item] !== "undefined") {
+					this[i] = this[this.length - 1];
+					this.length--;
+					i--;
+					continue;
+				}
+				obj[item] = item;
+			}
+			obj = null;
+
+			//为了实现链式写法
+			return this;
+		};
+
+		let arr = [12, 23, 13, 23, 12, 12, 2, 3, 1, 2, 3, 2, 1, 2, 3];
+		arr.myUnique().sort((a, b) => a - b);
+		console.log(arr);
+		// 链式写法：执行完上一个方法，紧接着调用下一个方法执行
+		// => arr之所以能调用myUnique或者sort等数组原型上的方法，是因为arr是Array的实例，所以链式写法的实现思路很简单：只需要让上一个方法执行的返回结果依然是当前类的实例，这样就可以立即接着调用类原型上的其它方法了
+		// arr.myUnique().sort((a, b) => a - b).map(item => {
+		// 	return '@@' + item;
+		// }).push('珠峰培训').shift();
+		//Uncaught TypeError: arr.myUnique(...).sort(...).map(...).push(...).shift is not a function  push返回的是新增后数组的长度，是个数字，不再是数组了，就不能继续调用数组的方法了
+			
+		/* let arr = [12, 23, 13, 23, 12, 12, 2, 3, 1, 2, 3, 2, 1, 2, 3];
+		arr.myUnique();
+		arr.sort((a, b) => a - b);
+		console.log(arr); */
+
+		/* function unique(arr) {
+			let obj = {};
+			for (let i = 0; i < arr.length; i++) {
+				let item = arr[i];
+				if (typeof obj[item] !== "undefined") {
+					// 当前项已经存在
+					arr[i] = arr[arr.length - 1];
+					arr.length--;
+					i--;
+					continue;
+				}
+				obj[item] = item;
+			}
+			return arr;
+		}
+		let arr = [12, 23, 13, 23, 12, 12, 2, 3, 1, 2, 3, 2, 1, 2, 3];
+		arr = unique(arr);
+		console.log(arr); */
+
+
+
+		/* 
+		 * 模拟内置的PUSH方法 
+		 *   在类的原型上编写的方法，让方法执行，我们一般都这样操作：实例.方法()，所以方法中的THIS一般都是我们要操作的这个实例，我们基于THIS操作就是操作这个实例
+		 */
+		/* Array.prototype.push = function push(value) {
+			// this:要操作的数组arr实例
+			this[this.length] = value;
+			return this.length;
+		};
+		let arr = [10, 20];
+		console.log(arr.push(100), arr);
+
+		let arr2 = [];
+		console.log(arr2.push('珠峰培训'), arr2); */
+
+		/*
+		 * JS中有很多内置类，而且在内置类的原型上有很多内置的属性和方法
+		 *    Array.prototype：数组作为Array的实例，就可以调取原型上的公共属性方法，完成数组的相关操作 => arr.push()：arr基于__proto__原型链的查找机制，找到Array.prototype上的push方法，然后把push方法执行，push方法执行
+		 *        + 方法中的THIS是要操作的arr这个数组实例
+		 *        + 作用是向arr(也就是this)的末尾追加新的值
+		 *        + 返回结果是新增后数组的长度
+		 *  
+		 * 向内置类原型扩展方法：
+		 *    Array.prototype.xxx = xxx
+		 *    =>这种方法存在风险：我们自己设置的属性名可能会把内置的属性给覆盖掉
+		 *    =>一般我们自己在内置类原型上扩展的方法，设置的属性名最好加上前缀
+		 * 
+		 *    Array.prototype={...}
+		 *    =>浏览器为了保护内置类原型上的方法，不允许我们重新定向内置类原型的指向（严格模式下会报错）
+		 */
+
+		/* "use strict";
+		Array.prototype = {
+			AA: 100
+		}; //=>Uncaught TypeError: Cannot assign to read only property 'prototype' of function 'function Array() { [native code] }'
+		let arr = [10, 20];
+		console.log(arr.AA); //=>undefined */
+
+		/* Array.prototype.myPush = function () {
+			console.log('自己的PUSH');
+		};
+		let arr = [10, 20];
+		arr.myPush(100); */
+	</script>
+</body>
+
+</html>
