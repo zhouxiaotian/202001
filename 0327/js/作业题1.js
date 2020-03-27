@@ -40,7 +40,7 @@ let res = fn(1, 2)(3);
 console.log(res); //=>6 */
 
 //============================================
-var x = 2;
+/* var x = 2;
 var y = {
 	x: 3,
 	// 在创建对象堆，给z属性赋值的时候，就要把自执行函数执行了，把其返回结果赋值给属性z
@@ -60,4 +60,71 @@ var y = {
 var m = y.z;
 m(4);
 y.z(5);
-console.log(x, y.x);
+console.log(x, y.x); */
+
+//============================================
+/* function Fn(n, m) {
+	n = n || 0;
+	m = m || 0;
+	this.x = n;
+	this.y = m;
+	this.getX = function () {
+		console.log(this.x);
+	}
+	return n + m;  
+}
+Fn.prototype.sum = function () {
+	console.log(this.x + this.y);
+}
+Fn.prototype = {
+	getX: function () {
+		this.x += 1;
+		console.log(this.x);
+	},
+	getY: function () {
+		this.y -= 1;
+		console.log(this.y);
+	}
+};
+let f1 = new Fn(10, 20);
+let f2 = new Fn;
+console.log(f1.getX === f2.getX); //=>false  都是私有的
+console.log(f1.getY === f2.getY); //=>true  都是公有的
+console.log(f1.__proto__.getY === Fn.prototype.getY); //=>true 都是找原型上的方法（值得注意的是：在IE浏览器中是不允许我们直接操作 __proto__）
+console.log(Fn.prototype.getX === f2.getX); //=>false  原型上的 VS 私有的
+console.log(f1.constructor); //=>Object
+f1.getX();
+// 执行的是私有的getX；方法中的this:f1；console.log(this.x) => f1.x => 10
+Fn.prototype.getX();
+// 执行的是公有的getX；方法中的this:Fn.prototype；
+// this.x += 1    Fn.prototype.x=Fn.prototype.x+1=undefined+1=NaN
+// console.log(this.x); => Fn.prototype.x => NaN
+f2.getY();
+// 执行的是公有的getY；方法中的this:f2；
+// this.y -= 1;   f2.y=f2.y-1=0-1=-1
+// console.log(this.y);  => f2.y => -1
+Fn.prototype.getY();
+// 执行的是公有的getY；方法中的this:Fn.prototype；
+// this.y -= 1;   Fn.prototype.y=Fn.prototype.y-1=undefined-1=NaN
+// console.log(this.y);  => Fn.prototype.y => NaN
+f1.sum();
+// f1.sum => undefined
+// undefined() ：报错，f1.sum is not a function */
+
+/* 优化点 
+Fn.prototype.sum = function () {
+	console.log(this.x + this.y);
+}
+let obj = {
+	// constructor: Fn,
+	getX: function () {
+		this.x += 1;
+		console.log(this.x);
+	},
+	getY: function () {
+		this.y -= 1;
+		console.log(this.y);
+	}
+};
+// Object.assign(obj1,obj2)把两个对象进行合并，合并过程中，有冲突的属性以obj2为主，剩余的不冲突的都合并在一起，返回一个合并后的新对象
+Fn.prototype = Object.assign(Fn.prototype, obj); */
