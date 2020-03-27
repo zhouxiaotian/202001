@@ -16,7 +16,6 @@ let m = n.plus(10).minus(5); //=>为了能够调用链式写法，需要保证PL
 console.log(m); //=>15 
 */
 
-
 /* 
 Array.prototype.unique = function unique() {
 	// this:一般都是当前Array类的一个实例（我们要操作的数组）
@@ -27,6 +26,7 @@ ary = ary.unique().sort((a, b) => a - b);
 console.log(ary); 
 */
 
+/* 
 String.prototype.getParams = function getParams(attr) {
 	// 1.获取字符串中问号后面传参的值，以对象键值对的方式进行存储
 	let askIndex = this.indexOf('?'),
@@ -47,4 +47,5 @@ String.prototype.getParams = function getParams(attr) {
 	return obj[attr] || "";
 };
 let url = "locallhost?key1=val1&key2=val2&key3=val3";
-console.log(url.getParams("aaa"));
+console.log(url.getParams("aaa")); 
+*/
