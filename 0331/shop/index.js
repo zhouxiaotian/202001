@@ -43,6 +43,12 @@ function render(data=[]) {
               </div>
             </li>`
   })
+  let n = data.length%5;
+  if(n){
+    for(let i = 0; i < 5-n;i++){
+      str += '<li></li>'
+    }
+  } 
   let ul = document.querySelector('.phone_list_box');
   ul.innerHTML = str;
 }
@@ -55,7 +61,8 @@ timeBtn.onclick = function(){
   
   // 把数据按照 时间进行排序  然后 再去执行render函数
   console.log(ary)
-  this.flag *= (-1)
+  // this.flag *= (-1);
+  this.flag = this.flag * -1
   let temp = ary.sort((a,b)=>{
     return (a.time - b.time)*this.flag;
   })
