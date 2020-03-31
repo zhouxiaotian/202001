@@ -1,0 +1,19 @@
+.container {
+	padding: 0;
+}
+
+.card-deck {
+	margin-top: 20px;
+	flex-wrap: wrap;
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.card-deck .card {
+	margin: 0 5px 10px 5px;
+	flex: 0 0 218px;
+}
+
+.card-deck .card .card-text {
+	margin-bottom: 10px;
+}
