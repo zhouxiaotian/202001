@@ -1,0 +1,44 @@
+[
+    {
+        "img":"https://res.vmallres.com/pimages//product/6901443316496/428_428_1563762865294mp.png",
+        "title":"HUAWEI nova 5i Pro",
+        "price":1200,
+        "num":2300,
+        "time":123
+    },
+    {
+        "img":"https://res.vmallres.com/pimages//product/6901443254712/428_428_1542768008007mp.png",
+        "title":"华为麦芒8",
+        "price":2000,
+        "num":3,
+        "time":4
+    },
+    {
+        "img":"https://res.vmallres.com/pimages//product/6901443315901/428_428_1560916037515mp.png",
+        "title":"HUAWEI P30 Pro",
+        "price":3400,
+        "num":224,
+        "time":1234
+    },
+    {
+        "img":"https://res.vmallres.com/pimages//product/6901443278138/428_428_1544693593610mp.png",
+        "title":"华为手机",
+        "price":3222,
+        "num":233,
+        "time":23
+    },
+    {
+        "img":"https://res.vmallres.com/pimages//product/6901443292189/428_428_1552440582581mp.png",
+        "title":"HUAWEI Mate 20 X 5G版",
+        "price":5600,
+        "num":456,
+        "time":166
+    },
+    {
+        "img":"https://res.vmallres.com/pimages//product/6901443321315/428_428_1563353009647mp.png",
+        "title":"HUAWEI Mate 20 X 5G版",
+        "price":2300,
+        "num":12,
+        "time":12367
+    }
+]
