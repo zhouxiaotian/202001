@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		// JS中数据类型
+		// 基本数据类型：number string boolean null undefined symbol bigint
+		// 引用数据类型：object（普通对象、数组对象、正则对象、日期对象、Math、实例对象、原型prototype...） function
+
+		// JSON不是单独的数据类型，它是对象数据类型的某一种特殊的格式 
+		// => JSON是一种数据格式：JSON格式的对象/JSON格式的字符串
+		// => 服务器端返回给客户端的数据，一般都是JSON格式的
+
+		/*let obj1 = {
+			name: '珠峰',
+			age: 10
+		}; //=>普通格式对象
+
+		let obj2 = {
+			"name": "珠峰",
+			"age": 10
+		}; //=>JSON格式的对象（其实就是把对象的属性名基于双引号包起来而已，但是和普通对象的操作是一样的） 
+
+		let str = '{"name":"珠峰","age":10}'; //=>JSON格式的字符串
+		*/
+
+		// GO（window）中有一个属性：JSON
+		// 把JSON格式的对象(或者普通对象)转换为JSON格式的字符串
+		let obj2 = {
+			"name": "珠峰",
+			"age": 10
+		};
+		console.log(JSON.stringify(obj2)); //=>'{"name":"珠峰","age":10}'
+
+		// 把JSON格式的字符串转换为对象
+		let str = '{"name":"珠峰","age":10}';
+		console.log(JSON.parse(str)); //=>{name: "珠峰", age: 10}
+	</script>
+</body>
+
+</html>
