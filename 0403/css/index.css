@@ -1,0 +1,52 @@
+/*
+ * 使用BT的时候，并不是所有封装好的样式都符合我们的需求，我们需要通过自己设置样式来达到修改样式的效果 
+ * 特殊：我们自己设置的样式，因为层级关系的问题（样式优先级），不能覆盖默认的BT样式，此时我们需要让我们写的样式优先级最高  !important
+ */
+
+.container {
+	padding: 0;
+}
+
+@media (min-width: 768px) {
+
+	/* 当设备的宽度>=768 */
+	.container {
+		max-width: 900px;
+	}
+
+	/* 导航在小屏幕下也能正常都展示出来 */
+	.navbar-nav {
+		flex-direction: row;
+	}
+
+	.nav-link {
+		padding-left: .5rem !important;
+		padding-right: .5rem !important;
+	}
+
+	.navbar-collapse {
+		flex-basis: auto;
+	}
+}
+
+.productBox {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 10px auto;
+}
+
+.productBox .card {
+	margin-right: 1%;
+	margin-bottom: 10px;
+	width: 19.2%;
+}
+
+.productBox .card:nth-child(5n+5) {
+	margin-right: 0;
+}
+
+.productBox .card .card-title {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
