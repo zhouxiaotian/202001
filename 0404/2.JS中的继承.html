@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/*
+		 * JS本身是基于面向对象开发的编程语言
+		 *   =>类：封装、继承、多态 
+		 * 
+		 * 封装：类也是一个函数，把实现一个功能的代码进行封装，以此实现“低耦合高内聚”
+		 * 多态：重载、重写
+		 *    重写：子类重写父类上的方法（伴随着继承运行的）
+		 *    重载：相同的方法，由于参数或者返回值不同，具备了不同的功能（JS中不具备严格意义上的重载，JS中的重载：同一个方法内，根据传参不同实现不同的功能）
+		 * 继承：子类继承父类中的方法
+		 */
+
+		/* 
+		public void fn(int x,init y){
+
+		}
+		public void fn(int x){
+
+		}
+		fn(10,20);  执行第一个FN
+		fn(10);  执行第二个FN
+		fn('珠峰培训');  报错  
+		*/
+
+		/* 
+		function fn(x, y) {
+
+		}
+
+		function fn(x) {
+
+		}
+		fn(10, 20);  执行第二个FN
+		fn(10); 执行第二个FN 
+		*/
+
+		/* 
+		function fn(x, y) {
+			if(y===undefined){
+				// ...
+				return;
+			}
+			// ....
+		}
+		fn(10);
+		fn(10, 20); 
+		*/
+	</script>
+
+	<script>
+		/*
+		 * 在JS语言中，它的继承和其它编程语言还是不太一样的 
+		 * 继承的目的：让子类的实例同时也具备父类中私有的属性和公共的方法
+		 */
+
+		// JS中第一种继承方案：原型继承（让子类的原型等于父类的实例即可）
+		/* function Parent() {
+			this.x = 100;
+		}
+		Parent.prototype.getX = function getX() {
+			return this.x;
+		};
+
+		function Child() {
+			this.y = 200;
+		}
+		Child.prototype = new Parent; //=>原型继承
+		Child.prototype.getY = function getY() {
+			return this.y;
+		};
+
+		let c1 = new Child;
+		console.log(c1); */
+
+
+		// JS中第二种继承方式：CALL继承（只能继承父类中私有的，不能继承父类中公共的）
+		/* function Parent() {
+			this.x = 100;
+		}
+		Parent.prototype.getX = function getX() {
+			return this.x;
+		};
+
+		function Child() {
+			// 在子类构造函数中，把父类当做普通方法执行（没有父类实例，父类原型上的那些东西也就和它没关系了）
+			// this -> Child的实例c1
+			Parent.call(this); // this.x=100 相当于强制给c1这个实例设置一个私有的属性x，属性值100，相当于让子类的实例继承了父类的私有的属性，并且也变为了子类私有的属性 “拷贝式”
+			this.y = 200;
+		}
+		Child.prototype.getY = function getY() {
+			return this.y;
+		};
+
+		let c1 = new Child;
+		console.log(c1); */
+
+
+		// JS中第三种继承：寄生组合式继承（CALL继承 + 另类原型继承）
+		/* function Parent() {
+			this.x = 100;
+		}
+		Parent.prototype.getX = function getX() {
+			return this.x;
+		};
+
+		function Child() {
+			Parent.call(this);
+			this.y = 200;
+		}
+		Child.prototype = Object.create(Parent.prototype);
+		Child.prototype.constructor = Child;
+		Child.prototype.getY = function getY() {
+			return this.y;
+		};
+
+		let c1 = new Child;
+		console.log(c1); */
+
+
+		// 创建一个空对象，让其原型链指向obj
+		/* let obj = {
+			xxx: 'xxx'
+		};
+		console.log(Object.create(obj)); */
+	</script>
+
+	<script>
+		/* ES6中的类和继承 */
+		class Parent {
+			constructor() {
+				this.x = 100;
+			}
+			// Parent.prototype.getX=function...
+			getX() {
+				return this.x;
+			}
+		}
+
+		// 继承: extends Parent（类似于寄生组合继承）
+		// 注意：继承后一定要在CONSTRUCTOR第一行加上SUPER
+		class Child extends Parent {
+			constructor() {
+				super(); //=>类似于我们之前的CALL继承  super(100,200)：相当于把Parent中的constructor执行，传递了100和200
+				this.y = 200;
+			}
+			getY() {
+				return this.y;
+			}
+		}
+		let c1 = new Child;
+		console.log(c1);
+
+		// Child(); //=>Uncaught TypeError: Class constructor Child cannot be invoked without 'new'  ES6中创建的就是类，不能当做普通函数执行，只能new执行
+	</script>
+</body>
+
+</html>
