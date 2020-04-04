@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/*
+		 * 数据类型检测:
+		 *   typeof 
+		 *   instanceof
+		 *   constructor
+		 *   Object.prototype.toString.call([value])
+		 */
+
+		/* 
+		 * typeof [value]  返回结果是一个字符串（字符串中包含了对应的数据类型）
+		 *   =>使用起来简单，基本数据类型值基本上都可以有效检测，引用数据类型值也可以检测出来  "number"/"string"/"boolean"/"undefined"/"symbol"/"bigint"/"object"/"function"
+		 *   =>typeof null === "object"
+		 *   =>对于数组、普通对象、正则等，返回结果都是"object"，所以无法基于typeof细分对象数据类型
+		 * 
+		 * typeof typeof [] === "string"
+		 */
+
+		/*
+		 * [实例] instanceof [类]：用来检测当前实例是否属于这个类
+		 *   =>基于这种方式，可以弥补typeof无法细分对象类型的缺点（想检测这个值是否为数组，只需要看他是否为Array类的实例即可）
+		 */
+		// let arr = [10, 20];
+		/* 
+		console.log(typeof arr); //=>"object"
+		console.log(arr instanceof Array); //=>true
+		console.log(arr instanceof RegExp); //=>false
+		console.log(arr instanceof Object); //=>true  不管是数组对象还是正则对象，都是Object的实例，检测结果都是TRUE，所以无法基于这个结果判断是否为普通对象 
+		*/
+
+		/*
+		// instanceof检测机制：验证当前类的原型prototype是否会出现在实例的原型链__proto__上，只要在它的原型链上，则结果都为TRUE
+		function Fn() {}
+		Fn.prototype = Object.create(Array.prototype);
+		let f = new Fn;
+		console.log(f instanceof Array); //=>true f其实不是数组，因为它连数组的基本结构都是不具备的 
+		*/
+
+		// instanceof检测的实例必须都是引用数据类型的，它对基本数据类型值操作无效
+		// console.log(10 instanceof Number); //=>false
+		// console.log(new Number(10) instanceof Number); //=>true
+
+		/*
+		 * constructor：利用类和实例的关系，实例.constructor 一般都等于 类.prototype.constructor 也就是当前类本身（前提是你的constructor并没有被破坏）
+		 *   =>但是这种方式也是不保险的，因为JS中的constructor是不被保护的（用户可以自己随便改），这样基于constructor检测的值存在不确定性（但是真实项目中，没有人会改内置类的constructor）
+		 */
+		/* let arr = [],
+			obj = {},
+			num = 10;
+		console.log(arr.constructor === Array); //=>true
+		console.log(arr.constructor === Object); //=>false
+		console.log(obj.constructor === Object); //=>true
+		console.log(num.constructor === Number); //=>true */
+
+		/*
+		 * JS中基本上不存在局限性的数据类型检测方式：
+		 *   => Object.prototype.toString.call([value])
+		 *   => 基于它可以有效的检测任何数据类型的值 
+		 * 
+		 * 找到Object.prototype上的toString方法，让toString方法执行，并且基于call让方法中的this指向检测的数据值，这样就可以实现数据类型检测了
+		 *   =>Object.prototype.toString.call(10)
+		 *   =>({}).toString.call(10)
+		 *   =>({}).toString===Object.prototype.toString
+		 *  
+		 * 获取结果的结构
+		 *   "[object 当前数据值所属的构造函数]"
+		 */
+		// let class2type = {};
+		// let toString = class2type.toString; //=>Object.prototype.toString
+
+		/* console.log(toString.call(10)); //=>"[object Number]"
+		console.log(toString.call(NaN)); //=>"[object Number]"
+		console.log(toString.call("xxx")); //=>"[object String]"
+		console.log(toString.call(true)); //=>"[object Boolean]"
+		console.log(toString.call(null)); //=>"[object Null]"
+		console.log(toString.call(undefined)); //=>"[object Undefined]"
+		console.log(toString.call(Symbol())); //=>"[object Symbol]"
+		console.log(toString.call(BigInt(10))); //=>"[object BigInt]"
+		console.log(toString.call({xxx:'xxx'})); //=>"[object Object]"
+		console.log(toString.call([10,20])); //=>"[object Array]"
+		console.log(toString.call(/^\d+$/)); //=>"[object RegExp]"
+		console.log(toString.call(function(){})); //=>"[object Function]" */
+
+		/*
+		 * 每一种数据类型的构造函数的原型上都有toString方法；
+		 * 每一种基本数据类型的构造函数的原型上都有valueOf方法；Object.prototype的原型上也有valueOf方法；
+		 *   =>除了Object.prototype上的toString是用来返回当前实例所属类的信息（检测数据类型的），其余的都是转换为字符串的
+		 *   =>对象实例.toString() ：toString方法中的THIS是对象实例，也就是检测它的数据类型，也就是THIS是谁，就是检测谁的数据类型  =>Object.prototype.toString.call([value]) 所以我们是把toString执行，基于call改变this为要检测的数据值
+		 */
+
+		/* let num1 = 10,
+			num2 = new Number(10);
+		let arr = [10, 20],
+			obj = {
+				xxx: 'xxx'
+			}; */
+
+		// ALERT会把所有要输出的值转换为字符串（隐性转换），像这种隐性转换为字符串的还有很多，例如：字符串拼接、把对象转换为数字（也是先转换为字符串）...
+		//  =>num1.valueOf() 先获取原始值
+		//  =>[[PrimitiveValue]].toString() 把获取的原始值转换为字符串
+
+		// valueOf是获取原始值 [[PrimitiveValue]]
+		// toString是将原始值转换为字符串
+		/* console.log(num1);
+		console.log(num1.valueOf());
+		console.log(num1.toString());
+
+		console.log(num2);
+		console.log(num2.valueOf());
+		console.log(num2.toString()); */
+
+		/* console.log(arr);
+		console.log(arr.valueOf()); //=>Object.prototype.valueOf 原始值
+		console.log(arr.toString()); //=>Array.prototype.toString 转换字符串 */
+
+		/* console.log(obj);
+		console.log(obj.valueOf()); //=>Object.prototype.valueOf  原始值
+		console.log(obj.toString()); //=>Object.prototype.toString  检测数据类型 */
+	</script>
+
+	<script src="jquery中的数据类型检测方法类库.js"></script>
+</body>
+
+</html>
