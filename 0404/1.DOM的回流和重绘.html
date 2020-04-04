@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		.box {
+			width: 100px;
+			height: 100px;
+			background: red;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="box" id="box"></div>
+
+	<ul id="item">
+		<!-- <li>我是第1个LI</li> -->
+	</ul>
+
+	<!-- IMPORT JS -->
+	<script>
+		// SCRIPT在DOM结构末尾导入，可以直接使用元素的ID代表这个元素对象
+
+		/* 
+		 * 在老版本的浏览器中，我们分别改变了三次样式（都涉及了位置或者大小的改变），所以触发三次回流和重绘
+		 * 
+		 * 现代浏览器中默认增加了“渲染队列的机制”，以此来减少DOM的回流和重绘
+		 *    => 遇到一行修改样式的代码，先放到渲染队列中，继续看下面一行代码是否还为修改样式的，如果是继续增加到渲染队列中...直到下面的代码不再是修改样式的，而是获取样式的代码！此时不再向渲染队列中增加，把之前渲染队列中要修改的样式一次性渲染到页面中，引发一次DOM的回流和重绘
+		 * 
+		 * 解决方案一：分离读写（把设置样式和读取样式的操作分离开）
+		 */
+		// 一次回流重绘
+		/* box.style.width = '200px';
+		box.style.height = '200px';
+		box.style.margin = '20px';
+		console.log(box.style.width);
+		console.log(box.offsetHeight); */
+
+		// 一次回流重绘
+		/* 
+		box.style.width = '200px';
+		box.style.height = '200px';
+		box.style.margin = '20px'; */
+
+		// 三次回流和重绘
+		/* box.style.width = '200px';
+		console.log(box.style.width); //=>中断渲染队列，立即渲染一次，引发一次DOM回流和重绘  200px
+		box.style.height = '200px'; 
+		console.log(box.offsetHeight);
+		box.style.margin = '20px'; */
+
+		// 手动不分离读写的需求：先设置动画，渲染后，在去改变样式，让其有动画效果
+		/* box.style.transition = '.3s';
+		let AA = box.offsetHeight;
+		box.style.width = '200px';
+		box.style.height = '200px'; */
+	</script>
+
+	<script>
+		/* 方案二：集中改变样式 */
+		// box.className = 'active';
+		// box.style.cssText = 'width:200px;height:200px;';
+	</script>
+
+	<script>
+		/* 方案三：在动态操作DOM结构中的优化（例如：数据绑定） */
+
+		/* for (let i = 1; i <= 5; i++) {
+			let liBox = document.createElement('li');
+			liBox.innerText = `我是第${i}个LI`;
+			item.appendChild(liBox); 
+			//=>每一次向页面中增加，都会触发一次DOM的回流和重绘（5次）
+		} */
+
+		// 文档碎片：临时创建的一个存放文档的容器，我们可以把新创建的LI，存放到容器中，当所有的LI都存储完，我们统一把容器中的内容增加到页面中（只触发一次回流）
+		/* let frag = document.createDocumentFragment();
+		for (let i = 1; i <= 5; i++) {
+			let liBox = document.createElement('li');
+			liBox.innerText = `我是第${i}个LI`;
+			frag.appendChild(liBox);
+		}
+		item.appendChild(frag); */
+
+		// 真实项目中，有一个文档碎片类似的方式，也是把要创建的LI事先存储好，最后统一放到页面中渲染（字符串拼接）
+		/* let str = ``;
+		for (let i = 1; i <= 5; i++) {
+			str += `<li>我是第${i}个LI</li>`;
+		}
+		item.innerHTML = str; */
+	</script>
+
+</body>
+
+</html>
