@@ -101,3 +101,36 @@ let shopModule = (function () {
 	};
 })();
 shopModule.init();
+
+
+function shopModule(){
+	this.box = document.querySelector(qqq);
+	this.data = {};
+	this.init()
+}
+shopModule.prototype.render = function name(params) {
+	
+}
+shopModule.prototype.handler = function name(params) {
+	
+}
+shopModule.prototype.init = function name(params) {
+	
+}
+
+
+class shopModule{
+	constructor(qqq){
+		this.box = document.querySelector(qqq);
+		this.data = {};
+		this.init()
+	}
+	render(){}
+	handler(){
+
+	}
+	init(){
+
+	}
+}
+new shopModule();

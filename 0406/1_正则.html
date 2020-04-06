@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  /* 
+    正则  是一种处理字符串的规则；
+    JS中的正则 一种引用数据类型； RegExp
+    正则的编写方式 ：
+      字面量的方式：  /zhufeng/
+      实例的方式：  new RegExp('zhufeng')   当正则中的一些字符需要是变量的时候；才会选择这种方式
+    
+    正则的两种用途
+      用于匹配  test  编写一个正则（制定了一套规则）；去测试某个字符串是否符合这个规则；
+      用于捕获  exec  编写一个正则（制定了一套规则）; 去把某个字符串中符合这个规则的字符获取到
+    
+    var reg = /zhufeng\d+/   : 斜杠中间的 zhufeng  我们称为元字符；
+
+    元字符可以分为： 
+      有特殊含义的元字符 
+      普通元字符
+
+      有特殊含义的元字符：
+      \       转义字符
+      \d      0-9之间的数字
+      \D      除了0-9的任意字符
+      \w      数字 字母 下划线
+      \W      除了 数字 字母 下划线的任意字符
+      ^       以什么字符开头
+      $       以什么字符结尾
+      .       代表除了换行以外的所有字符
+      \n      代表换行
+
+      x|y     x或者y
+      [xyz]   x或者y或z
+      [^xy]   除了xy的任意字符
+      [a-z]   a到z的任意字符 小写的英文字母
+      [^a-z]  除了a-z的任意字符
+      ()      分组和提升优先级
+      (?:)    只匹配不捕获
+      (?=)    正向肯定预查
+      (?!)    正向否定预查
+
+    量词元字符： 都是用在其他元字符后边的； /zhufeng{3}}/  zhufenggg
+    ?          前边的字符出现 0或1次；
+    +          前边的字符出现 1或多次；
+    *          前边的字符出现 0或多次；n
+    {n}        前边的字符出现 n次；
+    {n,m}      前边的字符出现 n到m次；
+    {n,}       前边的字符出现 n到多次；
+
+    修饰符：用在正则外边的  /abc/i
+    i    ignoreCase : 忽略大小写
+    m    multiline   多行匹配
+    g    global 全局匹配
+  */
+
+</script>
