@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text"/>
+  <button>提交</button>
+  <h1></h1>
+</body>
+</html>
+<script>
+  /* 
+    点击提交按钮  h1标签展示 这个出生日期和性别
+  */
+  let inp = document.querySelector('input'),
+      btn = document.querySelector('button'),
+      h1 = document.querySelector('h1');
+  btn.onclick = function(){
+    let val = inp.value;// 130425199503034246
+    var reg = /^[1-9]\d{5}((19|20)\d{2})(0[1-9]|1[0-2])(0[1-9]|[1-2]\d|3[01])\d{2}(\d)(\d|X)$/i;
+    // let ary = /^\d{6}(\d{4})(\d{2})(\d{2})\d{2}(\d)(\d|x)$/i.exec(val);
+    let ary = reg.exec(val);
+    console.log(ary);
+    if(ary){
+      // 输入的是一个合法正则
+      let str = `这个人的出生日期是${ary[1]}年${ary[3]}月${ary[4]}日；性别是${ary[5]%2 ? '男' : '女'}`;
+      h1.innerHTML = str;
+    }else{
+      alert('不是一个合法的身份证号码')
+    }
+    
+  }    
+</script>

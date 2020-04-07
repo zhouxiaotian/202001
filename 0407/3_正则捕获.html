@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  /* 
+    匹配  test
+    捕获  exec  就把字符串中符合正则的部分 获取到
+    贪婪性 一次捕获 尽可能多的去捕获
+    懒惰性  只捕获一次
+  */
+/*   var reg = /\d{1,3}/;
+  var str = "zhufeng2019zhufeng2020";
+  console.log(reg.test(str))
+  console.log(reg.exec(str)) */
+
+/* 
+  // 解决正则的贪婪性
+  var reg = /\d{1,3}?/;
+  var str = "zhufeng2019zhufeng2020";
+  console.log(reg.test(str))
+  console.log(reg.exec(str)) */
+
+
+/*   // 解决整的懒惰性；
+  // reg.lastIndex  值是 下一次捕获的起始索引  exec和test方法都能改变lastIndex属性；
+  var reg = /\d+/g;// 修饰符 g; 可以解决懒惰性
+  var str = "zhufeng2019zhufeng2020";
+  console.log(reg.lastIndex);
+  // console.log(reg.test(str))
+  console.log(reg.exec(str),reg.lastIndex)//2019
+  console.log(reg.exec(str),reg.lastIndex)//2020
+  console.log(reg.exec(str),reg.lastIndex)//null
+  console.log(reg.exec(str),reg.lastIndex)//2019
+  console.log(reg.exec(str),reg.lastIndex)//2020
+  console.log(reg.exec(str),reg.lastIndex)//null */
+
+
+ /*  // ()  在匹配的时候一般用来提升优先级  在捕获的时候起到分组的作用
+  var reg = /([a-z]+)(\d+)/;
+  var str = 'zf2020';//珠峰2019hello2021
+  console.log(reg.exec(str))
+  // 从结果上看  数组中的第一项是整个正则捕获的内容 往后分别是各个小分组捕获的内容
+ */
+
+  var reg = /(\d)+/;
+  var str = '1234qwe';
+  reg.exec(str); // 把量词放在分组外边的这种情况 小分组最后捕获的内容都是整个组捕获的项中的最后一位
+  
+  var reg = /(([a-z])+)((\d)+)/;// 先总后分  先左后右  先外后里；
+  var str = 'zf2021';//珠峰2019hello2021
+  console.log(reg.exec(str))
+</script>

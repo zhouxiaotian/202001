@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  var str = 'zf2019px2020';
+  var reg = /\d+/;
+  // console.log(reg.exec(str)[0]);
+  // console.log(reg.exec(str)[0]);
+  // 封装一个execAll  
+  RegExp.prototype.execAll = function(str){
+    // this 是正则  str 是目标字符串；
+    let ary = [];
+    let _this = this; // 把this对应的值 给了一个私有变量； 一位私有变量的值 我们是可以直接修改的
+    if(_this.global==false){
+      // 正则没有全局修饰符 g;
+      // _this = eval(_this+'g')
+      _this = new RegExp(_this,'g');
+    }    
+    res = _this.exec(str);
+    while(res){
+      ary.push(res[0]);
+      res = _this.exec(str)
+    }    
+    return ary;
+  }
+  
+  console.log(reg.execAll(str)) ;// ['2019','2020']
+
+  var str = 'https://baicu.com?abc=123&zf=666&px=888&_=t';
+  function queryParams(str){
+    str = str.split('?')[1];// abc=123  zf=666   px=888   _=t
+    let ary = str.split('&');// [abc=123,zf=666,px=888];
+    let obj = {};
+    ary.forEach(item=>{
+      let t = item.split('=');//[abc,123]
+      obj[t[0]] = t[1]
+    })
+    return obj;
+  }
+  queryParams(str);// {abc:123,zf:666,px:888}
+
+  var reg = /[a-z]+=\d+/;
+  var reg = /([^?&=]+)=([^?&=]+)/g;
+  console.log(reg.exec(str))
+  console.log(reg.exec(str))
+  console.log(reg.exec(str))
+  console.log(reg.exec(str));
+  // 首要作业  结合正则和execAll的思想  实现 queryParams
+
+
+  //  match  split  replace  跟正则的结合使用方式；
+  // 1 -获取一个字符串中出现次数最多的字符 及其 次数 
+  var str = 'ertefvzdgfergsegfsdrgrgfbshtrh';
+
+  // 2- 实现一个千分符的函数 
+  // ‘124252343’  ‘124,252,343’
+
+  //3- 结合replace实现 queryParams
+</script>
