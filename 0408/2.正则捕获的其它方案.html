@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/* let str = "{0}年{1}月{2}日";
+		let reg = /\{(\d+)\}/g; */
+
+		// => EXEC
+		// console.log(reg.exec(str)); //=>["{0}", "0"...]
+
+		// => TEST
+		// 每一次匹配也和捕获一样，受制于reg.lastIndex（前提也是设置了g修饰符，不设置g每一次还是从0开始查找，规则和捕获一样）
+		/* console.log(reg.lastIndex); //0
+		console.log(reg.test(str)); //true
+		console.log(reg.lastIndex); //3
+		console.log(reg.test(str)); //true
+		console.log(reg.lastIndex); //7
+		console.log(reg.test(str)); //true
+		console.log(reg.lastIndex); //11
+		console.log(reg.test(str)); //false
+		console.log(reg.lastIndex); //0 */
+
+		/* reg.test(str);
+		console.log(RegExp.$1); //=>0  获取当前本次匹配项中，第一个分组匹配的内容（$1~$9代表正则中第几个分组中的内容）；$&是获取当前大正则匹配的内容；
+		reg.test(str);
+		console.log(RegExp.$1); //=>1 */
+
+		/* 
+		// 思维：在每一次捕获之前，先判断是否匹配，只有匹配再去捕获
+		let str = "zhufeng2020";
+
+		// 不设置G的情况下，不论TEST还是EXEC都是从索引零的位置开始查找（懒惰性）
+		let reg = /\d+/;
+		if (reg.test(str)) {
+			// console.log(reg.lastIndex); //=>0
+			console.log(reg.exec(str)); //=>["2020"]
+		}
+
+		// 如果取消了懒惰性，每一次TEST或者EXEC后，都会修改其lastIndex的值，导致下一次是在上一次匹配的末尾位置再次查找
+		reg = /\d+/g;
+		if (reg.test(str)) {
+			// console.log(reg.lastIndex); //=>11
+			console.log(reg.exec(str)); //=>null
+		} 
+		*/
+
+		/* let str = "130828199012040617";
+		let reg = /^(\d{6})(\d{4})(\d{2})(\d{2})\d{2}(\d)(?:\d|X)$/; */
+
+		/* console.log(reg.exec(str)); //=>["130828199012040617", "130828", "1990", "12", "04", "1"...] */
+
+		/* console.log(reg.test(str)); //=>true
+		console.log(RegExp['$&']); //=>"130828199012040617"
+		console.log(RegExp['$1']); //=>"130828"
+		console.log(RegExp['$2']); //=>"1990"
+		console.log(RegExp['$3']); //=>"12" */
+
+		/* 
+		// ES6中新增的
+		// 分组具名化（给分组起名字） ?<名字>
+		// 后期匹配完，可以基于匹配结果中的groups获取指定名字分组捕获的信息
+		reg = /^(?<A>\d{6})(?<B>\d{4})(?<C>\d{2})(?<D>\d{2})\d{2}(?<E>\d)(?:\d|X)$/;
+		let res = reg.exec(str);
+		console.log(res.groups.A);
+		console.log(res.groups.E); 
+		*/
+	</script>
+
+	<script>
+		/*
+		 * 字符串中和正则搭配实现正则捕获的方法 String.prototype
+		 *   match
+		 *   replace
+		 *   split
+		 *   ... 
+		 */
+
+		// MATCH VS EXEC
+		// 1.在设置全局修饰符G的情况下
+		// =>EXEC每一次执只能捕获一个匹配的结果（当前结果中包含大正则和小分组匹配的结果），如果想要捕获全需要执行多次
+		// =>MATCH执行一次就能把所有正则匹配的信息捕获到（只有大正则匹配的，并不包含小分组匹配的信息）
+		/* 
+		let str = "{0}年{1}月{2}日";
+		let reg = /\{(\d+)\}/g;
+		console.log(reg.exec(str)); //=>["{0}", "0",...]
+		// ...
+		console.log(str.match(reg)); //=>["{0}", "{1}", "{2}"] 
+		*/
+
+		// 2.如果不设置G的情况下
+		// 都只能捕获到第一个匹配的结果，获取的结果一模一样
+		/* 
+		let str = "130828199012040617";
+		let reg = /^(\d{6})(\d{4})(\d{2})(\d{2})\d{2}(\d)(?:\d|X)$/;
+		console.log(reg.exec(str)); //=>["130828199012040617", "130828", "1990", "12", "04", "1",...]
+		console.log(str.match(reg)); //=>["130828199012040617", "130828", "1990", "12", "04", "1",...] 
+		*/
+	</script>
+
+	<script>
+		// replace本身是字符串替换的意思
+
+		// 再不使用正则的情况下，每一次执行REPLACE只能替换一个
+		/* let str = "zhufeng2020zhufeng2021"; //=>把"zhufeng"替换成为"珠峰"
+		str = str.replace('zhufeng', '珠峰');
+		str = str.replace('zhufeng', '珠峰');
+		console.log(str); //=>"珠峰2020珠峰2021" */
+
+		/* let str = "zhufeng2020zhufeng2021";
+		str = str.replace(/zhufeng/g, '珠峰');
+		console.log(str); //=>"珠峰2020珠峰2021" */
+
+		// 很多需求不使用正则是无法解决的
+		/* let str = "zhufeng2020zhufeng2021"; //=>把"zhufeng"替换成为"zhufengpeixun"
+		str = str.replace('zhufeng', 'zhufengpeixun');
+		console.log(str); //=>"zhufengpeixun2020zhufeng2021"
+		str = str.replace('zhufeng', 'zhufengpeixun'); //=>还是从最新字符串索引为零的位置开始查找替换
+		console.log(str); //=>zhufengpeixunpeixun2020zhufeng2021 */
+
+		/* let str = "{0}年{1}月{2}日";
+		let reg = /\{(\d+)\}/g;
+
+		// STR=STR.REPLACE(REG,FUNC)
+		// 1.首先会拿REG和STR去进行匹配捕获，匹配捕获一次，就会把FUNC函数执行一次
+		// 2.并且会把每一次捕获的结果（和EXEC捕获的结果一样）传递给FUNC函数
+		// 3.FUNC函数中返回啥，就相当于把原始字符中，大正则匹配的结果替换成啥
+		str = str.replace(reg, (...args) => {
+			// console.log(args); => 存储的是每一次正则匹配捕获的结果 [大正则匹配的、小分组匹配的、捕获的起始索引、原始字符串]
+
+			return '@@';
+		});
+		console.log(str); //=>"@@年@@月@@日" */
+	</script>
+
+	<script>
+		/* let time = "2020-4-8";
+		//=>变为"2020年04月08日"
+		let arr = time.match(/\d+/g);
+		arr = arr.map(item => item.length < 2 ? '0' + item : item);
+		time = `${arr[0]}年${arr[1]}月${arr[2]}日`;
+		console.log(time); //=>"2020年04月08日" */
+
+		/* let time = "2020-4-8";
+		let arr = time.match(/\d+/g)
+			.map(item => item.length < 2 ? '0' + item : item);
+		//arr=['2020','04','08']
+		let template = '{0}年{1}月{2}日';
+		// 思路：获取 {0}和0 ，基于索引0到arr中获取"2020"，把得到的2020替换{0} =>{0}被替换为arr[0] ...
+		template = template.replace(/\{(\d+)\}/g, (value, group) => {
+			// group小分组每一次匹配的结果
+			// arr[group] 基于小分组捕获的索引到数组中找到对应的项
+			return arr[group]; //=>返回啥就是把TEMPLETE中大正则本次匹配的结果替换成啥
+		});
+		console.log(template); */
+
+		/* 格式化时间字符串 */
+		String.prototype.formatTime = function formatTime(template) {
+			// 1.根据操作的时间字符串获取年月日小时分钟秒等信息
+			let arr = this.match(/\d+/g).map(item => {
+				return item.length < 2 ? '0' + item : item;
+			});
+
+			// 2.解析格式化的模板，找到对应的时间，替换模板中的内容
+			template = template || '{0}年{1}月{2}日 {3}时{4}分{5}秒';
+			return template.replace(/\{(\d+)\}/g, (_, group) => {
+				return arr[group] || "00";
+			});
+		};
+
+		// let time = "2020-4-8";
+		// time = time.formatTime();
+		// console.log(time);
+
+		// let time = "2020-4-8 16:36:8";
+		// time = time.formatTime(); //=>格式:xxxx年xx月xx日 xx时xx分xx秒
+		// console.log(time);
+		// time = time.formatTime('{1}-{2} {3}:{4}'); //=>格式: xx-xx xx:xx  0年 1月 2日 3时 4分 5秒
+		// console.log(time);
+		// time = time.formatTime('{0}年{1}月{2}日');
+		// console.log(time);
+	</script>
+
+	<script>
+		// 验证一个字符串中哪个字母出现的次数最多，多少次？
+
+		/* ===费洲星=== */
+		/* 
+		// 把字符串变为一个数组：数组中的字母是不重复的
+		let str = "zhufengpeixunzhoulaoshi";
+		let ary = [...new Set(str.split(''))];
+		let max = 0;
+		let code = '';
+		for (let i = 0; i < ary.length; i++) {
+			//创建正则匹配字符 
+			let reg = new RegExp(ary[i], 'g');
+			//利用match找出对应字符在中字符串中出现的地方，取匹配的返回数组的长度，即是对应字符串出现的次数
+			let val = str.match(reg).length;
+			//更新出现次数最高的字符与次数
+			if (val > max) {
+				max = val;
+				code = ary[i];
+			} else if (val === max) { //处理不同字符出现次数相同的情况
+				code = `${code}、${ary[i]}`;
+			}
+		}
+		console.log(`出现次数最多的字符是：${code},次数为：${max}`); 
+		*/
+
+		/* ==郭伟杰== */
+		/* 
+		// 依次遍历字符串中的每一个字符,把每一个字符作为对象的属性名，属性值存储它出现的次数，这样遍历结束后，分别记录了，每一个字符出现的次数
+		let str = "zhufengpeixunzhoulaoshi";
+		let obj = {};
+		// str.match(/[a-zA-Z]/g) <==> str.split('')
+		str.match(/[a-zA-Z]/g).forEach(item => {
+			// 每一次存储之前，验证一下对象中是否已经包含这个字符，如果有，则代表之前存储过，我们此时让数量累加1即可
+			if (obj[item] !== undefined) {
+				obj[item]++;
+				return;
+			}
+			obj[item] = 1;
+		});
+		let max = 0,
+			result = '';
+		for (let key in obj) {
+			let val = obj[key];
+			if (val > max) {
+				max = val;
+				result = key;
+			} else if (val === max) {
+				result += `|${key}`;
+			}
+		}
+		console.log(max, result); 
+		*/
+
+		/* ==朱光翼== */
+		/* let str = "zhufengpeixunzhoulaoshi";
+		let arr = str.split('').sort((a, b) => {
+			// 字符比较
+			return a.localeCompare(b);
+		});
+		let max = 1,
+			result = '',
+			temp = 1;
+		for (let i = 0; i < arr.length - 1; i++) {
+			let curr = arr[i],
+				next = arr[i + 1];
+			if (curr === next) {
+				temp++;
+				if (temp > max) {
+					max = temp;
+					result = curr;
+				}
+			} else {
+				temp = 1;
+			}
+		}
+		console.log(max, result); */
+
+		/* let str = "zhufengpeixunzhoulaoshi";
+		str = str.split('').sort((a, b) => a.localeCompare(b)).join('');
+		// console.log(str);//=>"aeefghhhiilnnoopsuuuxzz"
+		let ary = str.match(/([a-zA-Z])\1+/g).sort((a, b) => b.length - a.length);
+		// console.log(ary); //=>["hhh", "uuu", "ee", "ii", "nn", "oo", "zz"]
+		let max = ary[0].length,
+			res = [ary[0].substr(0, 1)];
+		for (let i = 1; i < ary.length; i++) {
+			let item = ary[i];
+			if (item.length < max) {
+				break;
+			}
+			res.push(item.substr(0, 1));
+		}
+		console.log(`出现次数最多的字符：${res}，出现了${max}次`); */
+
+		/* let str = "zhufengpeixunzhoulaoshi",
+			max = 0,
+			res = [],
+			flag = false;
+		str = str.split('').sort((a, b) => a.localeCompare(b)).join('');
+		// console.log(str); //=>"aeefghhhiilnnoopsuuuxzz"
+		for (let i = str.length; i > 0; i--) {
+			// i=23 ... i=3
+			let reg = new RegExp("([a-zA-Z])\\1{" + (i - 1) + "}", "g");
+			str.replace(reg, (content, $1) => {
+				res.push($1);
+				max = i;
+				flag = true;
+			});
+			if (flag) break;
+		}
+		console.log(`出现次数最多的字符：${res}，出现了${max}次`); */
+	</script>
+
+	<script>
+		// 获取URL中的传参信息（可能也包含HASH值）
+		String.prototype.queryURLParams = function queryURLParams() {
+			let obj = {};
+			// 哈希值值的处理
+			this.replace(/#([^?=#&]+)/g, (_, group) => obj['HASH'] = group);
+			// 问号传参信息的处理
+			this.replace(/([^?#=&]+)=([^?#=&]+)/g, (_, group1, group2) => {
+				obj[group1] = group2;
+			});
+			return obj;
+		};
+		/* let str = 'http://www.zhufengpeixun.cn/?lx=1&from=weixin&name=xxx#video';
+		let obj = str.queryURLParams();
+		console.log(obj); */
+
+		// millimeter：实现千分符处理
+		String.prototype.millimeter = function millimeter() {
+			/* let str = this.split('').reverse().join('');
+			str = str.match(/\d{1,3}/g).join(',');
+			return str.split('').reverse().join(''); */
+
+			return this.replace(/\d{1,3}(?=(\d{3})+$)/g, value => {
+				return value + ',';
+			});
+		};
+
+		let str = "2312345638";
+		str = str.millimeter();
+		console.log(str); //=>"2,312,345,638"
+	</script>
+</body>
+
+</html>
