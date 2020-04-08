@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+		.container {
+			padding: 0;
+			width: 300px;
+		}
+
+		.form-text {
+			color: lightcoral !important;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="form-group">
+			<label>真实姓名</label>
+			<input type="text" class="form-control" id="userNameInp">
+			<small class="form-text text-muted" id="userNameTip"></small>
+		</div>
+		<div class="form-group">
+			<label>邮箱</label>
+			<input type="text" class="form-control" id="userEmailInp" placeholder="请输入常用的邮箱">
+			<small class="form-text text-muted" id="userEmailTip"></small>
+		</div>
+		<div class="form-group">
+			<label>电话</label>
+			<input type="text" class="form-control" id="userPhoneInp" placeholder="请输入常用的手机号">
+			<small class="form-text text-muted" id="userPhoneTip"></small>
+		</div>
+		<div class="form-group">
+			<label>密码</label>
+			<input type="password" class="form-control" id="userPassInp" placeholder="6~16位，同时包含大小写字母和数字">
+			<small class="form-text text-muted" id="userPassTip"></small>
+		</div>
+		<div class="form-group">
+			<label>确认密码</label>
+			<input type="password" class="form-control" id="userPassConfirmInp">
+			<small class="form-text text-muted" id="userPassConfirmTip"></small>
+		</div>
+		<button type="button" class="btn btn-primary" id="submit">提交</button>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script>
+		function query(selector) {
+			return document.querySelector(selector);
+		}
+
+		let formModule = (function () {
+			// 获取我们需要的元素
+			let userNameInp = query('#userNameInp'),
+				userNameTip = query('#userNameTip'),
+				userEmailInp = query('#userEmailInp'),
+				userEmailTip = query('#userEmailTip'),
+				userPhoneInp = query('#userPhoneInp'),
+				userPhoneTip = query('#userPhoneTip'),
+				userPassInp = query('#userPassInp'),
+				userPassTip = query('#userPassTip'),
+				userPassConfirmInp = query('#userPassConfirmInp'),
+				userPassConfirmTip = query('#userPassConfirmTip'),
+				submit = query('#submit');
+
+			// 真实姓名的验证：失去焦点和点击提交按钮的时候执行校验
+			function checkName() {
+				// userNameInp.value：获取文本框中的内容
+				// trim：去除获取字符串的首尾空格
+				let val = userNameInp.value.trim(),
+					reg = /^[\u4E00-\u9FA5]{2,10}(·[\u4E00-\u9FA5]{2,10}){0,2}$/;
+				if (val.length === 0) {
+					userNameTip.innerHTML = '真实姓名为必填项，请您填写！';
+					return false; //=>不符合规范让方法返回FALSE，符合规范返回TRUE
+				}
+				if (!reg.test(val)) {
+					userNameTip.innerHTML = '姓名格式不合法，请正确输入！';
+					return false;
+				}
+				userNameTip.innerHTML = '';
+				return true;
+			}
+
+			// 校验邮箱
+			function checkEmail() {
+				let val = userEmailInp.value.trim(),
+					reg = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+				if (val.length === 0) {
+					userEmailTip.innerHTML = '邮箱为必填项，请您填写！';
+					return false;
+				}
+				if (!reg.test(val)) {
+					userEmailTip.innerHTML = '邮箱格式不合法，请正确输入！';
+					return false;
+				}
+				userEmailTip.innerHTML = '';
+				return true;
+			}
+
+			// 校验手机号
+			function checkPhone() {
+				let val = userPhoneInp.value.trim(),
+					reg = /^1\d{10}$/;
+				if (val.length === 0) {
+					userPhoneTip.innerHTML = '手机号码为必填项，请您填写！';
+					return false;
+				}
+				if (!reg.test(val)) {
+					userPhoneTip.innerHTML = '手机号码格式不合法，请正确输入！';
+					return false;
+				}
+				userPhoneTip.innerHTML = '';
+				return true;
+			}
+
+			// 校验密码
+			function checkPass() {
+				let val = userPassInp.value.trim(),
+					reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{6,16}$/;
+				if (val.length === 0) {
+					userPassTip.innerHTML = '密码为必填项，请您填写！';
+					return false;
+				}
+				if (!reg.test(val)) {
+					userPassTip.innerHTML = '密码格式不合法，请正确输入！';
+					return false;
+				}
+				userPassTip.innerHTML = '';
+				return true;
+			}
+
+			// 确认密码
+			function checkConfirmPass() {
+				let val = userPassConfirmInp.value.trim(),
+					val2 = userPassInp.value.trim();
+				if (val !== val2) {
+					userPassConfirmTip.innerHTML = '两次输入的密码不一致，请查正！';
+					return false;
+				}
+				userPassConfirmTip.innerHTML = '';
+				return true;
+			}
+
+			// 提交
+			function handle() {
+				// 1.在把之前的表单校验执行一遍（只需要把之前封装的表单校验方法执行即可，而且方法会根据校验的情况返回TRUE和FALSE），当所有校验方法都返回TRUE的时候，则代表格式都合法了
+				if (!checkName() || !checkEmail() || !checkPhone() || !checkPass() || !checkConfirmPass()) {
+					return;
+				}
+				// 2.此时说明所有的校验都已经合法了，真实项目中，我们在依次获取文本框中的信息，然后提交给服务器即可
+				alert('格式校验合法！！');
+			}
+			
+			return {
+				init() {
+					// 及时校验
+					userNameInp.onblur = checkName;
+					userEmailInp.onblur = checkEmail;
+					userPhoneInp.onblur = checkPhone;
+					userPassInp.onblur = checkPass;
+					userPassConfirmInp.onblur = checkConfirmPass;
+
+					// 点击提交
+					submit.onclick = handle;
+				}
+			}
+		})();
+		formModule.init();
+	</script>
+</body>
+
+</html>
