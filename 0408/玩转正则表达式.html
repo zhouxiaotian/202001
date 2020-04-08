@@ -1,0 +1,718 @@
+<!DOCTYPE html><html><head><title>玩转正则表达式</title><meta charset='utf-8'><link href='https://cdn.maxiang.io/res-min/themes/marxico.css' rel='stylesheet'><style>
+.note-content  {font-family: "Helvetica Neue", Arial, "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, Song, sans-serif;}
+
+</style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+<h4 id="玩转正则表达式">玩转正则表达式</h4>
+
+<blockquote>
+  <p>regular expression：RegExp</p>
+  
+  <p>用来处理字符串的规则</p>
+  
+  <ul><li><p>只能处理字符串</p></li>
+  <li><p>它是一个规则：可以验证字符串是否符合某个规则（test），也可以把字符串中符合规则的内容捕获到（exec / match…）</p></li>
+  </ul>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"good good study , day day up！"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/\d+/</span>;
+</div><div class="hljs-line">reg.test(str); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">str = <span class="hljs-string">"2019-08-12"</span>;
+</div><div class="hljs-line">reg.exec(str); <span class="hljs-comment">//=&gt;["2019",index:0,inputs:"原始字符串"]</span>
+</div></code></pre>
+
+<p><strong>编写正则表达式</strong></p>
+
+<p>创建方式有两种</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//=&gt;字面量创建方式（两个斜杠之间包起来的，都是用来描述规则的元字符）</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg1 = <span class="hljs-regexp">/\d+/</span>;
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;构造函数模式创建  两个参数：元字符字符串，修饰符字符串</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg2 = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\d+"</span>);
+</div></code></pre>
+
+<p>正则表达式由两部分组成</p>
+
+<ul><li><p>元字符</p></li>
+<li><p>修饰符</p></li>
+</ul>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">/*常用的元字符*/</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;1.量词元字符：设置出现的次数</span>
+</div><div class="hljs-line">* 零到多次  
+</div><div class="hljs-line">+ 一到多次
+</div><div class="hljs-line">? 零次或者一次
+</div><div class="hljs-line">{n} 出现n次
+</div><div class="hljs-line">{n,} 出现n到多次
+</div><div class="hljs-line">{n,m} 出现n到m次
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;2.特殊元字符：单个或者组合在一起代表特殊的含义</span>
+</div><div class="hljs-line">\    转义字符（普通-&gt;特殊-&gt;普通）
+</div><div class="hljs-line">.    除\n（换行符）以外的任意字符
+</div><div class="hljs-line">^    以哪一个元字符作为开始
+</div><div class="hljs-line">$    以哪一个元字符作为结束
+</div><div class="hljs-line">\n   换行符
+</div><div class="hljs-line">\d   <span class="hljs-number">0</span>~<span class="hljs-number">9</span>之间的一个数字
+</div><div class="hljs-line">\D   非<span class="hljs-number">0</span>~<span class="hljs-number">9</span>之间的一个数字 （大写和小写的意思是相反的）
+</div><div class="hljs-line">\w   数字、字母、下划线中的任意一个字符
+</div><div class="hljs-line">\s   一个空白字符（包含空格、制表符、换页符等）
+</div><div class="hljs-line">\t   一个制表符（一个TAB键：四个空格）
+</div><div class="hljs-line">\b   匹配一个单词的边界
+</div><div class="hljs-line">x|y  x或者y中的一个字符
+</div><div class="hljs-line">[xyz] x或者y或者z中的一个字符
+</div><div class="hljs-line">[^xy] 除了x/y以外的任意字符
+</div><div class="hljs-line">[a-z] 指定a-z这个范围中的任意字符  [<span class="hljs-number">0</span><span class="hljs-number">-9</span>a-zA-Z_]===\w
+</div><div class="hljs-line">[^a-z] 上一个的取反“非”
+</div><div class="hljs-line">()   正则中的分组符号
+</div><div class="hljs-line">(?:) 只匹配不捕获
+</div><div class="hljs-line">(?=) 正向预查
+</div><div class="hljs-line">(?!) 负向预查 
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;3.普通元字符：代表本身含义的</span>
+</div><div class="hljs-line">/zhufeng/ 此正则匹配的就是 <span class="hljs-string">"zhufeng"</span>
+</div></code></pre>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">/*正则表达式常用的修饰符*/</span>
+</div><div class="hljs-line">i =&gt;ignoreCase  忽略单词大小写匹配
+</div><div class="hljs-line">m =&gt;multiline   可以进行多行匹配
+</div><div class="hljs-line">g =&gt;global      全局匹配
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">u =&gt;Unicode     用来正确处理大于\uFFFF的Unicode字符（UTF<span class="hljs-number">-16</span>）
+</div><div class="hljs-line">y =&gt;sticky      粘连
+</div><div class="hljs-line">s =&gt;dotAll      让点能匹配任意字符，包含\n\r
+</div></code></pre>
+
+<p><strong>元字符详细解析</strong></p>
+
+<p><code>^ $</code></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^\d/</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"zhufeng"</span>)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"2019zhufeng"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"zhufeng2019"</span>));<span class="hljs-comment">//=&gt;false</span>
+</div></code></pre>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/\d$/</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"zhufeng"</span>)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"2019zhufeng"</span>));<span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"zhufeng2019"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div></code></pre>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//=&gt;^/$两个都不加：字符串中包含符合规则的内容即可</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg1 = <span class="hljs-regexp">/\d+/</span>;
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;^/$两个都加：字符串只能是和规则一致的内容</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg2 = <span class="hljs-regexp">/^\d+$/</span>;
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;举个例子：验证手机号码（11位，第一个数字是1即可）</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^1\d{10}$/</span>;
+</div></code></pre>
+
+<p><code>\</code></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//=&gt;.不是小数点，是除\n外的任意字符</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^2.3$/</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"2.3"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"2@3"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"23"</span>));<span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;基于转义字符，让其只能代表小数点</span>
+</div><div class="hljs-line">reg = <span class="hljs-regexp">/^2\.3$/</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"2.3"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"2@3"</span>));<span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"\\d"</span>;
+</div><div class="hljs-line">reg = <span class="hljs-regexp">/^\d$/</span>; <span class="hljs-comment">//=&gt;\d代表0-9的数字</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(str)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line">reg = <span class="hljs-regexp">/^\\d$/</span>; <span class="hljs-comment">//=&gt;把特殊符合转换为普通的</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(str)); <span class="hljs-comment">//=&gt;true</span>
+</div></code></pre>
+
+<p><code>x|y</code></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^18|29$/</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"18"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"29"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"129"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"189"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"1829"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"829"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"182"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-comment">//---直接x|y会存在很乱的优先级问题，一般我们写的时候都伴随着小括号进行分组，因为小括号改变处理的优先级 =&gt;小括号：分组</span>
+</div><div class="hljs-line">reg = <span class="hljs-regexp">/^(18|29)$/</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"18"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"29"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"129"</span>)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"189"</span>)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;只能是18或者29中的一个了</span>
+</div></code></pre>
+
+<p><code>[]</code></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//1.中括号中出现的字符一般都代表本身的含义</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^[@+]$/</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"@"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"+"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"@@"</span>)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"@+"</span>)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">reg = <span class="hljs-regexp">/^[\d]$/</span>; <span class="hljs-comment">//=&gt;\d在中括号中还是0-9</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"d"</span>));<span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"\\"</span>));<span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"9"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//2.中括号中不存在多位数</span>
+</div><div class="hljs-line">reg = <span class="hljs-regexp">/^[18]$/</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"1"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"8"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"18"</span>)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">reg = <span class="hljs-regexp">/^[10-29]$/</span>; <span class="hljs-comment">//=&gt;1或者0-2或者9</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"1"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"9"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"0"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"2"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"10"</span>));<span class="hljs-comment">//=&gt;false</span>
+</div></code></pre>
+
+<p><strong>常用的正则表达式</strong></p>
+
+<ol><li rel="1"><p>验证是否为有效数字</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 规则分析</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 1.可能出现 + - 号，也可能不出现  [+-]?</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 2.一位0-9都可以，多位首位不能是0 (\d|([1-9]\d+))</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 3.小数部分可能有可能没有，一旦有后面必须有小数点+数字 (\.\d+)?</span>
+</div><div class="hljs-line"><span class="hljs-comment">*/</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^[+-]?(\d|([1-9]\d+))(\.\d+)?$/</span>;
+</div></code></pre></li>
+<li rel="2"><p>验证密码</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//=&gt;数字、字母、下划线</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;6~16位</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> val = userPassInp.value,
+</div><div class="hljs-line">     reg = <span class="hljs-regexp">/^\w{6,16}$/</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> flag=reg.test(val);
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,18}$/</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[#?&amp;*-])[a-zA-Z0-9#?&amp;*-]{8,18}$/</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^(?![0-9]+$)(?![a-z]+$)(?![A-Z]+$)[0-9a-zA-Z]{8,18}$/</span>
+</div><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment">function checkPass(val){</span>
+</div><div class="hljs-line"><span class="hljs-comment">   if(val.length&lt;6 || val.length&gt;16){</span>
+</div><div class="hljs-line"><span class="hljs-comment">    alert('长度必须介于6-16位之间！');</span>
+</div><div class="hljs-line"><span class="hljs-comment">    return;</span>
+</div><div class="hljs-line"><span class="hljs-comment">}</span>
+</div><div class="hljs-line"><span class="hljs-comment">   let area=['a','b'....'_']; //=&gt;包含数字、字母、下划线</span>
+</div><div class="hljs-line"><span class="hljs-comment">   for(let i=0;i&lt;val.length;i++){</span>
+</div><div class="hljs-line"><span class="hljs-comment">       let char=val[i];</span>
+</div><div class="hljs-line"><span class="hljs-comment">       if(!area.includes(char)){</span>
+</div><div class="hljs-line"><span class="hljs-comment">           alert('格式不正确！');</span>
+</div><div class="hljs-line"><span class="hljs-comment">        return;</span>
+</div><div class="hljs-line"><span class="hljs-comment">       }</span>
+</div><div class="hljs-line"><span class="hljs-comment">   }</span>
+</div><div class="hljs-line"><span class="hljs-comment">}</span>
+</div><div class="hljs-line"><span class="hljs-comment">*/</span>
+</div></code></pre></li>
+<li rel="3"><p>验证真实姓名的</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 1.汉字  /^[\u4E00-\u9FA5]$/</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 2.名字长度 2~10位</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 3.可能有译名 ·汉字  (·[\u4E00-\u9FA5]{2,10}){0,2}</span>
+</div><div class="hljs-line"><span class="hljs-comment">*/</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^[\u4E00-\u9FA5]{2,10}(·[\u4E00-\u9FA5]{2,10}){0,2}$/</span>;
+</div></code></pre></li>
+<li rel="4"><p>验证邮箱的</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/</span>;
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt; \w+((-\w+)|(\.\w+))*</span>
+</div><div class="hljs-line"><span class="hljs-comment">//1.开头是数字字母下划线（1到多位）</span>
+</div><div class="hljs-line"><span class="hljs-comment">//2.还可以是 -数字字母下划线 或者 .数字字母下划线,整体零到多次</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;邮箱的名字由“数字、字母、下划线、-、.”几部分组成，但是-/.不能连续出现也不能作为开始</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt; @[A-Za-z0-9]+</span>
+</div><div class="hljs-line"><span class="hljs-comment">//1.@后面紧跟着：数字、字母 （1-多位）</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt; ((\.|-)[A-Za-z0-9]+)*</span>
+</div><div class="hljs-line"><span class="hljs-comment">//1.对@后面名字的补充</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 多域名     .com.cn</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 企业邮箱    zxt@zhufeng-peixun-office.com</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt; \.[A-Za-z0-9]+</span>
+</div><div class="hljs-line"><span class="hljs-comment">//1. 这个匹配的是最后的域名（.com/.cn/.org/.edu/.net...）</span>
+</div></code></pre></li>
+<li rel="5"><p>身份证号码</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 1. 一共18位</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 2. 最后一位可能是X</span>
+</div><div class="hljs-line"><span class="hljs-comment">*</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 身份证前六位：省市县  130828</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 中间八位：年月日</span>
+</div><div class="hljs-line"><span class="hljs-comment">* 最后四位：</span>
+</div><div class="hljs-line"><span class="hljs-comment">*   最后一位 =&gt; X或者数字</span>
+</div><div class="hljs-line"><span class="hljs-comment">*   倒数第二位 =&gt; 偶数 女  奇数 男</span>
+</div><div class="hljs-line"><span class="hljs-comment">*   其余的是经过算法算出来的</span>
+</div><div class="hljs-line"><span class="hljs-comment">*/</span>
+</div><div class="hljs-line"><span class="hljs-comment">//let reg = /^\d{17}(\d|X)$/;</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;小括号分组的第二个作用：分组捕获，不仅可以把大正则匹配的信息捕获到，还可以单独捕获到每个小分组的内容</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^(\d{6})(\d{4})(\d{2})(\d{2})\d{2}(\d)(\d|X)$/</span>;
+</div><div class="hljs-line">reg.exec(<span class="hljs-string">"130828199012040617"</span>); <span class="hljs-comment">//=&gt;["130828199012040617", "130828", "1990", "12", "04", "1", "7"...] 捕获结果是数组，包含每一个小分组单独获取的内容</span>
+</div></code></pre></li>
+</ol>
+
+<p><strong>正则两种创建方式的区别</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//=&gt;构造函数因为传递的是字符串，\需要写两个才代表斜杠</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/\d+/g</span>;
+</div><div class="hljs-line">reg = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"\\d+"</span>,<span class="hljs-string">"g"</span>);
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;正则表达是中的部分内容是变量存储的值</span>
+</div><div class="hljs-line"><span class="hljs-comment">//1.两个斜杠中间包起来的都是元字符（如果正则中要包含某个变量的值，则不能使用字面量方式创建）</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> type = <span class="hljs-string">"zhufeng"</span>;
+</div><div class="hljs-line">reg = <span class="hljs-regexp">/^@"+type+"@$/</span>; 
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"@zhufeng@"</span>)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">'@"""typeeeee"@'</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-comment">//2.这种情况只能使用构造函数方式（因为它传递的规则是字符串，只有这样才能进行字符串拼接）</span>
+</div><div class="hljs-line">reg = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"^@"</span>+type+<span class="hljs-string">"@$"</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"@zhufeng@"</span>));<span class="hljs-comment">//=&gt;true</span>
+</div></code></pre>
+
+<hr>
+
+<p><strong>正则的捕获</strong></p>
+
+<blockquote>
+  <p>实现正则捕获的办法</p>
+  
+  <ul><li><p>正则RegExp.prototype上的方法</p>
+  
+  <ul>
+  <li><p>exec</p></li>
+  <li><p>test</p></li></ul></li>
+  <li><p>字符串String.prototype上支持正则表达式处理的方法</p>
+  
+  <ul>
+  <li><p>replace</p></li>
+  <li><p>match</p></li>
+  <li><p>splite</p></li>
+  <li><p>…….</p></li></ul></li>
+  </ul>
+</blockquote>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"zhufeng2019yangfan2020qihang2021"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/\d+/</span>;
+</div><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * 基于exec实现正则的捕获</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   1.捕获到的结果是null或者一个数组</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     第一项：本次捕获到的内容</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     其余项：对应小分组本次单独捕获的内容</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     index：当前捕获内容在字符串中的起始索引</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     input：原始字符串</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   2.每执行一次exec，只能捕获到一个符合正则规则的，但是默认情况下，我们执行一百遍，获取的结果永远都是第一个匹配到的，其余的捕获不到</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     =&gt;“正则捕获的懒惰性”：默认只捕获第一个</span>
+</div><div class="hljs-line"><span class="hljs-comment"> */</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.exec(str)); <span class="hljs-comment">//=&gt;["2019", index: 7, input: "zhufeng2019yangfan2020qihang2021"]</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.exec(str)); <span class="hljs-comment">//=&gt;["2019"...]</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;实现正则捕获的前提是：当前正则要和字符串匹配，如果不匹配捕获的结果是null</span>
+</div><div class="hljs-line"><span class="hljs-comment">let reg = /^\d+$/;</span>
+</div><div class="hljs-line"><span class="hljs-comment">console.log(reg.test(str)); //=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-comment">console.log(reg.exec(str)); //=&gt;null</span>
+</div><div class="hljs-line"><span class="hljs-comment">*/</span>
+</div></code></pre>
+
+<p>懒惰性的解决办法</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"zhufeng2019yangfan2020qihang2021"</span>;
+</div><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * reg.lastIndex：当前正则下一次匹配的起始索引位置 </span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   懒惰性捕获的原因：默认情况下lastIndex的值不会被修改，每一次都是从字符串开始位置查找，所以找到的永远只是第一个</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   解决办法：全局修饰符g</span>
+</div><div class="hljs-line"><span class="hljs-comment"> */</span>
+</div><div class="hljs-line"><span class="hljs-comment">// let reg = /\d+/;</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.lastIndex); //=&gt;0 下面匹配捕获是从STR索引零的位置开始找</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.exec(str));</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.lastIndex); //=&gt;0 第一次匹配捕获完成，lastIndex没有改变，所以下一次exec依然是从字符串最开始找，找到的永远是第一个匹配到的</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">// let reg = /\d+/g;</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.exec(str)); //=&gt;["2019"...]</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.lastIndex); //=&gt;11 设置全局匹配修饰符g后，第一次匹配完，lastIndex会自己修改</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.exec(str)); //=&gt;["2020"...]</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.lastIndex); //=&gt;22</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.exec(str)); //=&gt;["2021"...]</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.lastIndex); //=&gt;32</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.exec(str)); //=&gt;null 当全部捕获后，再次捕获的结果是null，但是lastIndex又回归了初始值零，再次捕获又从第一个开始了...</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.lastIndex); //=&gt;0</span>
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(reg.exec(str)); //=&gt;["2019"...]</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">// let reg = /\d+/g;</span>
+</div><div class="hljs-line"><span class="hljs-comment">// if (reg.test(str)) {</span>
+</div><div class="hljs-line"><span class="hljs-comment">//  //=&gt;验证一下:只有正则和字符串匹配我们在捕获</span>
+</div><div class="hljs-line"><span class="hljs-comment">//  console.log(reg.lastIndex); //=&gt;11 基于TEST匹配验证后，LASTINDEX已经被修改为第一次匹配后的结果，所以下一次捕获不再从头开始了</span>
+</div><div class="hljs-line"><span class="hljs-comment">//  console.log(reg.exec(str)); //=&gt;["2020"...]</span>
+</div><div class="hljs-line"><span class="hljs-comment">// }</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;需求：编写一个方法execAll，执行一次可以把所有匹配的结果捕获到（前提正则一定要设置全局修饰符g）</span>
+</div><div class="hljs-line">~ <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">execAll</span>(<span class="hljs-params">str = <span class="hljs-string">""</span></span>) </span>{
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;str:要匹配的字符串</span>
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;this:RegExp的实例（当前操作的正则）</span>
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;进来后的第一件事，是验证当前正则是否设置了G，不设置则不能在进行循环捕获了，否则会导致死循环</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.global) <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.exec(str);
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;ARY存储最后所有捕获的信息  RES存储每一次捕获的内容（数组）</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">let</span> ary = [],
+</div><div class="hljs-line">            res = <span class="hljs-keyword">this</span>.exec(str);
+</div><div class="hljs-line">        <span class="hljs-keyword">while</span> (res) {
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;把每一次捕获的内容RES[0]存放到数组中</span>
+</div><div class="hljs-line">            ary.push(res[<span class="hljs-number">0</span>]);
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;只要捕获的内容不为NULL，则继续捕获下去</span>
+</div><div class="hljs-line">            res = <span class="hljs-keyword">this</span>.exec(str);
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span> ary.length === <span class="hljs-number">0</span> ? <span class="hljs-literal">null</span> : ary;
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    <span class="hljs-built_in">RegExp</span>.prototype.execAll = execAll;
+</div><div class="hljs-line">}();
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/\d+/g</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.execAll(<span class="hljs-string">"珠峰2019@2020培训"</span>));
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;字符串中的MATCH方法，可以在执行一次的情况下，捕获到所有匹配的数据（前提：正则也得设置G才可以）</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">"珠峰2019@2020培训"</span>.match(reg));
+</div></code></pre>
+
+<p>正则的分组捕获</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//=&gt;身份证号码</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"130828199012040112"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^(\d{6})(\d{4})(\d{2})(\d{2})\d{2}(\d)(?:\d|X)$/</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.exec(str));
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(str.match(reg));
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;["130828199012040112", "130828", "1990", "12", "04", "1", index: 0, input: "130828199012040112"]</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;第一项：大正则匹配的结果</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;其余项：每一个小分组单独匹配捕获的结果</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;如果设置了分组（改变优先级），但是捕获的时候不需要单独捕获，可以基于?:来处理</span>
+</div></code></pre>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//=&gt;既要捕获到{数字}，也想单独的把数字也获取到，例如：第一次找到 {0} 还需要单独获取0</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"{0}年{1}月{2}日"</span>;
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;不设置g只匹配一次，exec和match获取的结果一致（既有大正则匹配的信息，也有小分组匹配的信息）</span>
+</div><div class="hljs-line"><span class="hljs-comment">let reg = /\{(\d+)\}/;</span>
+</div><div class="hljs-line"><span class="hljs-comment">console.log(reg.exec(str));</span>
+</div><div class="hljs-line"><span class="hljs-comment">console.log(str.match(reg));</span>
+</div><div class="hljs-line"><span class="hljs-comment">//["{0}", "0",...]</span>
+</div><div class="hljs-line"><span class="hljs-comment">*/</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/\{(\d+)\}/g</span>;
+</div><div class="hljs-line"><span class="hljs-comment">//console.log(str.match(reg)); //=&gt;["{0}", "{1}", "{2}"] 多次匹配的情况下,match只能把大正则匹配的内容获取到，小分组匹配的信息无法获取</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> aryBig=[],
+</div><div class="hljs-line">    arySmall=[],
+</div><div class="hljs-line">    res=reg.exec(str);
+</div><div class="hljs-line"><span class="hljs-keyword">while</span>(res){
+</div><div class="hljs-line">    <span class="hljs-keyword">let</span> [big,small]=res;
+</div><div class="hljs-line">    aryBig.push(big);
+</div><div class="hljs-line">    arySmall.push(small);
+</div><div class="hljs-line">    res=reg.exec(str);
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(aryBig,arySmall); <span class="hljs-comment">//=&gt;["{0}", "{1}", "{2}"] ["0", "1", "2"]</span>
+</div></code></pre>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//=&gt;分组的第三个作用：“分组引用”</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"book"</span>; <span class="hljs-comment">//=&gt;"good"、"look"、"moon"、"foot"...</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^[a-zA-Z]([a-zA-Z])\1[a-zA-Z]$/</span>; <span class="hljs-comment">//=&gt;分组引用就是通过“\数字”让其代表和对应分组出现一模一样的内容</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"book"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"deep"</span>)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(<span class="hljs-string">"some"</span>)); <span class="hljs-comment">//=&gt;false</span>
+</div></code></pre>
+
+<p><strong>正则捕获的贪婪性</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"珠峰2019@2020培训"</span>;
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;正则捕获的贪婪性：默认情况下，正则捕获的时候，是按照当前正则所匹配的最长结果来获取的</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/\d+/g</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(str.match(reg)); <span class="hljs-comment">//=&gt;["2019","2020"]</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;在量词元字符后面设置？：取消捕获时候的贪婪性（按照正则匹配的最短结果来获取）</span>
+</div><div class="hljs-line">reg = <span class="hljs-regexp">/\d+?/g</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(str.match(reg)); <span class="hljs-comment">//=&gt;["2", "0", "1", "9", "2", "0", "2", "0"]</span>
+</div></code></pre>
+
+<p>问号在正则中的五大作用：</p>
+
+<ul><li><p>问号左边是非量词元字符：本身代表量词元字符，出现零到一次</p></li>
+<li><p>问号左边是量词元字符：取消捕获时候的贪婪性</p></li>
+<li><p>(?:) 只匹配不捕获</p></li>
+<li><p>(?=) 正向预查</p></li>
+<li><p>(?!) 负向预查</p></li>
+</ul>
+
+<p><strong>其它正则捕获的方法</strong></p>
+
+<ol><li rel="1"><p>test也能捕获（本意是匹配）</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"{0}年{1}月{2}日"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/\{(\d+)\}/g</span>;
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(str)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">RegExp</span>.$<span class="hljs-number">1</span>); <span class="hljs-comment">//=&gt;"0"</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(str)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">RegExp</span>.$<span class="hljs-number">1</span>); <span class="hljs-comment">//=&gt;"1"</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(str)); <span class="hljs-comment">//=&gt;true</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">RegExp</span>.$<span class="hljs-number">1</span>); <span class="hljs-comment">//=&gt;"2"</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(reg.test(str)); <span class="hljs-comment">//=&gt;false</span>
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">RegExp</span>.$<span class="hljs-number">1</span>); <span class="hljs-comment">//=&gt;"2" 存储的是上次捕获的结果</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;RegExp.$1~RegExp.$9：获取当前本次正则匹配后，第一个到第九个分组的信息</span>
+</div></code></pre></li>
+<li rel="2"><p>replace 字符串中实现替换的方法（一般都是伴随正则一起使用的）</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"zhufeng@2019|zhufeng@2020"</span>;
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;把"zhufeng"替换成"珠峰"</span>
+</div><div class="hljs-line"><span class="hljs-comment">//1.不用正则，执行一次只能替换一个</span>
+</div><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment">str = str.replace("zhufeng","珠峰").replace("zhufeng","珠峰");</span>
+</div><div class="hljs-line"><span class="hljs-comment">console.log(str);</span>
+</div><div class="hljs-line"><span class="hljs-comment">*/</span>
+</div><div class="hljs-line"><span class="hljs-comment">//2.使用正则会简单一点</span>
+</div><div class="hljs-line">str = str.replace(<span class="hljs-regexp">/zhufeng/g</span>,<span class="hljs-string">"珠峰"</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(str);
+</div></code></pre>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"zhufeng@2019|zhufeng@2020"</span>;
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;把"zhufeng"替换为"zhufengpeixun"</span>
+</div><div class="hljs-line"><span class="hljs-comment">//str=str.replace("zhufeng","zhufengpeixun").replace("zhufeng","zhufengpeixun");</span>
+</div><div class="hljs-line"><span class="hljs-comment">//"zhufengpeixunpeixun@2019|zhufeng@2020" 每一次替换都是从字符串第一个位置开始找的（类似于正则捕获的懒惰性）</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;基于正则g可以实现</span>
+</div><div class="hljs-line">str = str.replace(<span class="hljs-regexp">/zhufeng/g</span>,<span class="hljs-string">"zhufengpeixun"</span>);
+</div></code></pre>
+
+<p>案例：把时间字符串进行处理</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> time = <span class="hljs-string">"2019-08-13"</span>;
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;变为"2019年08月13日"</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/^(\d{4})-(\d{1,2})-(\d{1,2})$/</span>;
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;这样可以实现</span>
+</div><div class="hljs-line"><span class="hljs-comment">//time = time.replace(reg,"$1年$2月$3日");</span>
+</div><div class="hljs-line"><span class="hljs-comment">//console.log(time); //=&gt;2019年08月13日</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;还可以这样处理 [str].replace([reg],[function])</span>
+</div><div class="hljs-line"><span class="hljs-comment">//1.首先拿REG和TIME进行匹配捕获，能匹配到几次就会把传递的函数执行几次（而且是匹配一次就执行一次）</span>
+</div><div class="hljs-line"><span class="hljs-comment">//2.不仅把方法执行，而且REPLACE还给方法传递了实参信息（和exec捕获的内容一致的信息：大正则匹配的内容，小分组匹配的信息....）</span>
+</div><div class="hljs-line"><span class="hljs-comment">//3.在函数中我们返回的是啥，就把当前大正则匹配的内容替换成啥</span>
+</div><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment">time = time.replace(reg,(big,$1,$2,$3)=&gt;{</span>
+</div><div class="hljs-line"><span class="hljs-comment">   //=&gt;这里的$1~$3是我们自己设置的变量</span>
+</div><div class="hljs-line"><span class="hljs-comment">   console.log(big,$1,$2,$3);</span>
+</div><div class="hljs-line"><span class="hljs-comment">});</span>
+</div><div class="hljs-line"><span class="hljs-comment">*/</span>
+</div><div class="hljs-line">time = time.replace(reg,(...arg)=&gt;{
+</div><div class="hljs-line">   <span class="hljs-keyword">let</span> [,$<span class="hljs-number">1</span>,$<span class="hljs-number">2</span>,$<span class="hljs-number">3</span>]=arg;
+</div><div class="hljs-line">   $<span class="hljs-number">2.</span>length&lt;<span class="hljs-number">2</span>?$<span class="hljs-number">2</span>=<span class="hljs-string">"0"</span>+$<span class="hljs-number">2</span>:<span class="hljs-literal">null</span>;
+</div><div class="hljs-line">   $<span class="hljs-number">3.</span>length&lt;<span class="hljs-number">2</span>?$<span class="hljs-number">3</span>=<span class="hljs-string">"0"</span>+$<span class="hljs-number">3</span>:<span class="hljs-literal">null</span>;
+</div><div class="hljs-line">   <span class="hljs-keyword">return</span> $<span class="hljs-number">1</span>+<span class="hljs-string">"年"</span>+$<span class="hljs-number">2</span>+<span class="hljs-string">"月"</span>+$<span class="hljs-number">3</span>+<span class="hljs-string">"日"</span>;
+</div><div class="hljs-line">});
+</div></code></pre>
+
+<p>单词首字母大写</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"good good study，day day up！"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-regexp">/\b([a-zA-Z])[a-zA-Z]*\b/g</span>;
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;函数被执行了六次，每一次都把正则匹配信息传递给函数</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;每一次ARG:["good","g"] ["good","g"] ["study","s"]...</span>
+</div><div class="hljs-line">str = str.replace(reg,(...arg)=&gt;{
+</div><div class="hljs-line">   <span class="hljs-keyword">let</span> [content,$<span class="hljs-number">1</span>]=arg;
+</div><div class="hljs-line">   $<span class="hljs-number">1</span>=$<span class="hljs-number">1.</span>toUpperCase();
+</div><div class="hljs-line">   content=content.substring(<span class="hljs-number">1</span>);
+</div><div class="hljs-line">   <span class="hljs-keyword">return</span> $<span class="hljs-number">1</span>+content;
+</div><div class="hljs-line">});
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(str); <span class="hljs-comment">//=&gt;"Good Good Study，Day Day Up！"</span>
+</div></code></pre>
+
+<p>验证一个字符串中那个字母出现的次数最多，多少次？</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">/*==（去重思维）==*/</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"zhufengpeixunzhoulaoshi"</span>;
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> obj = {};
+</div><div class="hljs-line">[].forEach.call(str, char =&gt; {
+</div><div class="hljs-line"><span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> obj[char] !== <span class="hljs-string">"undefined"</span>) {
+</div><div class="hljs-line">    obj[char]++;
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span>;
+</div><div class="hljs-line">}
+</div><div class="hljs-line">obj[char] = <span class="hljs-number">1</span>;
+</div><div class="hljs-line">});
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> max = <span class="hljs-number">1</span>,
+</div><div class="hljs-line">res = [];
+</div><div class="hljs-line"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> obj) {
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> item = obj[key];
+</div><div class="hljs-line">item &gt; max ? max = item : <span class="hljs-literal">null</span>;
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> key <span class="hljs-keyword">in</span> obj) {
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> item = obj[key];
+</div><div class="hljs-line"><span class="hljs-keyword">if</span> (item === max) {
+</div><div class="hljs-line">    res.push(key);
+</div><div class="hljs-line">}
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">`出现次数最多的字符：<span class="hljs-subst">${res}</span>，出现了<span class="hljs-subst">${max}</span>次`</span>);
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">/*==排序==*/</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"zhufengpeixunzhoulaoshi"</span>;
+</div><div class="hljs-line">str = str.split(<span class="hljs-string">''</span>).sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a.localeCompare(b)).join(<span class="hljs-string">''</span>);
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(str);//=&gt;"aeefghhhiilnnoopsuuuxzz"</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> ary = str.match(<span class="hljs-regexp">/([a-zA-Z])\1+/g</span>).sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> b.length - a.length);
+</div><div class="hljs-line"><span class="hljs-comment">// console.log(ary); //=&gt;["hhh", "uuu", "ee", "ii", "nn", "oo", "zz"]</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> max = ary[<span class="hljs-number">0</span>].length,
+</div><div class="hljs-line">res = [ary[<span class="hljs-number">0</span>].substr(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)];
+</div><div class="hljs-line"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">1</span>; i &lt; ary.length; i++) {
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> item = ary[i];
+</div><div class="hljs-line"><span class="hljs-keyword">if</span> (item.length &lt; max) {
+</div><div class="hljs-line">    <span class="hljs-keyword">break</span>;
+</div><div class="hljs-line">}
+</div><div class="hljs-line">res.push(item.substr(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>));
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">`出现次数最多的字符：<span class="hljs-subst">${res}</span>，出现了<span class="hljs-subst">${max}</span>次`</span>);
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">/*==从最大到最小去试找==*/</span>
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> str = <span class="hljs-string">"zhufengpeixunzhoulaoshi"</span>,
+</div><div class="hljs-line">max = <span class="hljs-number">0</span>,
+</div><div class="hljs-line">res = [],
+</div><div class="hljs-line">flag = <span class="hljs-literal">false</span>;
+</div><div class="hljs-line">str = str.split(<span class="hljs-string">''</span>).sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a.localeCompare(b)).join(<span class="hljs-string">''</span>);
+</div><div class="hljs-line"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = str.length; i &gt; <span class="hljs-number">0</span>; i--) {
+</div><div class="hljs-line"><span class="hljs-keyword">let</span> reg = <span class="hljs-keyword">new</span> <span class="hljs-built_in">RegExp</span>(<span class="hljs-string">"([a-zA-Z])\\1{"</span> + (i - <span class="hljs-number">1</span>) + <span class="hljs-string">"}"</span>, <span class="hljs-string">"g"</span>);
+</div><div class="hljs-line">str.replace(reg, (content, $<span class="hljs-number">1</span>) =&gt; {
+</div><div class="hljs-line">    res.push($<span class="hljs-number">1</span>);
+</div><div class="hljs-line">    max = i;
+</div><div class="hljs-line">    flag = <span class="hljs-literal">true</span>;
+</div><div class="hljs-line">});
+</div><div class="hljs-line"><span class="hljs-keyword">if</span> (flag) <span class="hljs-keyword">break</span>;
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">`出现次数最多的字符：<span class="hljs-subst">${res}</span>，出现了<span class="hljs-subst">${max}</span>次`</span>);
+</div></code></pre>
+
+<p>其它方法：formatTime 、 queryURLParams 、 millimeter</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line">~ <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * formatTime：时间字符串的格式化处理</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   @params</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     templete:[string] 我们最后期望获取日期格式的模板</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     模板规则:{0}-&gt;年  {1~5}-&gt;月日时分秒</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   @return</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     [string]格式化后的时间字符串</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *  by zhufengpeixun on 2019/08/13</span>
+</div><div class="hljs-line"><span class="hljs-comment"> */</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">formatTime</span>(<span class="hljs-params">templete = <span class="hljs-string">"{0}年{1}月{2}日 {3}时{4}分{5}秒"</span></span>) </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">let</span> timeAry = <span class="hljs-keyword">this</span>.match(<span class="hljs-regexp">/\d+/g</span>);
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> templete.replace(<span class="hljs-regexp">/\{(\d+)\}/g</span>, (...[, $<span class="hljs-number">1</span>]) =&gt; {
+</div><div class="hljs-line">        <span class="hljs-keyword">let</span> time = timeAry[$<span class="hljs-number">1</span>] || <span class="hljs-string">"00"</span>;
+</div><div class="hljs-line">        <span class="hljs-keyword">return</span> time.length &lt; <span class="hljs-number">2</span> ? <span class="hljs-string">"0"</span> + time : time;
+</div><div class="hljs-line">    });
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">/* </span>
+</div><div class="hljs-line"><span class="hljs-comment"> * queryURLParams：获取URL地址问号和面的参数信息（可能也包含HASH值）</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   @params</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   @return</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     [object]把所有问号参数信息以键值对的方式存储起来并且返回</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * by zhufengpeixun on 2019/08/13</span>
+</div><div class="hljs-line"><span class="hljs-comment"> */</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">queryURLParams</span>(<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">let</span> obj = {};
+</div><div class="hljs-line">    <span class="hljs-keyword">this</span>.replace(<span class="hljs-regexp">/([^?=&amp;#]+)=([^?=&amp;#]+)/g</span>, (...[, $<span class="hljs-number">1</span>, $<span class="hljs-number">2</span>]) =&gt; obj[$<span class="hljs-number">1</span>] = $<span class="hljs-number">2</span>);
+</div><div class="hljs-line">    <span class="hljs-keyword">this</span>.replace(<span class="hljs-regexp">/#([^?=&amp;#]+)/g</span>, (...[, $<span class="hljs-number">1</span>]) =&gt; obj[<span class="hljs-string">'HASH'</span>] = $<span class="hljs-number">1</span>);
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> obj;
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">/* </span>
+</div><div class="hljs-line"><span class="hljs-comment"> * millimeter：实现大数字的千分符处理</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   @params</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *   @return</span>
+</div><div class="hljs-line"><span class="hljs-comment"> *     [string]千分符后的字符串</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * by zhufengpeixun on 2019/08/13</span>
+</div><div class="hljs-line"><span class="hljs-comment"> */</span>
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">millimeter</span>(<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">    <span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment">        let num = this.split('').reverse().join('');</span>
+</div><div class="hljs-line"><span class="hljs-comment">        for (let i = 2; i &lt; num.length - 1; i += 4) {</span>
+</div><div class="hljs-line"><span class="hljs-comment">            let prev = num.substring(0, i + 1),</span>
+</div><div class="hljs-line"><span class="hljs-comment">                next = num.substring(i + 1);</span>
+</div><div class="hljs-line"><span class="hljs-comment">            num = prev + "," + next;</span>
+</div><div class="hljs-line"><span class="hljs-comment">        }</span>
+</div><div class="hljs-line"><span class="hljs-comment">        num = num.split('').reverse().join('');</span>
+</div><div class="hljs-line"><span class="hljs-comment">        return num;</span>
+</div><div class="hljs-line"><span class="hljs-comment">     */</span>
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.replace(<span class="hljs-regexp">/\d{1,3}(?=(\d{3})+$)/g</span>, content =&gt; content + <span class="hljs-string">','</span>);
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">/* 扩展到内置类String.prototype上 */</span>
+</div><div class="hljs-line">[<span class="hljs-string">"formatTime"</span>, <span class="hljs-string">"queryURLParams"</span>, <span class="hljs-string">"millimeter"</span>].forEach(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> {
+</div><div class="hljs-line">    <span class="hljs-built_in">String</span>.prototype[item] = <span class="hljs-built_in">eval</span>(item);
+</div><div class="hljs-line">});
+</div><div class="hljs-line">}();
+</div></code></pre>
+
+<p>如何把一个字符串的大小写取反（大写变小写小写变大写），例如 ’AbC’ 变成 ‘aBc’</p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> arr = str.split(<span class="hljs-string">''</span>);
+</div><div class="hljs-line">arr = arr.map(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> {
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> item ===item.toUpperCase()?item.toLowerCase():item.toUpperCase();
+</div><div class="hljs-line">});
+</div><div class="hljs-line"><span class="hljs-built_in">console</span>.log(arr.join(<span class="hljs-string">''</span>));
+</div></code></pre>
+
+<p>实现一个字符串匹配算法，从字符串 S 中，查找是否存在字符串 T，若存在返回所在位置，不存在返回-1！（如果不能基于indexOf/includes等内置的方法，你会如何处理呢？）</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs maxima"><div class="hljs-line"><span class="hljs-built_in">let</span> indexOf = (S, T) =&gt; {
+</div><div class="hljs-line">    <span class="hljs-keyword">if</span> (S.<span class="hljs-built_in">length</span> &lt; T.<span class="hljs-built_in">length</span>) <span class="hljs-built_in">return</span> -<span class="hljs-number">1</span>;
+</div><div class="hljs-line">    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">let</span> i = <span class="hljs-number">0</span>; i &lt; S.<span class="hljs-built_in">length</span> - T.<span class="hljs-built_in">length</span> ; i++) {
+</div><div class="hljs-line">        <span class="hljs-keyword">if</span> (S.substr(i, T.<span class="hljs-built_in">length</span>) === T) <span class="hljs-built_in">return</span> i;
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    <span class="hljs-built_in">return</span> -<span class="hljs-number">1</span>;
+</div><div class="hljs-line">};
+</div></code></pre></li>
+</ol></div></body></html>
