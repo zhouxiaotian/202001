@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>JS盒子模型属性</title>
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		.outer {
+			box-sizing: border-box;
+			margin: 20px auto;
+			width: 500px;
+			height: 500px;
+			background: lightcoral;
+			border: 10px solid orangered;
+		}
+
+		.box {
+			box-sizing: border-box;
+			margin: 20px auto;
+			padding: 15px;
+			width: 300px;
+			height: 300px;
+			border: 10px solid lightblue;
+			background: lightcyan;
+			font-size: 18px;
+			line-height: 30px;
+			overflow: auto;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="outer" id="outer">
+		<div id="box" class="box">
+			夫君子之行，静以修身，俭以养德，非淡泊无以明志，非宁静无以致远。夫学须静也，才须学也，非学无以广才，非志无以成学。淫漫则不能励精，险躁则不能冶性，年与时驰，意与日去，遂成枯落，多不接世，悲守穷庐，将复何及~~
+		</div>
+	</div>
+</body>
+
+</html>
