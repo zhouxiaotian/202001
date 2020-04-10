@@ -19,13 +19,12 @@
 			box-sizing: border-box;
 			margin: 20px auto;
 			padding: 15px;
-			width: 300px;
+			width: 300.4px;
 			height: 300px;
 			border: 10px solid lightblue;
 			background: lightcyan;
 			font-size: 18px;
 			line-height: 30px;
-			overflow: auto;
 		}
 	</style>
 </head>
@@ -36,6 +35,100 @@
 			夫君子之行，静以修身，俭以养德，非淡泊无以明志，非宁静无以致远。夫学须静也，才须学也，非学无以广才，非志无以成学。淫漫则不能励精，险躁则不能冶性，年与时驰，意与日去，遂成枯落，多不接世，悲守穷庐，将复何及~~
 		</div>
 	</div>
+
+	<script>
+		// offsetLeft / offsetTop：当前元素距离其父级参照物的“左偏移和上偏移”
+		// =>父级参照物不是父级元素  offsetParent
+		// =>距离其父参照物的内边框（从当前元素外边框开始，到父参照物的内边框）
+
+		// 父参照物指的是：同一个平面中最外层的元素是内层所有元素的父参照物
+		// =>默认情况下，所有的元素都在同一个文档流（同一个平面）中，这样他们的父参照物都是BODY，所获取的偏移也都是距离BODY的
+		// =>但是一旦某些元素设置了position（relative/absolute/fixed）就会形成一个新的平面，那么其内部元素的父参照物就不在是BODY，而是当前元素本身
+		/* console.log(outer.offsetParent); //=>BODY
+		console.log(box.offsetParent); //=>BODY
+
+		outer.style.position = 'relative';
+		console.log(outer.offsetParent); //=>BODY
+		console.log(box.offsetParent); //=>OUTER */
+
+		/*
+		 * offset：Get the left and up offsets of the current element from the body
+		 *   @params
+		 *      element[element object]：Elements to operate on
+		 *   @return
+		 *      [object]：{top:xxx,left:xxx}
+		 * by zhufengpeixun on 2020/04/10
+		 */
+		function offset(element) {
+			// 1.首先获取当前元素的父参照物和其距离父参照物的偏移
+			let parent = element.offsetParent,
+				top = element.offsetTop,
+				left = element.offsetLeft;
+			// 2.循环依次向上查找父参照物（一直到找不到为止）
+			while (parent) {
+				// 加上父参照物的边框（非IE8浏览器中才加）
+				if (!/MSIE 8.0/.test(navigator.userAgent)) {
+					left += parent.clientLeft;
+					top += parent.clientTop;
+				}
+				// 加上父参照物的偏移值
+				left += parent.offsetLeft;
+				top += parent.offsetTop;
+				// 继续向上查找
+				parent = parent.offsetParent;
+			}
+			// 3.把查找的结果返回
+			return {
+				// top:top 
+				top,
+				left
+			};
+		}
+
+		// 兼容问题：在标准的IE8浏览器中，偏移值是当前元素外边框距离父参照物的外边框的距离（其它浏览器都是距离父参照物内边框），所以我们计算偏移值的时候，如果是IE8浏览器，则边框不需要在加了
+		// navigator.userAgent获取当前浏览器的版本信息
+	</script>
+
+	<script>
+		//=>基于JS盒子模型属性获取的结果都是整数（可能会和实际的值差生一些偏差）
+		/* 
+		// clientWidth && clientHeight：内容+PADDING
+		// 内容有溢出对其没有影响
+		console.log(box.clientWidth);
+		console.log(box.clientHeight);
+
+		// 获取浏览器可视窗口（浏览器一屏幕的宽高）
+		// =>document.documentElement 获取HTML元素对象
+		// =>兼容IE低版本浏览器 document.documentElement.clientWidth||document.body.clientWidth
+		console.log(document.documentElement.clientWidth);
+		console.log(document.documentElement.clientHeight);  
+		*/
+
+		// 获取左边框和上边框的大小（没有获取右边框和下边框的盒子模型属性）
+		// console.log(box.clientLeft);
+		// console.log(box.clientTop);
+
+		// 只是在client的基础上加上了边框的大小，所以内容是否溢出对其也没有影响
+		// console.log(box.offsetWidth);
+		// console.log(box.offsetHeight);
+
+		/* 
+		// 在内容没有溢出的情况下, scrollWidth/scrollHeight与clientWidth/clientHeight结果是一样的
+		// 在内容有溢出的情况下，它的结果包含了溢出内容宽高（但是这个值是一个约等于的值，不完全准确的：在不同浏览器中，因为对内容渲染机制的差异，结果是不一样的，而且我们设置的overflow的值也对最后的结果有影响）
+		// console.log(box.scrollWidth);
+		// console.log(box.scrollHeight);
+
+		// 获取当前页面真实的宽度和高度，包括那部分溢出的内容
+		// console.log(document.documentElement.scrollHeight);
+		// console.log(document.documentElement.scrollWidth); 
+		*/
+
+		// =>scrollLeft/scrollTop是13个盒子模型属性中唯二可以修改的属性（其余都是只读的，只有这两个是可读写的），通过修改对应的值，可以控制滚动条的滚动
+		// scrollLeft横向滚动条卷去的宽度 
+		// scrollTop竖向滚动条卷去的高度
+		// 最小值0  最大值 scrollHeight-clientHeight
+		// console.log(box.scrollTop);
+	</script>
 </body>
 
 </html>

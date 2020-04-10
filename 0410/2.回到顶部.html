@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		html,
+		body {
+			height: 1000%;
+			background: -webkit-linear-gradient(top left, red, green, blue, orange, pink);
+		}
+
+		#GOTO {
+			position: fixed;
+			right: 0;
+			bottom: 100px;
+			width: 80px;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<button id="GOTO">回到顶部</button>
+
+
+	<!-- IMPORT JS -->
+	<script>
+		// 开始不显示回到顶部按钮，当随着滚动条滚动，卷去的高度超过了一屏幕的大小，我们再显示这个按钮
+		window.onscroll = function () {
+			// 不论我们基于什么方式，控制了滚动条的滚动，都会触发这个事件，让绑定的方法执行
+			let sT = document.documentElement.scrollTop,
+				cH = document.documentElement.clientHeight;
+			if (sT >= cH) {
+				GOTO.style.display = 'block';
+			} else {
+				GOTO.style.display = 'none';
+			}
+		};
+
+		GOTO.onclick = function () {
+			document.documentElement.scrollTop = 0;
+		};
+	</script>
+</body>
+
+</html>
