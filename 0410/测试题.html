@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		// 现在浏览器：一方面需要向后兼容ES3，也需要适配ES6新的语法规范，这样在新老语法重合的部分，浏览器表现的不尽人意
+		/*
+		 * EC(G)变量提升
+		 *   var a;  function a;（新版本中，判断题中的函数只提前声明，老版本中还是声明+定义都处理了） => VO(G)有一个a的变量
+		 */
+		/* var a = 0;
+		if (true) {
+			/!*
+			 * 一但条件成立，进来的第一件事情就是把之前未定义的函数进行定义赋值
+			 *   a = function(){} 
+			 *!/
+			// console.log(a); =>函数
+			a = 1;
+			// console.log(a); =>1
+
+			function a() {}; //=>在现有的浏览器机制中（截止2020/04/10）如果判断体中（被理解为块作用域）遇到function定义变量，它下面的代码中出现的 变量重新赋值，都只对当前块起作用，对外层上下文没有影响
+			a = 21;
+			console.log(a); //=>21
+		}
+		console.log(a); //=>1 */
+	</script>
+
+	<script>
+		/* debugger;
+		console.log(a); //=>undefined
+		var a = 0;
+		if (true) {
+			//=>用VAR来创建的变量，浏览器不会形成任何的块作用域
+			console.log(a); //=>0
+			a = 1;
+			console.log(a); //=>1
+			var a = function () {};
+			console.log(a); //=>函数
+			a = 21;
+			console.log(a); //=>21
+		}
+		console.log(a); //=>21 */
+
+		/* 
+		let a = 0;
+		if (true) {
+			// a = 1; //=>Uncaught ReferenceError: Cannot access 'a' before initialization  因为出现了LET，块作用域对其有作用了，禁止在当前作用域声明变量之前使用他
+			let a = function () {};
+			console.log(a); //=>函数
+			a = 21;
+			console.log(a); //=>21
+		}
+		console.log(a); //=>0
+		 */
+	</script>
+
+	<script>
+		/* debugger;
+		var a = 0;
+		if (true) {
+			// [兼容ES6新语法规范]
+			// 首先形成一个块级作用域，进来第一个事情：声明+定义一个a
+			//    a=function(){}
+			a = 1;
+
+			function a() {};
+			a = 21;
+			console.log(a); //=>21
+		}
+		// 块级作用域释放后，为了兼容原有的ES3的规范，把function a() {}之前修改过a的值，更新到全局上下文的a中
+		console.log(a); //=>1 */
+	</script>
+
+	<script>
+		/* 
+		 * 块作用域 
+		 *   如果{}中（例如：判断体和循环体）出现了 let/const/.../function 则在代码执行的时候产生一个块级作用域（私有作用域，声明的变量是私有变量）
+		 *   =>如果是let/const不存在变量提升，所以不允许在声明变量之前使用变量
+	     *   =>如果是function则比较特殊：首先保留了原有ES3中的相关特性，例如变量提升，在块级作用域刚形成的时候，首先就会声明+定义函数（把其理解为块级作用域中私有的，也不会像LET一样，他在定义的代码之前也能使用这个变量）；其次，为了更好的兼容ES3规范，截止目前，把function定义代码之前的操作结果，在块作用域结束后，同步到上级上下文的变量中（之后的代码是不管的）
+		 */
+	</script>
+</body>
+
+</html>
