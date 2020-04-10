@@ -67,7 +67,7 @@
 			// 2.循环依次向上查找父参照物（一直到找不到为止）
 			while (parent) {
 				// 加上父参照物的边框（非IE8浏览器中才加）
-				if (!/MSIE 8.0/.test(navigator.userAgent)) {
+				if (!/MSIE 8/.test(navigator.userAgent)) {
 					left += parent.clientLeft;
 					top += parent.clientTop;
 				}

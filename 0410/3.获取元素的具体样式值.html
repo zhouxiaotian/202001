@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>JS盒子模型属性</title>
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		.box {
+			box-sizing: border-box;
+			margin: 20px auto;
+			padding: 15px;
+			width: 300px;
+			height: 300px;
+			border: 10px solid lightblue;
+			background: lightcyan;
+			font-size: 18px;
+			line-height: 30px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="box" class="box">
+		夫君子之行，静以修身，俭以养德，非淡泊无以明志，非宁静无以致远。夫学须静也，才须学也，非学无以广才，非志无以成学。淫漫则不能励精，险躁则不能冶性，年与时驰，意与日去，遂成枯落，多不接世，悲守穷庐，将复何及~~
+	</div>
+
+	<script>
+		/*
+		 * 真实项目中，我们需要获取元素的某一个具体样式值
+		 *   =>元素.style.xxx：只能获取元素的行内样式值（我们必须把样式写在行内上才能获取到，写在样式表中的，我们获取不到）
+		 *     真实项目中，我们自己编写样式基本都不写在行内上
+		 *     只有基于JS设置元素的样式，才有可能设置在行内上 元素.style.xxx=xxx
+		 * 
+		 *   =>获取元素所有计算过的样式（回流阶段计算的样式信息就是“计算过的样式”）：不论样式写在哪、再或者不写按照浏览器默认样式处理等
+		 *     【标准浏览器】
+		 *        window.getComputedStyle(元素对象,伪类/null) 返回的是所有被计算过的样式对象CSSStyleDeclaration
+		 *     【IE6~8中】
+		 *       元素.currentStyle 返回样式对象
+		 */
+		function getCss(element, attr) {
+			// 优化：如果我们获取的结果符合 "数字+单位" 的格式，我们默认就把单位去掉,变为纯数字；如果获取的是 “纯数字的字符串”，我们也把其转换为数字；如果是组合值或者非数字的，则不进行任何的处理；
+			let value = window.getComputedStyle(element)[attr],
+				reg = /^\d+(px|rem|em)?$/i;
+			if (reg.test(value)) {
+				value = parseFloat(value);
+			}
+			return value;
+		}
+
+		// JS中给元素设置样式一般也有几种方法：
+		// =>设置行内样式  元素.style.xxx=xxx | 元素.style.cssText='xxx'
+		// =>设置样式类  元素.className=xxx
+		function setCss(element, attr, value) {
+			// 优化：如果传递的是opacity，在IE低版本中用的filter设置样式 
+			if (attr === "opacity") {
+				element['style']['opacity'] = value;
+				element['style']['filter'] = `alpha(opacity=${value*100})`;
+				return;
+			}
+			// 优化：对于某些特定样式（例如：width/height/margin/padding/marginTop.../paddingTop.../left/top/bottom/right...）如果传递的value没有带单位的（纯数字）我们手动默认给他加上PX单位
+			let reg = /^(width|height|margin|padding)?(top|left|bottom|right)?$/i;
+			if (reg.test(attr)) {
+				// 只有人家value没有传单位，我们才自己加单位（只有传递的是有效数字，我们才设置单位）
+				if (!isNaN(value)) {
+					value += 'px';
+				}
+			}
+			element['style'][attr] = value;
+		}
+
+		// options是一个对象，包含了我们需要批量设置样式的属性名和属性值
+		function setGroupCss(element, options) {
+			// 循环传递的样式对象，分别调取setCss设置样式即可
+			for (let key in options) {
+				if (!options.hasOwnProperty(key)) break;
+				setCss(element, key, options[key]);
+			}
+		}
+		/* setGroupCss(box, {
+			width: 100,
+			height: 100
+		}); */
+
+		// 既可以实现获取，也可以实现单一设置，也可以实现批量设置
+		// 1.如果传递的是三个参数则为单一设置样式
+		// 2.如果传递的是两个参数
+		//   第二个参数是个对象：则为批量设置样式
+		//   第二个参数是个字符串：则为获取样式
+		function css(element) {
+			let len = arguments.length,
+				attr = arguments[1],
+				value = arguments[2];
+			if (len >= 3) {
+				// 单一设置样式
+				setCss(element, attr, value);
+				return;
+			}
+			if (attr !== null && typeof attr === "object") {
+				// 批量设置
+				setGroupCss(element, attr);
+				return;
+			}
+			// 获取样式
+			return getCss(element, attr);
+		}
+
+		// 对象中的私有属性一般都是可枚举的属性（除了一些内置的私有属性外，例如：数组中的length属性...）；而在它所属类的原型上的公有属性方法一般都是不可枚举的（如果自己向内置类原型上扩展的方法，是可枚举的）；
+		// 可枚举 => 在FOR IN循环中可以把它遍历到
+		/* Object.prototype.zhufeng = 1000; //=>也会被枚举到的属性
+		let obj = {
+			name: 'xxx',
+			age: 10
+		};
+		for (let key in obj) {
+			// 一般在FOR IN循环的时候，我们只把私有可枚举属性进行处理
+			if (!obj.hasOwnProperty(key)) break;
+			console.log(key, obj[key]);
+		} */
+
+		/* function Fn() {
+			this.x = 100;
+			this.y = 200;
+		}
+		Fn.prototype.zhufeng = 1000;
+		let f = new Fn;
+		for (let key in f) {
+			console.log(key); //=> x y zhufeng
+		} */
+	</script>
+</body>
+
+</html>
