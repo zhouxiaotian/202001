@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		/* img:not([src]),
+		img[src=""] {
+			display: none
+		} */
+
+		.lazyImgBox {
+			box-sizing: border-box;
+			margin: 1000px 0;
+			width: 300px;
+			height: 500px;
+			background: url("images/default.gif") no-repeat center center #DDD;
+		}
+
+		.lazyImgBox img {
+			width: 100%;
+			height: 100%;
+			/* 为了后期图片显示有动画效果 */
+			opacity: 0;
+			transition: opacity .3s ease 0s;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="lazyImgBox">
+		<img src="" alt="" data-image="images/1.jpg">
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="js/utils.js"></script>
+	<script>
+		let lazyImgBox = document.querySelector('.lazyImgBox'),
+			img = lazyImgBox.querySelector('img'),
+			HTML = document.documentElement;
+
+		// B:图片所在盒子底边距离BODY顶端的距离
+		// cH:浏览器可视窗口一屏幕的高度
+		// A:浏览器底边框距离BODY顶端的距离
+		let B = utils.offset(lazyImgBox).top + lazyImgBox.offsetHeight,
+			cH = HTML.clientHeight,
+			A = 0;
+		window.onscroll = function () {
+			if (img.isLoad) return; //=>已经处理过了，则其余的都不在处理
+			A = cH + HTML.scrollTop;
+			// 延迟加载的条件：图片完全出现在可视窗口中（B<=A）
+			if (B <= A) {
+				// 问题：当我们把图片加载出来（或者地址不存在没加载，但是也处理了），但是对着浏览器继续滚动，B<=A的条件一直成立，会一直触发延迟加载操作  =>在第一次处理完成后，后续即使在符合条件我们也不处理了
+				lazy();
+			}
+		};
+
+		// 进行图片延迟加载的
+		function lazy() {
+			let dataImage = img.getAttribute("data-image"),
+				tempImage = new Image;
+			tempImage.src = dataImage;
+			tempImage.onload = () => {
+				img.src = dataImage;
+				// 动画:改变他的OPCITY样式即可
+				// img.offsetHeight; //=>先让上面显示的样式渲染（触发一次回流），再让下面透明度的样式改变，这样就能看到动画效果了
+				utils.css(img, 'opacity', 1);
+			};
+			img.removeAttribute('data-image');
+			tempImage = null;
+			img.isLoad = true; //=>不论成功还是失败，都标识一下当前图片我已经处理过了
+		}
+	</script>
+</body>
+
+</html>

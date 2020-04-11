@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训 - 微信：18310612838</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		img:not([src]),
+		img[src=""] {
+			display: none
+		}
+
+		.lazyImgBox {
+			box-sizing: border-box;
+			width: 300px;
+			height: 500px;
+			background: url("images/default.gif") no-repeat center center #DDD;
+		}
+
+		.lazyImgBox img {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+
+	<script>
+		/*
+		 不放在末尾，还想在DOM结构加载完成后执行
+			1. 把SCRIPT改成异步的即可
+			2. 或者监听事件，在DOM结构加载完成在执行这个代码 
+			   =>DOMContentLoaded DOM结构加载完
+			   =>load 所有资源都加载完 （晚于DOMContentLoaded触发的）
+		 */
+		/* window.addEventListener('DOMContentLoaded', function () {
+			let lazyImgBox = document.querySelector('.lazyImgBox');
+			console.log(lazyImgBox);
+		}); */
+		/* window.onload = function () {
+			let lazyImgBox = document.querySelector('.lazyImgBox');
+			console.log(lazyImgBox);
+		}; */
+	</script>
+
+	<!-- 
+		async VS defer
+		   async 从服务器获取资源是异步的（此时GUI继续渲染），但是一但资源请求回来，会立即把请求回来的JS执行（此时会阻断GUI的继续渲染） => 多个asyncJS请求，谁先回来就先执行谁，没有顺序
+		   defer 从服务器获取资源是异步的，只不过请求回来资源后没有立即执行，需要等到GUI绘制完成，再去按照顺序把所有请求回来的JS逐一执行
+	 -->
+	<!-- <script src="js/1.js" async></script> -->
+	<!-- <script src="js/1.js" defer></script> -->
+</head>
+
+<body>
+	<div class="lazyImgBox">
+		<img src="" alt="" data-image="images/1.jpg">
+	</div>
+
+
+	<!-- IMPORT JS -->
+	<script>
+		var lazyImgBox = document.querySelector('.lazyImgBox'),
+			img = lazyImgBox.querySelector('img');
+
+		/* window.onload = function () {
+			// 获取IMG中的真实图片地址 DATA-IMAGE，赋值给它的SRC
+			let trueSRC = img.getAttribute('data-image');
+			img.src = trueSRC;
+			img.removeAttribute('data-image');
+		}; */
+
+		setTimeout(function () {
+			// 定时器是异步的，它能够触发执行的条件：不仅是到达时间了，而且是主线程已经加载完成了（所以可以用它代替window.onload）
+
+			// 进一步优化：在IE浏览器中，如果我们加载的图片不存在，在图片区域不展示任何图片，会展示一个“×”，不太好看，所以我们在赋值SRC之前，一般先自己校验一下地址的真实性
+			var dataImage = img.getAttribute('data-image');
+			var tempImg = new Image; //=>创建一个临时的图片对象（它不会增加到页面中，它就是用来检测地址的合法性的）
+			tempImg.src = dataImage;
+			tempImg.onload = function () {
+				// 当前地址是正确的（tempImg.onload代表图片能正常加载出来）
+				img.src = dataImage;
+			};
+			img.removeAttribute('data-image');
+			tempImg = null;
+		}, 1000);
+	</script>
+</body>
+
+</html>
+
+<!-- 
+	图片延迟加载（图片的懒加载）
+	   1.为什么需要做图片的懒加载
+		 =>第一次加载页面的时候，如果请求真实图片资源，会减缓页面的渲染速度，为了提高首次打开的体验度，我们最开始不加载真实的图片资源，只有当第一次页面整体都渲染完成后，页面中已经呈现出除图片以外的其它资源后，再去按需加载真实的图片资源渲染
+		 =>进一步优化，最开始只加载首屏需要的图片，等到滚动条滚动的时候，再把当前屏幕中需要渲染的图片加载（避免不必要的资源加载）
+
+	1）给需要延迟加载的图片设置一个外层盒子，图片在这个盒子中
+	2）我们把图片的SRC设置为空，把后续需要请求的真实图片地址赋值给IMG的自定义属性
+	3）在最开始渲染的样式中
+	   ->给外层的盒子设置等待加载的背景LOGO（或者背景颜色，如果是背景图片，图片一定要非常的小，最好控制在5KB以内），让盒子起到一个占位的作用
+	   ->让所有的SRC为空的IMG默认是隐藏的
+	4）需要等到页面加载完成后（除图片资源，其它资源都加载完成了 window.onload），在JS中获取真实图片的地址，赋值给其SRC（此时才去加载真实的图片进行渲染）
+ -->
