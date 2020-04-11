@@ -8,21 +8,22 @@ body {
 	margin: 20px auto;
 	width: 760px;
 
-	/* 基于FLEX实现水平排列：会导致一个问题，每一列的高度都是一致的，按照最高的那个为准，这样无法区分每一列的高度了 */
-	/* display: flex;
-	justify-content: space-between; */
+	/* 基于FLEX实现水平排列：会导致一个问题，每一列的高度都是一致的，按照最高的那个为准，这样无法区分每一列的高度  align-items: flex-start; 设置它就可以解决 */
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
 }
 
 .container .column {
-	margin-right: 20px;
-	float: left;
+	/* margin-right: 20px;
+	float: left; */
 	box-sizing: border-box;
 	width: 240px;
 }
 
-.container .column:nth-last-child(1) {
+/* .container .column:nth-last-child(1) {
 	margin-right: 0;
-}
+} */
 
 .card {
 	margin-bottom: 10px;
