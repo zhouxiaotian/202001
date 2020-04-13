@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+  <title>珠峰培训 - 微信：18310612838</title>
+  <!-- IMPORT CSS -->
+  <link rel="stylesheet" href="css/reset.min.css">
+  <style>
+    .tabBox {
+      margin: 20px auto;
+      width: 500px;
+    }
+
+    .tabBox .tab {
+      position: relative;
+      top: 1px;
+    }
+
+    .tabBox .tab li {
+      float: left;
+      margin-right: 10px;
+      padding: 0 10px;
+      height: 35px;
+      line-height: 35px;
+      font-size: 14px;
+      border: 1px solid #AAA;
+      background: #f6f7fb;
+      cursor: pointer;
+    }
+
+    .tabBox .tab li.active {
+      background: #FFF;
+      border-bottom-color: #FFF;
+    }
+
+    .tabBox div {
+      display: none;
+      padding: 10px;
+      height: 100px;
+      border: 1px solid #AAA;
+      background: #FFF;
+    }
+
+    .tabBox div.active {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="tabBox" id="tabBox">
+    <ul class="tab clearfix">
+      <li class="active">编程</li>
+      <li>读书</li>
+      <li>运动</li>
+    </ul>
+    <div class="active">编程可以使我“赚取高薪”</div>
+    <div>读书可以使我“修身养性”</div>
+    <div>运动可以使我“身体健康”</div>
+  </section>
+
+  <section class="tabBox" id="tabBox2">
+    <ul class="tab clearfix">
+      <li class="active">编程</li>
+      <li>读书</li>
+      <li>运动</li>
+    </ul>
+    <div class="active">编程可以使我“赚取高薪”</div>
+    <div>读书可以使我“修身养性”</div>
+    <div>运动可以使我“身体健康”</div>
+  </section>
+
+  <section class="tabBox" id="tabBox3">
+    <ul class="tab clearfix">
+      <li class="active">编程</li>
+      <li>读书</li>
+      <li>运动</li>
+    </ul>
+    <div class="active">编程可以使我“赚取高薪”</div>
+    <div>读书可以使我“修身养性”</div>
+    <div>运动可以使我“身体健康”</div>
+  </section>
+</body>
+
+</html>
+<script src="./js/jquery-3.3.1.js"></script>
+<script>
+  /*  $('li').on('click',function(){
+    // 给每一个li绑定了点击事件
+    // console.log(this);// this是原生ＤＯＭ
+    $(this).addClass('active').siblings().removeClass('active');// 这种写法我们称为链式写法
+    let n = $(this).index();// 当前点击的那个元素的索引
+    // console.log(n);
+    // console.log($('div')[n]);// 点击的li对应的哪个div
+    $($('div')[n]).addClass('active').siblings().removeClass('active');
+  }); */
+
+  /* 
+    $('li').on('click',function(){
+      // this 就是当前点击的这个原生元素
+      // 给当前点击的这个元素加上 active类名； 让其他兄弟元素移除active类名
+      $(this).addClass('active').siblings().removeClass('active');
+      let n = $(this).index();// n就是点击的这个li的索引
+
+      // $('div')[n] 当前点击的哪个li对应的div(原生DOM) 给他添加active类名 让他的兄弟们移除active类名
+      // $($('div')[n]).addClass('active').siblings().removeClass('active');
+      // $('div').eq(n) 获取的是索引n对应的 JQ对象；
+      $('div').eq(n).addClass('active').siblings().removeClass('active');
+    });
+
+     */
+
+  $.fn.extend({
+    tab: function () {
+      // console.log(this)
+      let _this = this;// 因为事件对应的回调函数中的this不是当前这个函数中的this 所以用一个变量去存储this;
+      $('li',_this).on('click', function () {
+        $(this).addClass('active').siblings().removeClass('active');
+        let n = $(this).index(); 
+        $('div',_this).eq(n).addClass('active').siblings().removeClass('active');
+      });
+    }
+  })
+
+  $('#tabBox').tab();
+  $('#tabBox2').tab();
+  $('#tabBox3').tab();
+</script>

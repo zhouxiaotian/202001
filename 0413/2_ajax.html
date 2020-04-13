@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>珠峰培训</h1>
+  <h1>珠峰培训</h1>
+  <h1>珠峰培训</h1>
+  <h1>珠峰培训</h1>
+  <button>按钮</button>
+</body>
+</html>
+<script src="./js/jquery-3.3.1.js"></script>
+<script>
+  $.ajax({
+    url:'./json/data.json',
+    // method:'get',
+    success(data){
+      console.log(data)
+    }
+  });
+
+  $.get('./json/data.json',function(data){
+    console.log(data)
+  });
+  $('button').on('click',function(){
+    // $('h1').hide(); // 让标签隐藏
+    // $('h1').show(); // 让标签显示
+    $('h1').toggle();// 若元素是再显示状态 就让元素隐藏； 若是隐藏状态就让元素显示
+  });
+
+  // extend 我们称为 JQ 扩展（JQ插件）
+  $.fn.extend({
+    // fn.extend扩展的属性 会放到JQ的原型上
+    qqq(){
+      console.log('qqq')
+    }
+  });
+  $.extend({
+    // 直接通过extend 扩展的属性 会放到JQ自己身上；
+    www(){
+      console.log('www')
+    }
+  });
+  $('h1').qqq();
+  $.www();
+</script>

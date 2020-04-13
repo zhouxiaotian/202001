@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    [qqq]{
+      border:10px  solid salmon;
+    }
+    body{
+      background: #fff;
+      color:#333
+    }
+    .body_box{
+      background: #333;
+      color:#fff
+    }
+  </style>
+</head>
+<body class='body_box'>
+  <div >珠峰</div>
+  <div id="app">
+    <span>123</span>
+    <a href="http://baidu.com">qqqq</a>
+    <ul>
+      <li> <span>6666</span></li>
+      <li> <a href="http://qqqq">aaaa</a></li>
+    </ul>
+  </div>
+  <h2 class="box"></h2>
+  <ul class="ul_box">
+    <li class="box"></li>
+    <li class="box" qqq=234></li>
+    <li class="box" qqq=123></li>
+    <li class="box"></li>
+  </ul>
+
+  <input type="text">
+  <button>按钮</button>
+</body>
+<script src="./js/jquery-3.3.1.js"></script>
+</html>
+<script>
+  /* 
+    zepto  就是一个缩减版的JQ ，一般用于移动端；
+    JQ就是一个封装好的方法库，提供了各种常用的方法;
+    JQ 提供的方法 我们不用考虑兼容性问题
+  */
+  let oDiv = document.querySelector('div');
+  let oDiv2 = $('div');
+  
+  let $oDiv = $('#app');
+  /* 
+    JQ获取DOM元素　　$("css选择器",上下文)  获取的结果 都是一个集合；
+  
+  */
+/*   var $box = $('.box');
+  var $box2 = $('ul .box');
+  var $ul = $('.ul_box');
+  var $box3 = jQuery('.box',$ul);
+  var $box4 = jQuery('.box:last-child',$ul);
+  var $box5 = jQuery('.box:nth-child(2)',$ul);
+  console.log($box,$box2,$box3,$box4,$box5) */
+
+  var $a = $('#app a');
+  console.log($a);
+
+  var $a = $('#app>a');
+  console.log($a);
+
+  var $a = $oDiv.children('a');// 获取子代中的a标签
+  console.log($a);
+
+  var $a = $oDiv.find('a');// 获取后代中的a标签
+  console.log($a);
+
+
+  var $lis = $('ul li');// 从这些获取到的li中筛选出  有qqq属性的哪个元素
+  var $li = $lis.filter('[qqq=123]');// 
+  console.log($li);
+
+  console.log($li.prev())// 上一个元素标签
+  console.log($li.next()) // 下一个元素标签
+  console.log($li.prevAll()) // 上边所有的标签
+  console.log($li.nextAll()) // 下边所有元素标签
+  console.log($li.siblings())// 所有的兄弟
+  console.log($li.parent()) // 父标签；
+
+  console.log($li.index()) // 获取当前元素的索引
+
+  //通过$获取的元素 都是 JQ 对象
+  // JQ 对象转成原生对象 通过 索引的方式
+  // 原生对象转成JQ对象  $(原生DOM对象)
+  console.log($oDiv);
+  $oDiv[0].style.color = 'red';
+  $($oDiv[0]);
+
+  var str  = `<h2>你好 珠峰</h2>`;
+  // $oDiv[0].innerHTML = str;
+  // $oDiv.html(str); ///相当于 用户str的内容 替换 $oDiv的原有结构；
+  $oDiv.append(str); // div.appenChild(li)  把str对应的结构 塞到$oDiv的末尾
+
+  var $inp = $('input');
+  // val方法用于表单元素
+  // $inp.val()  不传参数 就是获取input对应的内容
+  //             传参数 就是设置input框的内容
+  console.log($inp.val())
+  $inp.val('66666');
+
+  // $().attr()  操作行内属性用的
+  // 一个参数的时候 是获取对应属性名的属性值
+  // 两个参数的时候 是设置对应属性
+  // 若需要设置多个属性的时候 我们可以传递一个对象
+  console.log($inp.attr('type'))
+  console.log($inp.attr('class','qqq'))
+  console.log($inp.attr({
+    q:123,
+    w:123,
+    e:345
+  }))
+  $inp.attr('style','color:red');
+  // $inp.removeAttr('class');// 移除对应的行内属性；
+
+  // JQ 操作css 有对应的css方法；
+  $inp.css('color');// 一个参数的时候 是用来获取属性名对应的属性值的
+  $inp.css('width',200);// 两个参数是设置；
+  $inp.css({
+    height:50,
+    fontSize:20,
+    paddingLeft:10
+  })// 若传一个对象 就是批量设置
+
+  // JQ 操作类名的方法
+  console.log($inp.hasClass('www')); // 判断对应的元素有没有对应的类名 有就返回true; 没有就返回false;
+  $inp.addClass('box box2 box2');// 添加类名
+  $inp.removeClass('box2');// 移除相应的类名；
+  $inp.toggleClass('qqq'); // 若元素有这个类名 就把这个类名删除； 若没有 就把这个类名加上
+
+
+ 
+</script>
+<script>
+  /* 
+    $().on(事件类型,回调函数)
+  */
+  //  $('button').on('click',function(){
+  //   //JQ绑定点击事件
+  //   $('body').toggleClass('body_box')
+  // });
+  // $('button')[0].onclick = function(){}
+  $('button').click(function(){
+    $('body').toggleClass('body_box')
+  });
+
+ /*  $.ajax({
+    url:"接口地址",// 接口就是 路径（地址）
+    method:"get",
+    success:function(data){
+      // 请求成功的回调函数
+    }
+  });
+  $.get('url',function(data){
+    // 成功的回调函数
+  }); */
+
+  $.get('https://qiyukf.com/webapi/user/getUnread.action?appKey=6a4a332c3d7fa9a58ff19edecbd1dd89&foreignId=&deviceId=uede9nxpnnjv0kbpvrnc&bid=&ts=1586764540459',function (params) {
+    console.log(params)
+  });
+  $.post('https://qiyukf.com/webapi/user/dvcSession.action?appKey=6a4a332c3d7fa9a58ff19edecbd1dd89&d=uede9nxpnnjv0kbpvrnc&f=',function(data){
+    console.log(data);
+  });
+  $.ajax({
+    url:"https://qiyukf.com/webapi/user/getUnread.action?appKey=6a4a332c3d7fa9a58ff19edecbd1dd89&foreignId=&deviceId=uede9nxpnnjv0kbpvrnc&bid=&ts=1586764540459",
+    // method:'get',
+    success(data){
+      console.log(data)
+    }
+  });
+</script>

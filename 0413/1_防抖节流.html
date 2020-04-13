@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text"  id='inp'>
+</body>
+</html>
+<script>
+
+  /* 
+    防抖 是让 函数在最后一次执行
+    节流 是固定频率  每个一段时间执行一次
+  */
+  //  需求：  校验用于输入的文本是否都是数字 合法 就在控制台输出是否合法即可
+  let inp = document.querySelector('#inp');
+  let timer = null;
+  inp.oninput = function(){
+    // 只要input框的内容发生改变 就会触发这个函数
+    clearTimeout(timer);// 内容每改变一次 都会把上一次形成的定时器给清除；
+    timer = setTimeout(() => {
+      console.log(this.value)
+    }, 500);
+  }
+
+  let flag = true;
+  inp.oninput = function(){
+    // 当这个函数第一次执行的时候，flag是true,所以能走到判断下边的代码
+    // 当这个函数 在500毫秒之内再次执行的时候，由于flag还是false呢； 所以走不到判断下边的代码
+    // 当过了500毫秒之后，flag重新变成了true,这时这个函数再执行的话，就可以走到下边代码，
+    // 下边的代码 又把 flag编程false 也就是说下一次能执行判断下边的代码 还得等500毫秒 
+    if(flag===false)return;
+    flag = false;
+    console.log(this.value)
+    setTimeout(() => {
+      flag = true;
+    }, 500);
+  }
+
+  inp.oninput = setTimeout(() => {
+    function qqq(){console.log(666)}
+  }, 1000);
+</script>
