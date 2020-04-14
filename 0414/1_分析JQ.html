@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+
+</html>
+<script>
+  var  $ = 123;
+  var jQuery = 666;
+</script>
+<script>
+  (function (global, factory) {
+    "use strict";
+    if (typeof module === "object" && typeof module.exports === "object") {
+      // 判断是否是 node
+      module.exports = global.document ?
+        factory(global, true) :
+        function (w) {
+          if (!w.document) {
+            throw new Error("jQuery requires a window with a document");
+          }
+          return factory(w);
+        };
+    } else {
+      factory(global);
+    }
+
+  })(typeof window !== 'undefined' ? window : this, function (window, noGlobal) {
+    "use strict";
+
+    var arr = [];
+
+    var document = window.document;
+
+    var getProto = Object.getPrototypeOf;
+
+    var slice = arr.slice;
+    var flat = arr.flat ? function (array) {
+      return arr.flat.call(array);
+    } : function (array) {
+      return arr.concat.apply([], array);
+    };
+
+
+    var concat = arr.concat;
+
+    var push = arr.push;
+
+    var indexOf = arr.indexOf;
+
+    var class2type = {};
+
+    var toString = class2type.toString;
+
+    var hasOwn = class2type.hasOwnProperty;
+
+    var fnToString = hasOwn.toString;
+
+    var ObjectFunctionString = fnToString.call(Object);
+
+    var support = {};
+
+    var isFunction = function isFunction(obj) {
+
+      // Support: Chrome <=57, Firefox <=52
+      // In some browsers, typeof returns "function" for HTML <object> elements
+      // (i.e., `typeof document.createElement( "object" ) === "function"`).
+      // We don't want to classify *any* DOM node as a function.
+      return typeof obj === "function" && typeof obj.nodeType !== "number";
+    };
+
+
+    var isWindow = function isWindow(obj) {
+      return obj != null && obj === obj.window;
+    };
+
+    var
+      version = "3.3.1",
+
+      // Define a local copy of jQuery
+      jQuery = function (selector, context) {
+        // selector 我们传进来的css选择器
+        // context  是我们传进来的上下文
+        return new jQuery.fn.init(selector, context);
+        //返回值 是 jQuery.fn.init 的一个实例；
+      };
+      jQuery.fn = jQuery.prototype = {
+        // 把 jQuery的原型重构成这个对象
+        constructor:jQuery,
+        jquery:version,
+        toArray: function() {
+          return slice.call( this );
+        },
+      };
+      jQuery.extend = jQuery.fn.extend = function(){}
+
+      //在JQ的原型上 新增了一个 init的方法
+      var init = jQuery.fn.init = function(selector,context,root){
+        // 这个函数 就是我们在 jQuery函数体内 new执行的函数
+        if(!selector){
+          return this // 返回一个空实例
+        }
+
+      }
+      
+      // 这一行代码 实现了 jQuery.fn.init产生的实例 能够调用jQuery原型上的方法
+      init.prototype = jQuery.fn;
+
+      var _jQuery = window.jQuery;
+      var _$ = window.$;// _$ 存储的是 原始的$ 代表的值
+      jQuery.noConflict = function (deep) {
+        //负责 若是JQ 把$给占用了 可以通过这个方法 还回去
+        if(window.$ === jQuery){
+          // 如果是JQ占用了这个$  那么 就把 $ 让渡回去；
+          window.$ = _$;
+        }
+        if(deep && window.jQuery === jQuery){
+          window.jQuery = _jQuery;
+        }
+        return jQuery;
+      }
+      window.jQuery = window.$ = jQuery
+      
+      
+      
+      
+      
+      return jQuery;
+  })
+</script>
+<script>
+  /* console.log($)
+  window._ = $;
+  var $ = 12345;
+  var jQuery = 666;
+  console.log($)
+  // jQuery.noConflict();// 让渡 $  使用权
+  console.log($); */
+  var qqq = $.noConflict(true);
+  // qqq  就是jQ
+  console.log($)
+  console.log(jQuery);
+  console.log(qqq)
+</script>
