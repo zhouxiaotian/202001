@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<div class="box">
+		哈哈哈哈
+	</div>
+	<div class="box">
+		呵呵呵呵
+	</div>
+	<div class="box">
+		嘿嘿嘿嘿
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script>
+		/* 
+		 * JQ是一个类库（封装一些公共的方法 [处理兼容、使用更方便、功能更强大...]，有助于项目的开发） =>封装的方法更多用于DOM的操作
+		 *  
+		 * 插件/UI组件: 针对于某一个业务需求或者功能的具体封装，例如选项卡插件、轮播图插件、日历插件、bootstrap这种UI组件等
+		 * 
+		 * 框架（vue/react）：一个庞大宏观的代码管理方案，具备自己的思想，我们用框架需要严格按照规定的思想（MVVM/MVC）去构建项目，框架中也会提供很多公共的方法、也有配套的UI组件和插件
+		 *  
+		 * 辅助工具：git/webpack/postman...
+		 */
+
+		/*
+		 * 现在的项目中已经不咋使用JQ了：因为JQ是传统的操作DOM思想 , 现在都是基于vue/react的数据驱动思想；可能有一些没有基于框架开发的项目，还依然沿用JQ；
+		 *   jquery 1.xx（jquery 1.11.3） =>兼容IE低版本浏览器
+		 *   jquery 2.xx =>鸡肋（伴随H5移动端发展诞生的  jquery mobile），首先不兼容低版本浏览器，诞生相比较于zepto类库来说，zepto更适合移动端开发
+		 *   jquery 3.xx =>悲剧（因为它诞生后，就是数据驱动思想的流行），也不兼容低版本浏览器的
+		 */
+
+		/* $ === jQuery */
+		// $([selector]);
+		// jQuery([selector]);
+
+		// $('.box')  返回的是init这个类的一个实例
+	</script>
+
+	<script>
+		// =>基于JQUERY选择器获取的JQ对象（JQ的实例、类数组集合、可以调用JQ原型上封装的方法）
+		// let $box = $('.box');
+		// // console.log($box);
+
+		// // =>获取的是原生JS对象
+		// let box = document.querySelector('.box');
+		// // console.dir(box);
+
+		// =>创建一个新的元素（返回的是JQ对象，索引零存储的是创建的A元素对象）
+		// $('<a>珠峰培训</a>').appendTo($box);
+
+		//===========================================
+		// 只有JQ对象才能用JQ原型上封装好的方法，原生JS对象只能用浏览器内置的原生方法（两个不能相互调用）  =>面向对象实例和类的关系
+		// 1.把原生JS对象转换为JQ对象 $([原生JS对象])
+		// console.log($(box));
+
+		// 2.把JQ对象转换为原生JS对象（集合中的每一项就是原生的DOM对象，只要基于索引获取即可）
+		// console.log($box[0]);
+		// console.log($box.get(0));
+
+		//===========================================
+		// 等待DOM结构加载完成才会触发执行
+		// => 它监听的是 DOMContentLoaded 这个事件（window.onload是所有资源都加载完成才会执行）
+		// => $(document).ready(function anonymous(){})
+		// $(function anonymous() {
+		// 	// 只要DOM结构加载完成，就会执行anonymous这个函数
+		// });
+	</script>
+
+	<script>
+		let $boxs = $('.box'),
+			boxs = document.querySelectorAll('.box');
+
+		// =>需求是把三个盒子中的文字颜色都改为红色
+		// boxs.style.color =
+		// 'red'; //=>Uncaught TypeError: Cannot set property 'color' of undefined  获取的是一个集合，不能直接集合设置，我们需要循环集合中的每一项，然后给每一项分别设置
+		/* [].forEach.call(boxs, (item,index) => {
+			item.style.color = 'red';
+		}); */
+
+		// JQ中有内置的循环机制，给集合中多元素设置样式（获取其它操作），不在需要自己循环处理了，JQ内部帮我们循环，并且给每一个都设置对应的样式
+		// $boxs.css('color', 'red');
+		// =>JQ中的each方法是对forEach的进一步封装，可以处理数组、类数组、对象等
+		/* $boxs.each(function (index, item) {
+			// index是当前遍历这一项的索引
+			// item是当前遍历的这一项（原生DOM对象）
+			// this===item
+			// console.log(index, item, this);
+		}); */
+
+		/* $.each([10, 20, 30], (index, item) => {
+			// ...
+		}); */
+
+		//=>JQ是一个类、也是一个普通函数、也是一个普通对象
+		// $() 首先会把它当做普通函数执行，只不过创建的是结果算是它的一个实例（这里既有普通函数的操作，也有类的操作）
+
+		// JQ会把很多方法放到jQuery.prototype上，这些方法是供实例调取使用的  
+		// =>实现效果（主要是DOM操作）
+		// $([selector]).xxx()
+
+		// JQ还是一个普通对象，在它对象上也有很多的工具方法，这些方法不是直接给实例用的，只是为了提供一些更有助于开发的方法   
+		// =>完善类库（可以供内外使用）
+		// $.xxx();
+		// $.ajax()  $.each()  ...
+
+		//=>可以自己向JQ中扩展方法  $.fn.extend({xxx:xxx})  /  $.extend({xxx:xxx})
+
+		/* // 写JQ插件
+		$.fn.extend({
+			AAA() {
+				console.log('向原型中扩展的方法');
+			}
+		});
+		
+		// 完善类库
+		$.extend({
+			AAA() {
+				console.log('向对象中扩展的方法');
+			}
+		}); */
+	</script>
+</body>
+
+</html>
