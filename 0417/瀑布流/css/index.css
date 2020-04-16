@@ -1,0 +1,48 @@
+html,
+body {
+	background: #D6D7DB;
+}
+
+.container {
+	box-sizing: border-box;
+	margin: 20px auto;
+	width: 760px;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.container .column {
+	box-sizing: border-box;
+	width: 240px;
+}
+
+.card {
+	margin-bottom: 10px;
+	padding: 5px;
+	background: #FFF;
+	box-shadow: 3px 3px 10px 0 #222;
+}
+
+.card a {
+	display: block;
+}
+
+.card a .lazyImageBox {
+	/* height: xxx; */
+	background: url("../images/default.gif") no-repeat center center #F4F4F4;
+	overflow: hidden;
+}
+
+.card a .lazyImageBox img {
+	width: 100%;
+	opacity: 0;
+	transition: opacity .3s ease;
+}
+
+.card a p {
+	margin-top: 5px;
+	color: #000;
+	font-size: 12px;
+	line-height: 20px;
+}
