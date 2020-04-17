@@ -2,7 +2,9 @@ let imageModule = (function () {
 	// 获取需要操作的元素
 	let $columns = $('.column'),
 		$lazyBoxs = null,
-		_data = [];
+		_data = [],
+		isRuning = false, //=>没有正在加载数据
+		count = 1;
 
 	// 从服务器获取数据（AJAX请求）
 	let queryData = function queryData() {
@@ -83,19 +85,86 @@ let imageModule = (function () {
 			});
 		}
 
-		// 每一次数据绑定完成，我们最好获取到所有的lazyImageBox
+		// 每一次数据绑定完成，我们最好获取到所有的lazyImageBox（条件：只有它里面的图片有DATA-IMAGE自定义属性的，才是没有处理过的，我们再获取处理）
+		// $lazyBoxs = $('.lazyImageBox');
 	};
 
 	// 图片的延迟加载（出现在视口中的图片延迟加载）
-	let lazyFunc = function lazyFunc() {};
+	let lazyFunc = function lazyFunc() {
+		// 获取到所有的lazyImageBox（条件：只有它里面的图片有DATA-IMAGE自定义属性的，才是没有处理过的，我们再获取处理）
+		// JQ:filter用来进行筛选的
+		$lazyBoxs = $('.lazyImageBox').filter((index, item) => {
+			// 有自定义属性获取的值，没有是null；返回的null，则当前项不会出现在最后的结果中；filter特点是只把RETURN结果是TRUE的筛选到；
+			return $(item).find('img').attr('data-image');
+		});
+
+		// 遍历集合中的每一项，给每一项做图片的延迟加载
+		$lazyBoxs.each((index, item) => {
+			// 当前ITEM（图片所在的盒子）底边距离BODY的距离<=浏览器底边距离BODY的距离
+			let $window = $(window),
+				$item = $(item);
+			let A = $window.outerHeight() + $window.scrollTop(),
+				B = $item.outerHeight() + $item.offset().top;
+			if (B <= A) {
+				// 开始单张图片延迟加载 
+				// JQ:find查找容器后代中的某些元素
+				// JQ:attr获取或者设置元素的自定义属性值 removeAttr移除自定义属性
+				let $img = $item.find('img'),
+					dataImage = $img.attr('data-image'),
+					tempImage = new Image;
+				tempImage.src = dataImage;
+				tempImage.onload = () => {
+					// 图片地址是正确的，能够正常加载
+					// JQ:css操作样式的
+					// JQ:支持链式写法
+					$img.attr('src', dataImage).css({
+						// CSS3中设置了TRANSITION动画
+						opacity: 1
+					});
+				};
+				tempImage = null;
+				$img.removeAttr('data-image');
+			}
+		});
+	};
 
 	// 加载更多的数据
+	let loadMore = function loadMore() {
+		// 条件：滚动到页面的底部(一屏幕高度+卷去的高度=页面真实高度，代表滚动到页面的底部了，但是页面真实高度是一个约等于的值，不准确，所以我们需要设置一定的误差)
+		let $window = $(window),
+			winH = $window.outerHeight(),
+			scrollT = $window.scrollTop(),
+			scrollH = $('body').outerHeight(); //=>获取页面真实的高度
+		if (winH + scrollT + winH / 2 >= scrollH) {
+			if (isRuning) return; //=>上一次数据没有加载完成之前，什么事情都不会操作
+			isRuning = true; //=>正在加载
+
+			// 每一次加载计数
+			count++;
+			if (count > 5) {
+				isRuning = false;
+				return;
+			}
+
+			// 滚动到页面底部了，加载更多数据
+			queryData();
+			bindHTML();
+			lazyFunc();
+			isRuning = false; //=>数据加载完了
+		}
+	};
 
 	return {
 		init() {
 			queryData();
 			bindHTML();
 			lazyFunc();
+
+			// JQ中的事件绑定：$元素.on([事件],[函数])
+			$(window).on('scroll', function () {
+				lazyFunc();
+				loadMore();
+			});
 		}
 	};
 })();
