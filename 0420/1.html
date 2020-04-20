@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" placeholder="序号">
+    <input type="text" placeholder="姓名">
+    <input type="button" value="提交">
+    <ul id="app">
+        <li>
+            序号：<i>1</i>===姓名：<i>珠峰</i>===<button>删除<tton>
+        </li>
+    </ul>
+    <script src="../0413/js/jquery-3.3.1.js"></script>
+    <script>
+        let $input = $('input'),
+        $app = $('#app'),
+        $butt = null;    
+
+        var ary = [{
+                index: 1,
+                name: "珠峰1"
+            },
+            {
+                index: 2,
+                name: "珠峰2"
+            },
+            {
+                index: 3,
+                name: "珠峰3"
+            },
+            {
+                index: 4,
+                name: "珠峰4"
+            }
+        ];
+
+       let strbox = function(){
+           let str = ''
+           $.each(ary,(index1,itme)=>{
+                let {index , name} = itme
+                str += ` <li>
+            序号：<i>${index}</i>===姓名：<i>${index}</i>===<button>删除<tton>
+        </li>`
+           })
+           $app.html(str)
+           $butt = $('button')
+           dledete()
+       }
+       let dledete = function(){
+         $butt.on('click',function(){
+             let $this = $(this);
+            $app.remove($this.parent()[0])
+            /*  let $this = $(this)
+          let n = $this.parent().index();
+          ary.splice(n,1) */
+          strbox()
+         })
+       }
+       strbox()
+    let $inp = $('input')
+     $inp.eq(2).on('click',function(){
+         let i = $inp.eq(0).val(),name = $inp.eq(1).val(1)
+         ary.push({index:i,name})
+         strbox()
+         $inp.eq(0).val('')
+         $inp.eq(1).val('')
+     })
+       //dledete()
+    </script>
+</body>
+</html>

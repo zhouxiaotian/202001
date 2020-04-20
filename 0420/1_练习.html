@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" placeholder="序号">
+  <input type="text" placeholder="姓名">
+  <input type="button" value='提交'>
+  <ul id="app">
+    <li>
+      序号：<i>1</i>===姓名：<i>珠峰</i>===<button>删除</button>
+    </li>
+  </ul>
+</body>
+</html>
+
+<script>
+  var ary = [
+    {index:1,name:"珠峰1"},
+    {index:2,name:"珠峰2"},
+    {index:3,name:"珠峰3"},
+    {index:4,name:"珠峰4"}
+  ];
+  let ul = document.querySelector('#app');
+  // let btns = document.getElementsByTagName('button');
+  // let btns2 = document.querySelectorAll('button');
+  // querySelectorAll 获取的元素不会跟随页面元素的更新而更新  ByTagName  ByClassName
+  let render = function(){
+    let str = '';
+    ary.forEach(item=>{
+      let {index,name} = item;
+      str += `<li>
+        序号：<i>${index}</i>===姓名：<i>${name}</i>===<button>删除</button>
+      </li>`
+    })
+    ul.innerHTML = str;
+    handle();// 在render中调用了 handle函数 那么 在render函数执行之前 必须有handle函数
+  }
+  
+  // console.log('render之前',btns)
+  // console.log('render之前',btns2)
+
+  // console.log(btns)
+  // console.log(btns2)
+  /* let handle = function () {
+    let btns = document.querySelectorAll('button');
+    // let lis = ul.querySelectorAll('li');// lis 永远代表 四项
+    [...btns].forEach((item,index)=>{
+      // item 就是每一个button
+      item.onclick = function(){
+        // let lis = ul.getElementsByTagName('li');
+        // let lis = ul.querySelectorAll('li');
+        // let li = lis[index];//当前点击的button对应的 li
+        // li.style.display = 'none';
+        // debugger;
+        // ul.removeChild(li)
+        // ul.removeChild(this.parentNode)
+        ary.splice(index,1);
+        render();
+      }
+    })
+  }
+  handle(); */
+
+  let handle = function () {
+    let btns = document.getElementsByTagName('button');
+    // let lis = ul.querySelectorAll('li');// lis 永远代表 四项
+    [...btns].forEach((item,index)=>{
+      // item 就是每一个button
+      item.onclick = function(){
+        // let lis = ul.getElementsByTagName('li');
+        // let lis = ul.querySelectorAll('li');
+        // let li = lis[index];//当前点击的button对应的 li
+        // li.style.display = 'none';
+        // debugger;
+        // ul.removeChild(li)
+        // ul.removeChild(this.parentNode)
+        ary.splice(index,1);
+        render();
+      }
+    })
+  }
+  render();
+
+  let inp = document.querySelectorAll('input');
+  // inp:[input,input, button]
+  inp[2].onclick = function(){
+    let i = inp[0].value,
+        name = inp[1].value;
+    ary.push({index:i,name:name});
+    inp[0].value = '';
+    inp[1].value = '';
+    render();    
+  }
+
+</script>

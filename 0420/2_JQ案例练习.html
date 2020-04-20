@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" placeholder="序号">
+  <input type="text" placeholder="姓名">
+  <input type="button" value='提交'>
+  <ul id="app">
+    <li>
+      序号：<i>1</i>===姓名：<i>珠峰</i>===<button>删除</button>
+    </li>
+  </ul>
+</body>
+
+</html>
+<script src="../0413/js/jquery-3.3.1.js"></script>
+<script>
+  var ary = [{
+      index: 1,
+      name: "珠峰1"
+    },
+    {
+      index: 2,
+      name: "珠峰2"
+    },
+    {
+      index: 3,
+      name: "珠峰3"
+    },
+    {
+      index: 4,
+      name: "珠峰4"
+    }
+  ];
+  let $ul = $('#app');
+  let render = function(){
+    let str = '';
+    // $.each(ary,function(index,item){})
+    ary.forEach((item,index)=>{
+      str += `<li>
+        序号：<i>${item.index}</i>===姓名：<i>${item.name}</i>===<button>删除</button>
+      </li>`
+    })
+    $ul.html(str);// html 不传参数就是获取 传参数就是设置；
+    handle()
+  }  
+  let handle = function () {
+    let $btns = $('button',$ul);
+    $btns.on('click',function(){
+      // this 是当前点击的哪一项 （原生DOM对象）
+      // $(this) 把原生DOM对象转成JQ对象
+      let $this = $(this);
+      // $ul.remove($this.parent())
+      // let n = $this.index();// 获取的是当前元素的索引（相对于他的兄弟元素）
+      let n = $this.parent().index();
+      ary.splice(n,1);
+      render()
+    })
+  }
+  render();
+  // handle();
+  let $inps = $('input');
+  $inps.eq(2).on('click',function(){
+    console.log(666)
+    let i = $inps[0].value, // 原生
+        name = $inps.eq(1).val();//JQ
+    ary.push({index:i,name}) ;
+    $inps[0].value = '';
+    $inps.eq(1).val('');
+    render();   
+  });
+</script>
