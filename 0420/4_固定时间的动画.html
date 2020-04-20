@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./less/3.css">
+</head>
+<body>
+  <div id="box"></div>
+</body>
+</html>
+<script>
+  // 规定一秒钟 从左边界移动到右边界
+  // 一共 1000ms 每20ms走的长度 就是步长；
+  let box = document.querySelector('#box');
+  let left = 0;
+  let max = document.documentElement.clientWidth - box.offsetWidth;
+  // max 就是我们要移动的路程；
+  // 1000ms 就是我们要移动的时间；
+  // 每隔10ms会移动一次；动多少次？ 1000/10
+  // 那么每一次移动多少？ max/(1000/10)  这就是步长
+  box.onclick = function(){
+    let step =  Math.round(max/(1000/10));
+    let timer = setInterval(() => {
+      left +=  step;
+      if(left > max){
+        left = max;
+        clearInterval(timer)
+      }
+      this.style.left = left + 'px';
+    }, 10);
+  }
+</script>
+<!-- 
+  
+  实现 元素的 渐显 fadeIn函数   fadeIn(ele) 不能使用c3
+
+  回到顶部（缓动）
+
+ -->

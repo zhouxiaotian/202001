@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./less/3.css">
+</head>
+<body>
+  <div id="box"></div>
+</body>
+</html>
+<script>
+  // 点击box实现 盒子 从左边移动500px;
+  let box = document.querySelector('#box');
+  let left = 0;
+  let max = document.documentElement.clientWidth - box.offsetWidth;
+ /*  box.onclick = function(){
+    // this.style.left = '500px';
+    // 让盒子每隔20毫秒向右移动1px 一直移动到500px;
+    let timer = setInterval(() => {
+      left +=5;
+      if(left > max){
+        left = max;// 避免 超过的数字直接设置给元素，回到元素多移动了一部分；
+        clearInterval(timer)
+        // return;
+      }
+      this.style.left = left + 'px';
+    }, 20);
+  }
+
+  window.onresize = function(){
+    // 当可视窗口的大小发生改变的时候 会触发这个函数；
+    max = document.documentElement.clientWidth - box.offsetWidth;
+    // console.log(666)
+  } */
+
+  // 怎么使用setTimeout去实现 setInterval的功能？思路 利用函数的递归
+  let  n = 0;
+  function fn() {
+    // 递归 就是函数自己调用自己；使用递归函数的时候都会有一个边界判断；
+    // 边界判断就是 说 啥时候让这个函数停止执行
+    if(n > 10)return;
+    n++;
+    console.log(n)
+    fn()
+  }
+  // setInterval(() => {
+  //   n++;
+  //   console.log(n)
+  // }, 1000);
+/*   function f1(){
+    n++;
+    console.log(n);
+    setTimeout(()=>{
+      f1();
+    },1000)
+  }
+  f1() */
+
+  /* box.onclick = function(){
+    let f = ()=>{
+      left +=5;
+      if(left > max){
+        left = max;
+      }
+      this.style.left = left + 'px';
+      setTimeout(() => {
+        console.log(3333)
+        left === max ? null : f();// 当到达右边界时 停止递归执行；
+      }, 20);
+    }
+    f();
+  } */
+
+  // requestAnimationFrame(回调函数) // 帧 每当 页面渲染完成之后 会自动调用这个回调函数
+  // 类似于 setTimeout
+  box.onclick = function(){
+    let f = ()=>{
+      left +=5;
+      if(left > max){
+        left = max;
+      }
+      this.style.left = left + 'px';
+      requestAnimationFrame(() => {
+        console.log(3333)
+        left === max ? null : f();// 当到达右边界时 停止递归执行；
+      })
+      // setTimeout(() => {
+      //   console.log(3333)
+      //   left === max ? null : f();// 当到达右边界时 停止递归执行；
+      // }, 20);
+    }
+    f();
+  }
+  // requestAnimationFrame 用法和功能 类似于 setTimeout; requestAnimationFrame 主要用于动画的渲染
+  // requestAnimationFrame的效率高于setTimeout 
+  requestAnimationFrame(()=>{
+    console.log(66666)
+  });
+  setTimeout(() => {
+    console.log(666)
+  }, 20);
+</script>

@@ -16,60 +16,57 @@
     </ul>
     <script src="../0413/js/jquery-3.3.1.js"></script>
     <script>
-        let $input = $('input'),
-        $app = $('#app'),
-        $butt = null;    
-
         var ary = [{
-                index: 1,
-                name: "珠峰1"
-            },
-            {
-                index: 2,
-                name: "珠峰2"
-            },
-            {
-                index: 3,
-                name: "珠峰3"
-            },
-            {
-                index: 4,
-                name: "珠峰4"
-            }
-        ];
-
-       let strbox = function(){
-           let str = ''
-           $.each(ary,(index1,itme)=>{
-                let {index , name} = itme
-                str += ` <li>
-            序号：<i>${index}</i>===姓名：<i>${index}</i>===<button>删除<tton>
-        </li>`
-           })
-           $app.html(str)
-           $butt = $('button')
-           dledete()
-       }
-       let dledete = function(){
-         $butt.on('click',function(){
-             let $this = $(this);
-            $app.remove($this.parent()[0])
-            /*  let $this = $(this)
-          let n = $this.parent().index();
-          ary.splice(n,1) */
-          strbox()
-         })
-       }
-       strbox()
-    let $inp = $('input')
-     $inp.eq(2).on('click',function(){
-         let i = $inp.eq(0).val(),name = $inp.eq(1).val(1)
-         ary.push({index:i,name})
-         strbox()
-         $inp.eq(0).val('')
-         $inp.eq(1).val('')
-     })
-       //dledete()
+            index: 1,
+            name: "珠峰1"
+        },
+        {
+            index: 2,
+            name: "珠峰2"
+        },
+        {
+            index: 3,
+            name: "珠峰3"
+        },
+        {
+            index: 4,
+            name: "珠峰4"
+        }
+    ];
+    let $ul = $('#app');
+    let render = function () {
+        let str = ``;
+        ary.forEach((item, index) => {
+            str += ` <li>
+            序号：<i>${item.index}</i>===姓名：<i>${item.name}</i>===<button>删除</button>
+        </li>`;
+        });
+        $ul.html(str);
+        handle();
+    }
+    let handle = function handle() {
+        let $btns = $('button', $ul);
+        // debugger
+        $btns.on('click', function () {
+            let $this = $(this);
+            let n = $this.parent().index();
+            ary.splice(n, 1);
+            render();
+        });
+    };
+    render();
+    let $inp = $('input');
+    $inp.eq(2).on('click', function () {
+        let i = $inp[0].value,
+            name = $inp.eq(1).val();
+        ary.push({
+            index: i,
+            name
+        });
+        $inp[0].value = '';
+        $inp.eq(1).value('');
+        render();
+    });
     </script>
 </body>
 </html>
