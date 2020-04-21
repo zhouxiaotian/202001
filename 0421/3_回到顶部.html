@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body{
+      min-height: 4000px;
+      background: linear-gradient(green,yellow,red);
+    }
+    button{
+      position:fixed;
+      bottom:50px;
+      right:50px;
+      padding: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <button>回到顶部</button>
+</body>
+</html>
+<script>
+  let btn = document.querySelector('button');
+  let h = document.documentElement.clientHeight || document.body.clientHeight;
+  window.onscroll = function(){
+    let t = document.documentElement.scrollTop;//卷曲的高度
+    if(t > h){
+      btn.style.display = 'block'
+    }else{
+      btn.style.display = 'none'
+    }
+  }
+  btn.onclick = function(){
+    // 1000ms   1000/10 = 100次
+    // let t = document.documentElement.scrollTop; 距离
+    // t/100 不称
+    if(this.isGoing)return;
+    this.isGoing = true;
+    let t = document.documentElement.scrollTop; 
+    let step = t/100;
+    let timer = setInterval(() => {
+      t -= step;
+      if(t < 0){
+        t = 0;
+        clearInterval(timer);
+        this.isGoing = false;
+      }
+      document.documentElement.scrollTop = t;
+    }, 10);
+  }
+</script>

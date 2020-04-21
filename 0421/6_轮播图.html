@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./less/6.css">
+</head>
+
+<body>
+  <div id="box">
+    <!-- box 是可视窗口 -->
+    <ul class='list'>
+      <!-- ul 是一个长条 -->
+      <li>
+        <img src="https://cms-bucket.ws.126.net/2020/0227/f8e3f9e3j00q6cu9c0062c000go006yc.jpg" alt="">
+      </li>
+      <li>
+        <img src="https://cms-bucket.ws.126.net/2020/0306/9084f041j00q6rqcl00l2c000go006yc.jpg" alt="">
+      </li>
+      <li>
+        <img src="https://cms-bucket.ws.126.net/2020/0227/e986cfd0j00q6cu4v001hc000go006yc.jpg" alt="">
+      </li>
+      <li>
+        <img src="https://cms-bucket.ws.126.net/2020/0218/2f1f019fj00q5w7pw008sc000go006yc.jpg" alt="">
+      </li>
+      <li>
+        <img src="http://cms-bucket.ws.126.net/2020/0421/e93e2200p00q94okl00mpc000s600e3c.png" alt="">
+      </li>
+      <li>
+        <img src="https://cms-bucket.ws.126.net/2020/0227/f8e3f9e3j00q6cu9c0062c000go006yc.jpg" alt="">
+      </li>
+    </ul>
+    <div class="btn_box">
+      <div class="left_btn"> &lt; </div>
+      <div class="right_btn"> > </div>
+    </div>
+  </div>
+</body>
+
+</html>
+<script>
+  let box = document.querySelector('#box');
+  let ul = document.querySelector('ul');
+  let leftBtn = document.querySelector('.left_btn'),
+      rightBtn = document.querySelector('.right_btn');
+  let start = 0;
+  let timer = null;
+  function move() {
+    timer = setInterval(() => {
+      start -= 600;
+      // ul.style.left = start  + 'px';
+      if (start < -3000) {
+        // 小于 -3000的时候 证明条已经出去了
+        // -3000的时候 我们显示的是伪第一张
+        start = 0;
+        ul.style.transition = 'none';
+        ul.style.transform = `translateX(${start}px)`;
+        // 闪到第一张之后  紧接着要向第二张移动 而不是再等1.5s;
+        let l = ul.offsetHeight;
+        // 读取操作会让浏览器重新渲染；
+        start = -600;
+        ul.style.transition = 'all 0.3s'
+      } else {
+        ul.style.transition = 'all 0.3s';
+      }
+      ul.style.transform = `translateX(${start}px)`;
+    }, 1500);
+  }
+  move();
+
+
+  // 滑过盒子 清除定时器
+  box.onmouseenter = function () {
+    clearInterval(timer);
+  }
+  // 离开盒子 重启定时器
+  box.onmouseleave = function () {
+    move();
+  }
+</script>

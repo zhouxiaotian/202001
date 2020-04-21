@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./less/1.css">
+</head>
+<body>
+  <div id="box"></div>
+</body>
+</html>
+<script>
+  let box = document.querySelector('#box');
+  function move(ele,attr,duration,target){
+    // ele 是要动的元素  attr是要动的属性 duration 是运动时长 targert是目标位置
+    //次数： duration/10
+    // 目标位置 - 当前初始位置 =  要移动的距离；
+    // 要移动的距离/次数 = 步长
+    // console.log(getComputedStyle(ele)[attr])
+    let start = parseFloat(getComputedStyle(ele)[attr]);// start就是当前属性的初始值
+    let step = (target - start)/(duration/10);//步长 10毫秒走的距离
+    // 次数*步长 才是运动的距离       步长 10毫秒走的距离
+    // 运动时间 * 运动的速度 才是 运动的距离；  运动的速度 1毫秒走的距离
+    let speed = (target - start)/duration; // 总路程/总时间 = 速度
+
+    let time = 0; // 记录运动的时间 封顶值 是 duration
+    let count = 0; // 记录运动的次数
+    let timer = setInterval(() => {
+      time += 10;// 运动时间
+      count += 1; // 运动次数
+      if(time > duration){
+        time = duration;
+        clearInterval(timer);
+      }
+      ele.style[attr] = time*speed + start +'px';// 移动距离 + 初始位置 就是当前位置
+      // ele.style[attr] = count*step + start +'px';// 移动距离 + 初始位置 就是当前位置
+    }, 10);
+  }
+  move(box,'left',1000,500);//把box 的left属性 移动到500px的位置 用时1000ms;
+  // move(box,'opacity',500,0.5);//把box 的opacity属性 变成0.5  用时500ms;
+</script>

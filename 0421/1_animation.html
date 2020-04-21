@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./less/1.css">
+</head>
+<body>
+  <div id="box" class='stop'>珠峰</div>
+</body>
+</html>
+<script>
+  let box = document.querySelector('#box');
+  /* let flag = 1;
+  box.onclick = function(){
+    // flag == 1 ? this.style.animationPlayState = 'paused' : this.style.animationPlayState='running';
+    this.style.animationPlayState = flag == 1 ? 'paused' : 'running';
+    flag *= -1;
+  } */
+  box.flag = 1;
+  box.onclick = function(){
+    // flag == 1 ? this.style.animationPlayState = 'paused' : this.style.animationPlayState='running';
+    this.style.animationPlayState = this.flag == 1 ? 'paused' : 'running';
+    this.flag *= -1;
+  }
+
+  /* box.onclick = function(){
+    // this.style 获取的是行内属性
+    // getComputedStyle(元素).属性； // IE 元素.currentStyle 获取的是当前元素的所有样式
+    console.log(this.style.width)
+    if(this.style.animationPlayState == 'paused'){
+      this.style.animationPlayState = 'running' 
+    }else{
+      this.style.animationPlayState = 'paused'
+    } 
+    if(getComputedStyle(this).animationPlayState == 'paused'){
+      this.style.animationPlayState = 'running' 
+    }else{
+      this.style.animationPlayState = 'paused'
+    }
+  } */
+
+  /* box.onclick = function(){
+    // this.classList.add  this.classList.remove  this.classList.toggle
+    this.classList.toggle('stop')
+    // classList 新增属性  toggle(类名) 切换类名使用的，点击时有这个类名就删除这个类名
+    // 没有这个类名就添加这个类名；
+  } */
+</script>

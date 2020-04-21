@@ -1,0 +1,80 @@
+@a:100px;
+*{
+  margin:0;
+  padding:0;
+}
+#box{
+  width: @a;
+  height: @a;
+  background-color: salmon;
+  position: relative;
+  left:200px;
+  // opacity: 0;
+  // animation: turnRound 1s  linear infinite;
+  // animation-play-state: paused;
+  // turnRound 动画方式； 1s 运动时长 ； linear 动效 ； infinite 运动次数
+  &:hover{
+    // & 代表当前的父元素
+    // animation:move123 2s;
+    // animation-play-state: paused;// paused停止； running运动
+  }
+  &.stop{
+    animation-play-state: paused
+  }
+}
+// animation   动画
+// transition  过渡
+
+@keyframes move123{
+  0%{
+    // from{} 
+    // to {}
+    opacity: 1;
+  }
+  50%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+@keyframes turnRound{
+  0%{
+    transform: rotate(0);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
+}
+@keyframes bounce {
+  from,
+  20%,
+  53%,
+  80%,
+  to {
+    -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  40%,
+  43% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    -webkit-transform: translate3d(0, -30px, 0);
+    transform: translate3d(0, -30px, 0);
+  }
+
+  70% {
+    -webkit-animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    animation-timing-function: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+    -webkit-transform: translate3d(0, -15px, 0);
+    transform: translate3d(0, -15px, 0);
+  }
+
+  90% {
+    -webkit-transform: translate3d(0, -4px, 0);
+    transform: translate3d(0, -4px, 0);
+  }
+}

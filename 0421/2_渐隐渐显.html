@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./less/1.css">
+</head>
+<body>
+  <div id="box">珠峰</div>
+</body>
+</html>
+<script>
+  function fadeIn(ele,time=1000){
+    // time 就是我们总共用的时长
+    // time/10 函数执行的次数
+    // 0到1 (1-0)/(time/10)  步长 
+    if(ele.isShowing)return;
+    ele.isShowing = true;
+    let opa = 0;
+    let step = (10000-0)/(time/10);
+    let timer = setInterval(() => {
+      opa += step;
+      if(opa > 10000){
+        opa = 10000;
+        clearInterval(timer);
+        ele.isShowing = false;
+      }
+      console.log(opa)
+      ele.style.opacity = opa/10000;
+    }, 10);
+  }
+  box.onclick = function(){
+    fadeIn(this,534);
+  }
+</script>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./less/1.css">
+</head>
+<body>
+  <div id="box"></div>
+</body>
+</html>
+<script>
+  let box = document.querySelector('#box');
+  function move(ele,attr,duration,target){
+    // 获取初始位置
+    let start = parseFloat(getComputedStyle(ele)[attr]);
+    // 获取要移动的距离
+    let change = target - start;
+    // 总运动的时间是 duration
+    let speed = change/duration;// 运动的速度；
+
+    let time = 0; // 用来记录运动的时间；
+    // 运动时间 * 运动速度 = 运动的距离
+
+    let timer = setInterval(() => {
+      time += 5;
+      if(time > duration){
+        time = duration;
+        clearInterval(timer);
+      }
+      ele.style[attr] = time*speed + start + 'px';// 移动距离 + 初始距离 = 当前位置
+    }, 5);
+
+  }
+  
+  // move(box,'left',1000,600);
+
+  function move2(ele,attr,duration,target){
+    let start = parseFloat(getComputedStyle(ele)[attr]);
+    let change = target - start;
+    let totalCount = duration/5;// 总的次数
+    let step = change/totalCount;// 步长；
+    let count = 0;// 用来记录运动的次数；
+    let timer = setInterval(() => {
+      count += 1;
+      if(count > totalCount){
+        count = totalCount;
+        clearInterval(timer);
+      }
+      ele.style[attr] = count * step + start + 'px';
+    }, 5);
+  }
+  move2(box,'left',1000,600);
+</script>
