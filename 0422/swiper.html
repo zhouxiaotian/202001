@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="css/swiper.min.css">
+	<style>
+		/* 重构为自己的样式 */
+		.swiper-container {
+			margin: 20px auto;
+			width: 100%;
+			height: 260px;
+			overflow: hidden;
+		}
+
+		.swiper-container .swiper-wrapper,
+		.swiper-container .swiper-wrapper .swiper-slide {
+			height: 100%;
+
+			/* 图片没有加载出来之前的占位图 */
+			background: #EEE;
+		}
+
+		.swiper-container .swiper-wrapper .swiper-slide img {
+			width: 100%;
+			height: 100%;
+		}
+
+		.swiper-container .swiper-button-prev,
+		.swiper-container .swiper-button-next {
+			width: 13.5px;
+			height: 22px;
+			background-size: 13.5px 22px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="swiper-container" id="BANNER1">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<img src="images/banner01.png" alt="">
+			</div>
+			<div class="swiper-slide">
+				<img src="images/banner02.png" alt="">
+			</div>
+			<div class="swiper-slide">
+				<img src="images/banner03.jpg" alt="">
+			</div>
+			<div class="swiper-slide">
+				<img src="images/banner04.png" alt="">
+			</div>
+		</div>
+
+		<!-- 如果需要分页器 -->
+		<div class="swiper-pagination"></div>
+
+		<!-- 如果需要导航按钮 -->
+		<div class="swiper-button-prev"></div>
+		<div class="swiper-button-next"></div>
+	</div>
+
+	<div class="swiper-container" id="BANNER2">
+		<div class="swiper-wrapper">
+			<div class="swiper-slide">
+				<img data-src="images/banner01.png" alt="" class="swiper-lazy">
+			</div>
+			<div class="swiper-slide">
+				<img data-src="images/banner02.png" alt="" class="swiper-lazy">
+			</div>
+			<div class="swiper-slide">
+				<img data-src="images/banner03.jpg" alt="" class="swiper-lazy">
+			</div>
+		</div>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="js/swiper.min.js"></script>
+	<script>
+		// new Swiper([selector],[options])
+		let swp = new Swiper('#BANNER1', {
+			// 控制切换方向 horizontal水平  vertical垂直
+			direction: 'horizontal',
+			// 初始化展示SLIDE的索引
+			initialSlide: 0,
+			// 控制每一张切换的时间(MS)
+			speed: 300,
+			// 循环切换（实现无缝衔接，原理：第一张克隆一份放到末尾位置，最后一张克隆一份放到最开始的位置，最后的SLIDE数量比真实多两个 => (4) 1 2 3 4 (1)）
+			loop: true,
+			// 控制自动切换
+			// autoplay: true,
+			autoplay: {
+				// 间隔多久切换一次
+				delay: 3000,
+				// 用户手动切换为SWIPER还可以继续自动切换
+				disableOnInteraction: false
+			},
+			// 配置分页器的信息
+			pagination: {
+				// 配置分页器的容器
+				el: '.swiper-pagination',
+				// 配置它的类型
+				type: 'bullets',
+				// 控制点击分页器是否可以实现切换
+				clickable: true
+			},
+			// 配置切换按钮的信息
+			navigation: {
+				nextEl: '.swiper-button-next',
+				prevEl: '.swiper-button-prev'
+			},
+			// 配置切换效果 slide/fade/cube/coverflow/flip
+			effect: 'slide',
+			// 支持强大的生命周期函数（钩子函数）：可以在操作的过程中自己编写一些想要的程序，从而实现更为复杂的效果
+			on: {
+				init() {
+					// this:当前SWIPER类的实例
+					/*
+					 * this.activeIndex 当前展示SLIDE的索引
+					 * this.realIndex 当前展示SLIDE的真实索引（非克隆）
+					 * this.slides 获取当前所有的SLIDE的集合
+					 *  
+					 * this.slideTo([index],[speed],[callback]) 切换到指定的某一个SLIDE处，基于speed速度切换（写0就是无动画立即切换），切换完触发callback函数执行
+					 * this.updateSize() 在我们修改了容器样式之后，基于这个方法会把切换的尺寸数据重新计算，按照最新的样式进行切换
+					 */
+					console.log('初始化成功!');
+				},
+				transitionStart() {
+					console.log('开始切换!');
+				},
+				transitionEnd() {
+					console.log('切换完成!');
+				}
+			}
+		});
+	</script>
+
+	<script>
+		new Swiper('#BANNER2', {
+			direction: 'vertical',
+			initialSlide: 2,
+			loop: true,
+			autoplay: true,
+			effect: 'slide',
+			// 图片延迟加载（性能优化）：把IMG的SRC改为DATA-SRC，并且给IMG设置swiper-lazy样式类
+			// lazy: true
+			lazy: {
+				// 把当前SLIDE左右两边的都加载（既有延迟加载，给用户的反馈是没有的）
+				loadPrevNext: true
+			}
+		});
+	</script>
+</body>
+
+</html>
