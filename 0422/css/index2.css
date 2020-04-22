@@ -1,0 +1,92 @@
+.container {
+	position: relative;
+	margin: 0 auto;
+	width: 800px;
+	height: 240px;
+	overflow: hidden;
+}
+
+.container .wrapper {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.container .wrapper .slide {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+
+	/* 初始默认样式 */
+	z-index: 0;
+	opacity: 0;
+
+	/* 动画 */
+	transition: opacity .3s;
+}
+
+/* 默认展示第一张图片 */
+.container .wrapper .slide:nth-child(1) {
+	z-index: 1;
+	opacity: 1;
+}
+
+.container .wrapper .slide img {
+	width: 100%;
+	height: 100%;
+}
+
+/* 分页器 */
+.pagination {
+	position: absolute;
+	z-index: 999;
+	bottom: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 5px 10px;
+	background: rgba(255, 255, 255, .3);
+	font-size: 0;
+	border-radius: 26px;
+}
+
+.pagination li {
+	display: inline-block;
+	margin: 0 10px;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: lightblue;
+	cursor: pointer;
+}
+
+.pagination li.active {
+	background: lightcoral;
+}
+
+/* 左右按钮 */
+.arrow {
+	display: none;
+	position: absolute;
+	z-index: 999;
+	top: 50%;
+	margin-top: -22.5px;
+	width: 30px;
+	height: 45px;
+	background: url(../images/pre.png) no-repeat 0 0;
+}
+
+.arrow.changeLeft {
+	left: 0;
+}
+
+.arrow.changeRight {
+	right: 0;
+	background-position: -50px 0;
+}
+
+.container:hover .arrow {
+	display: block;
+}
