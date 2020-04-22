@@ -30,5 +30,64 @@ function autoMove() {
 	step++;
 	wrapper.style.transitionDuration = '0.3s';
 	wrapper.style.left = -step * 800 + 'px';
+	paginationFocus();
 }
+
+// 焦点对齐
+function paginationFocus() {
+	let tempStep = step;
+	tempStep === (len - 1) ? tempStep = 0 : null;
+	// 循环焦点每一项，根据焦点的索引和当前步长做对比，控制哪一个焦点选中
+	[].forEach.call(paginationList, (item, index) => {
+		if (index === tempStep) {
+			item.className = 'active';
+			return;
+		}
+		item.className = '';
+	});
+}
+
+// 加载页面:开始自动轮播
 autoTimer = setInterval(autoMove, interval);
+
+// 鼠标进入到CONTAINER停止自动轮播，离开后自动轮播可以继续
+container.onmouseenter = function () {
+	clearInterval(autoTimer);
+};
+container.onmouseleave = function () {
+	autoTimer = setInterval(autoMove, interval);
+};
+
+// 点击焦点实现切换
+[].forEach.call(paginationList, (item, index) => {
+	item.onclick = function () {
+		// 如果点击的这一项索引正好是现在展示的这一张，则无需在处理（特殊项：点击的是第一个焦点，并且当前正好展示的也是克隆的这个SLIDER项）
+		if (index === step || (index === 0 && step === (len - 1))) {
+			return;
+		}
+
+		// 点击项的索引是谁，就让WRAPPER切换到哪一张即可
+		step = index;
+		wrapper.style.transitionDuration = '0.3s';
+		wrapper.style.left = -step * 800 + 'px';
+
+		// 焦点对齐
+		paginationFocus();
+	};
+});
+
+// 点击左右按钮实现切换（右边按钮简单，因为点击右边按钮和自动轮播一致）
+changeRight.onclick = autoMove;
+changeLeft.onclick = function () {
+	// 如果当前已经是真实的第一张，再减减左侧没东西了，此时我们让其快速移动端克隆的第一张（末尾），然后紧接着运动到倒数第二张（真实的最后一张）
+	if (step === 0) {
+		step = len - 1;
+		wrapper.style.transitionDuration = '0s';
+		wrapper.style.left = -step * 800 + 'px';
+		wrapper.offsetWidth;
+	}
+	step--;
+	wrapper.style.transitionDuration = '0.3s';
+	wrapper.style.left = -step * 800 + 'px';
+	paginationFocus();
+};
