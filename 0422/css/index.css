@@ -8,19 +8,27 @@
 }
 
 .container .wrapper {
+	/* 让WRAPPER相对于容器定位，后期的左右运动是修改WRAPPER的LEFT样式值即可 */
 	position: absolute;
 	top: 0;
 	left: 0;
+
+	/*WIDTH 需要根据SLIDER（包含克隆的）动态计算出来的 */
+	display: flex;
 	box-sizing: border-box;
 	width: 4000px;
 	height: 100%;
-	display: flex;
+
+	/* 基于CSS3中的过渡动画实现切换中的动画效果 */
+	transition: left .3s linear 0s;
 }
 
 .container .wrapper .slider {
+	/* 每一个SLIDER的宽度和CONTAINER的宽度保持一致 */
 	box-sizing: border-box;
 	width: 800px;
 	height: 100%;
+	overflow: hidden;
 }
 
 .container .wrapper .slider img {
@@ -29,7 +37,7 @@
 }
 
 /* 分页器 */
-.pagenition {
+.pagination {
 	position: absolute;
 	z-index: 999;
 	bottom: 10px;
@@ -41,7 +49,7 @@
 	border-radius: 26px;
 }
 
-.pagenition li {
+.pagination li {
 	display: inline-block;
 	margin: 0 10px;
 	width: 16px;
@@ -51,7 +59,7 @@
 	cursor: pointer;
 }
 
-.pagenition li.active {
+.pagination li.active {
 	background: lightcoral;
 }
 
