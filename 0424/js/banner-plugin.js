@@ -91,3 +91,75 @@ function _assignDeep(obj1, obj2) {
 	}
 	return obj;
 }
+
+//======================================
+/* 关于封装一个方法，我们需要传递很多参数的处理 */
+// 1.设置为形参，一个个的传递
+// ->传递实参的顺序必须和形参设置顺序保持一致
+// ->不好给形参设置默认值
+// ->中间的一些项如果不传递，会把后面传递的项错位
+//一般这种情况只应用于参数特别的少的情况下（一般不超过两个）
+/* function bannerPlugin(container, initialSlide = 0, autoplay) {
+
+}
+bannerPlugin(box, 0, 3000);
+bannerPlugin(box, 3000); */
+
+// 2.对于传递多个参数的情况下，我们一般基于对象键值对的方式处理
+// ->我可以传递，也可以不传递
+// ->传递的顺序也随意，因为都是基于属性名标记好的，只要属性和值对应，顺序是无所谓的
+// ->方便扩展
+// ->不传递的信息我们给其设置默认值
+
+
+
+
+
+class Banner {
+	constructor(container, options) {
+		// 把传递进来的信息都挂载到当前类的实例上
+		// 1.信息都作为他的私有属性（这样每一个实例之间互不影响）
+		// 2.挂载到实例上，以后在当前类的其它方法中，只要保证THIS是实例，都可以基于THIS.XXX获取和操作
+		this.container = container;
+		_each(options, (item, key) => {
+			this[key] = item;
+		});
+		this.activeIndex = this.initialSlide;
+	}
+	// 设置一些公共的方法
+}
+
+function bannerPlugin(container, options = {}) {
+	// 参数初始化：用我们自己配置项的值替换默认配置信息
+	let defaultParams = {
+		initialSlide: 0,
+		autoplay: 3000,
+		speed: 300,
+		pagination: {
+			el: '.pagination',
+			clickable: true
+		},
+		navigation: {
+			nextEl: '.changeRight',
+			prevEl: '.changeLeft'
+		},
+		on: {
+			init() {},
+			transitionStart() {},
+			transitionEnd() {}
+		}
+	};
+	options = _assignDeep(defaultParams, options);
+
+	// container处理
+	if (typeof container === "string") {
+		// 基于传递的选择器获取需要操作的元素
+		container = document.querySelector(container);
+	}
+	if (!container || container.nodeType !== 1) {
+		throw new TypeError('CONTAINER必须是DOM元素节点!');
+	}
+
+	// 实现轮播图效果
+	return new Banner(container, options);
+}
