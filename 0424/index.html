@@ -45,6 +45,31 @@
 
 	<!-- IMPORT JS -->
 	<script src="js/index.js"></script>
+
+	<script src="js/banner-plugin.js"></script>
+	<script>
+		// 每一次执行bannerPlugin这个方法，可以让指定的容器实现出左右运动版的轮播图效果
+		// options
+		//    initialSlide:0  初始展示哪一个SLIDE
+		//    autoplay:0/3000 控制自动切换（0不自动切换  3000间隔3000MS切换一次，默认是3000MS）
+		//    speed:300 每一张切换的速度
+		//    pagination:{  分页器的处理，如果传递的值是null，则不支持分页器效果
+		//        el:[selector],  指定分页器容器
+		//        clickable:false  是否支持分页器点击切换
+		//    }
+		//    navigation:{ 左右切换按钮的处理，如果传递的值是null，则不支持左右切换效果
+		//        nextEl: [selector],
+		//        prevEl: [selector]
+		//    }
+		//    on:{ 配置切换过程中的钩子函数（在某个处理阶段要干的事情）
+		//        init(){ 初始化成功做的事情 },
+		//        transitionStart(){ 切换之前 }
+		//        transitionEnd(){ 切换之后 }
+		//    }
+		// bannerPlugin([container],[options]);
+	</script>
+
+	<script src="js/复习知识点.js"></script>
 </body>
 
 </html>
