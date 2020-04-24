@@ -98,6 +98,8 @@ function isArrayLike(obj) {
 }
 
 function _each(obj, callback, context = window) {
+	obj = _cloneDeep(obj); //=>把原始传递的进来的数据深度克隆一份，后期操作的都是克隆后的结果，对原始的数据不会产生改变
+
 	// 参数合法性校验
 	if (obj == null) {
 		//=>null undefined  
@@ -145,13 +147,13 @@ function _each(obj, callback, context = window) {
 	// index:当前这一项的索引
 });
  */
-let arr = [10, 20, 30, 40];
+/* let arr = [10, 20, 30, 40];
 let boxs = document.getElementsByTagName('*');
 let oo = [];
 let obj = {
 	xxx: 'xxx',
 	age: 10
-};
+}; */
 
 // _each(obj, item => {
 // 	console.log(item);
@@ -181,3 +183,129 @@ let obj = {
 // 	}
 // 	console.log(item);
 // });
+
+//======================================
+/* 对象的深克隆和浅克隆 */
+// 浅克隆：只把第一级的拷贝一份赋值给新的数组，一般我们实现数组克隆的办法都是浅克隆
+// let arr1 = [10, 20, [30, 40]];
+// let arr2 = arr1.slice(0);
+// let arr2 = arr1.concat();
+// let arr2 = [...arr1];
+
+// 深克隆：不仅把第一级克隆一份给新的数组，如果原始数组中存在多级，那么是把每一级都克隆一份赋值给新数组的每一个级别
+// JSON.stringify(arr1) 把原始对象变为一个字符串（去除堆和堆嵌套的关系）
+// JSON.parse(...) 在把字符串转换为新的对象，这样浏览器会重新开辟内存来存储信息
+// let arr2 = JSON.parse(JSON.stringify(arr1));
+
+// 但是JSON.stringify并不是对所有的值都能有效处理：
+// 正则变为空对象
+// 函数/undefined/Symbol都会变为null
+// 日期格式数据变为字符串后，基于PARSE也会不到日期对象格式了
+// 但是对于 数字/字符串/布尔/null/普通对象/数组对象 等都没有影响
+// 这样克隆后的信息和原始数据产生差异化
+// let arr1 = [10, '20', [30, 40], /\d+/, function () {}, null, undefined, {
+// 	xxx: 'xxx'
+// }, Symbol('xxx'), new Date()];
+
+function _cloneDeep(obj) {
+	// 传递进来的如果不是对象，则无需处理，直接返回原始的值即可（一般Symbol和Function也不会进行处理的）
+	if (obj === null) return null;
+	if (typeof obj !== "object") return obj;
+
+	// 过滤掉特殊的对象（正则对象或者日期对象）：直接使用原始值创建当前类的一个新的实例即可，这样克隆后的是新的实例，但是值和之前一样
+	if (obj instanceof RegExp) return new RegExp(obj);
+	if (obj instanceof Date) return new Date(obj);
+
+	// 如果传递的是数组或者对象，我们需要创建一个新的数组或者对象，用来存储原始的数据
+	// obj.constructor 获取当前值的构造器（Array/Object）
+	let cloneObj = new obj.constructor;
+	for (let key in obj) {
+		// 循环原始数据中的每一项，把每一项赋值给新的对象
+		if (!obj.hasOwnProperty(key)) break;
+		cloneObj[key] = _cloneDeep(obj[key]);
+	}
+	return cloneObj;
+}
+
+/* let arr1 = [10, '20', true, null, undefined, Symbol('xxx'), {
+		xxx: 'xxx'
+	},
+	[10, 20], /\d+/, new Date()
+];
+let arr2 = cloneDeep(arr1);
+
+let obj1 = {
+	name: 'zhufeng',
+	age: 10,
+	state: true,
+	fn: function () {},
+	reg: /\d+/,
+	0: null,
+	1: undefined,
+	2: Symbol('xxx'),
+	time: new Date(),
+	arr: [10, 20]
+};
+let obj2 = cloneDeep(obj1); */
+
+
+//===========================
+function _assignDeep(obj1, obj2) {
+	// 先把OBJ1中的每一项深度克隆一份赋值给新的对象
+	let obj = _cloneDeep(obj1);
+
+	// 再拿OBJ2替换OBJ中的每一项
+	for (let key in obj2) {
+		if (!obj2.hasOwnProperty(key)) break;
+		let v2 = obj2[key],
+			v1 = obj[key];
+		// 如果OBJ2遍历的当前项是个对象，并且对应的OBJ这项也是一个对象，此时不能直接替换，需要把两个对象重新合并一下，合并后的最新结果赋值给新对象中的这一项
+		if (typeof v1 === "object" && typeof v2 === "object") {
+			obj[key] = _assignDeep(v1, v2);
+			continue;
+		}
+		obj[key] = v2;
+	}
+
+	return obj;
+}
+
+let obj1 = {
+	name: 'zhufeng',
+	age: 10,
+	teacher: {
+		0: '张三',
+		1: '李四'
+	}
+};
+
+let obj2 = {
+	age: 20,
+	teacher: {
+		2: '王五'
+	},
+	school: '北京'
+};
+
+let obj = _assignDeep(obj1, obj2);
+console.log(obj);
+
+
+
+// 把两个对象合并为一个对象
+// =>浅比较
+// let obj = {
+// 	...obj1,
+// 	...obj2
+// };
+// Object.assign(obj1,obj2) 合并两个对象（用后一个替换前一个），返回合并后的新对象
+// =>但是这个方法中的合并也是浅比较：只比较第一级
+// obj = Object.assign(obj1, obj2);
+/* {
+	name:'zhufeng',
+	age:20,
+	school: '北京',
+	teacher:{
+		2: '王五'
+	}
+} */
