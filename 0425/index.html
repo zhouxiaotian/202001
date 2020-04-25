@@ -8,9 +8,20 @@
 	<link rel="stylesheet" href="css/reset.min.css">
 	<link rel="stylesheet" href="css/banner-plugin.css">
 	<style>
-		.zhufeng-container {
+		#banner1 {
 			width: 600px;
 			height: 200px;
+		}
+
+		#banner2 {
+			margin-top: 50px;
+			width: 800px;
+			height: 260px;
+		}
+
+		#banner3 {
+			margin-top: 50px;
+			height: 300px;
 		}
 	</style>
 </head>
@@ -36,11 +47,65 @@
 		<a href="javascript:;" class="zhufeng-arrow-next"></a>
 	</div>
 
+	<div class="zhufeng-container" id="banner2">
+		<div class="zhufeng-wrapper">
+			<div class="zhufeng-slide">
+				<img src="images/banner01.png" alt="">
+			</div>
+			<div class="zhufeng-slide">
+				<img src="images/banner02.png" alt="">
+			</div>
+			<div class="zhufeng-slide">
+				<img src="images/banner03.jpg" alt="">
+			</div>
+		</div>
+		<div class="zhufeng-pagination"></div>
+	</div>
+
+	<div class="zhufeng-container" id="banner3">
+		<div class="zhufeng-wrapper">
+			<div class="zhufeng-slide">
+				<img src="images/banner01.png" alt="">
+			</div>
+			<div class="zhufeng-slide">
+				<img src="images/banner02.png" alt="">
+			</div>
+			<div class="zhufeng-slide">
+				<img src="images/banner03.jpg" alt="">
+			</div>
+		</div>
+		<div class="zhufeng-pagination"></div>
+		<a href="javascript:;" class="zhufeng-arrow-prev"></a>
+		<a href="javascript:;" class="zhufeng-arrow-next"></a>
+	</div>
+
 	<!-- IMPORT JS -->
 	<script src="js/banner-plugin.js"></script>
 	<script>
-		bannerPlugin('#banner1', {
-			initialSlide: 2
+		bannerPlugin('#banner1');
+
+		bannerPlugin('#banner2', {
+			initialSlide: 1,
+			autoplay: 1000,
+			navigation: null
+		});
+
+		bannerPlugin('#banner3', {
+			autoplay: 0,
+			pagination: {
+				clickable: false
+			},
+			on: {
+				init() {
+					console.log('初始化成功!');
+				},
+				transitionStart() {
+					console.log(`切换开始!`);
+				},
+				transitionEnd() {
+					console.log(`切换结束！当前是第${this.activeIndex+1}张！`);
+				}
+			}
 		});
 	</script>
 </body>

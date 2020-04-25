@@ -85,87 +85,91 @@
 (function () {
 	class Banner {
 		constructor(container, options) {
+			this.container = container;
 			_each(options, (item, key) => {
 				this[key] = item;
 			});
-			this.container = container;
 			this.activeIndex = this.initialSlide;
 			this.init();
 		}
+		// BANNER.PROTOTYPE  实例.XXX()
 		init() {
-			// 先基于它获取元素后，才可以获取实例上的信息
+			// THIS:当前类的实例
+			// 入口，在这里控制代码执行的逻辑顺序
 			this.computed();
 
-			let {
-				autoplay,
-				autoMove,
-				container,
-				pagination,
-				paginationList,
-				arrowNext,
-				arrowPrev
-			} = this;
-
 			// 控制是否自动切换
-			if (autoplay) {
-				this.autoTimer = setInterval(autoMove.bind(this), autoplay);
-				container.onmouseenter = () => clearInterval(this.autoTimer);
-				container.onmouseleave = () => this.autoTimer = setInterval(autoMove.bind(this), autoplay);
+			if (this.autoplay) {
+				// this.autoTimer = setInterval(this.autoMove, this.autoplay);
+				// 这样处理后，每间隔一定时间执行THIS.AUTOMOVE方法，方法中的THIS不在是当前类的实例，而是WINDOW
+				// this.autoTimer = setInterval(this.autoMove.bind(this), this.autoplay);
+				// this.autoTimer = setInterval(() => {
+				// 	// THIS:用的也是外面的THIS，也就是实例
+				// 	this.autoMove();
+				// }, this.autoplay);
+
+				this.autoTimer = setInterval(this.autoMove.bind(this), this.autoplay);
+				let _this = this;
+				this.container.onmouseenter = function () {
+					// THIS:容器本身  CONTAINER
+					// _THIS外面创建的变量存储的是实例
+					clearInterval(_this.autoTimer);
+				};
+				this.container.onmouseleave = () => {
+					// 箭头函数中的THIS是上下文中的，也就是实例
+					this.autoTimer = setInterval(this.autoMove.bind(this), this.autoplay);
+				};
 			}
 
 			// 控制焦点切换
-			if (toType(pagination) === "object" && pagination.clickable === true && paginationList) {
-				_each(paginationList, (item, index) => {
+			if (toType(this.pagination) === "object" && this.pagination.clickable === true && this.paginationList) {
+				_each(this.paginationList, (item, index) => {
 					item.onclick = () => {
-						let {
-							activeIndex,
-							slides
-						} = this;
-						if ((index === activeIndex) || (index === 0 && activeIndex === slides.length - 1)) return;
+						if ((index === this.activeIndex) || (index === 0 && this.activeIndex === this.slides.length - 1)) return;
 						this.activeIndex = index;
-						this.change();
+						this.wrapper.style.transitionDuration = `${this.speed}ms`;
+						this.wrapper.style.left = `${-this.activeIndex*this.changeWidth}px`;
+						this.autoFocus();
 					};
 				});
 			}
 
 			// 控制左右按钮切换
-			arrowNext ? arrowNext.onclick = autoMove.bind(this) : null;
-			arrowPrev ? arrowPrev.onclick = () => {
-				if (this.activeIndex === 0) {
-					this.activeIndex = this.slides.length - 1;
-					this.change(true);
-				}
-				this.activeIndex--;
-				this.change();
-			} : null;
-
-			// 初始化完成，触发INIT回调函数
-			if (toType(this.on) === "object" && isFunction(this.on.init)) {
-				// 把回调函数执行，让方法中的THIS是实例，并且传递的第一个参数也是实例
-				this.on.init.call(this, this);
+			if (this.arrowNext) {
+				this.arrowNext.onclick = this.autoMove.bind(this);
+			}
+			if (this.arrowPrev) {
+				this.arrowPrev.onclick = () => {
+					if (this.activeIndex === 0) {
+						this.activeIndex = this.slides.length - 1;
+						this.wrapper.style.transitionDuration = `0ms`;
+						this.wrapper.style.left = `${-this.activeIndex*this.changeWidth}px`;
+						this.wrapper.offsetWidth;
+					}
+					this.activeIndex--;
+					this.wrapper.style.transitionDuration = `${this.speed}ms`;
+					this.wrapper.style.left = `${-this.activeIndex*this.changeWidth}px`;
+					this.autoFocus();
+				};
 			}
 		}
-		// 计算结构和样式
 		computed() {
-			let {
-				container,
-				pagination,
-				navigation
-			} = this;
-
-			// 轮播图
+			// 先获取需要操作的元素
+			let container = this.container;
 			this.wrapper = container.querySelector('.zhufeng-wrapper');
 			this.slidesTrue = container.querySelectorAll('.zhufeng-slide');
+			// 克隆第一张到容器的末尾
 			this.wrapper.appendChild(this.slidesTrue[0].cloneNode(true));
 			this.slides = container.querySelectorAll('.zhufeng-slide');
 
 			// 分页器
 			this.paginationBox = null;
 			this.paginationList = null;
-			if (toType(pagination) === "object") {
-				let el = pagination.el;
+			if (toType(this.pagination) === "object") {
+				let el = this.pagination.el;
 				if (el) {
 					this.paginationBox = container.querySelector(el);
+					// 创建SPAN
 					let str = ``;
 					_each(this.slidesTrue, item => {
 						str += `<span></span>`;
@@ -178,13 +182,13 @@
 			// 左右切换
 			this.arrowPrev = null;
 			this.arrowNext = null;
-			if (toType(navigation) === "object") {
-				navigation.prevEl ? this.arrowPrev = container.querySelector(navigation.prevEl) : null;
-				navigation.nextEl ? this.arrowNext = container.querySelector(navigation.nextEl) : null;
+			if (toType(this.navigation) === "object") {
+				this.navigation.prevEl ? this.arrowPrev = container.querySelector(this.navigation.prevEl) : null;
+				this.navigation.nextEl ? this.arrowNext = container.querySelector(this.navigation.nextEl) : null;
 			}
 
 			// 控制元素的样式（包含初始展示哪一个）
-			this.changeWidth = parseFloat(getComputedStyle(container).width);
+			this.changeWidth = parseFloat(window.getComputedStyle(this.container).width);
 			this.activeIndex = this.activeIndex < 0 ? 0 : (this.activeIndex > this.slides.length - 1 ? this.slides.length - 1 : this.activeIndex);
 			this.wrapper.style.width = `${this.changeWidth*this.slides.length}px`;
 			this.wrapper.style.transition = `left ${this.speed}ms`;
@@ -192,64 +196,45 @@
 			_each(this.slides, item => {
 				item.style.width = `${this.changeWidth}px`;
 			});
+
+			// 默认焦点对齐
 			this.autoFocus();
 		}
-		// 自动轮播
-		autoMove() {
-			if (this.activeIndex === this.slides.length - 1) {
-				this.activeIndex = 0;
-				this.change(true);
-			}
-			this.activeIndex++;
-			this.change();
-		}
-		// 实现轮播图切换
-		change(now = false) {
-			let {
-				wrapper,
-				speed,
-				activeIndex,
-				changeWidth,
-				on
-			} = this;
-			let isO = toType(on) === "object" ? true : false,
-				transitionStart = isO ? on.transitionStart : null,
-				transitionEnd = isO ? on.transitionEnd : null;
-			// 切换之前触发的钩子函数
-			!now && transitionStart ? transitionStart.call(this, this) : null;
-
-			wrapper.style.transitionDuration = `${now?0:speed}ms`;
-			wrapper.style.left = `${-activeIndex*changeWidth}px`;
-			if (now) {
-				wrapper.offsetWidth;
-			} else {
-				this.autoFocus();
-			}
-
-			// 切换之后触发的钩子函数
-			let fn = () => {
-				!now && transitionEnd ? transitionEnd.call(this, this) : null;
-				// 每一次都会重新监听，所以监听完需要把上一次监听的移除掉
-				wrapper.removeEventListener('transitionend', fn);
-			};
-			wrapper.addEventListener('transitionend', fn);
-		}
-		// 实现焦点对齐
 		autoFocus() {
-			let {
-				paginationList,
-				activeIndex,
-				slides
-			} = this;
-			if (!paginationList) return;
-			activeIndex === slides.length - 1 ? activeIndex = 0 : null;
-			_each(paginationList, (item, index) => {
-				if (index === activeIndex) {
+			// 实现焦点对齐
+			if (!this.paginationList) return;
+			let temp = this.activeIndex;
+			temp === this.slides.length - 1 ? temp = 0 : null;
+			_each(this.paginationList, (item, index) => {
+				if (index === temp) {
 					item.className = 'active';
 					return;
 				}
 				item.className = '';
 			});
+		}
+		autoMove() {
+			let {
+				activeIndex,
+				slides,
+				wrapper,
+				speed,
+				changeWidth
+			} = this;
+			if (activeIndex === slides.length - 1) {
+				// 累加之前已经是最后一张了，此时我们应该让其立即运动到第一张，再继续累加切换到第二张才可以
+				activeIndex = 0; //=>这只是把变量值修改了，但是实例上的activeIndex还没有被更改，你也需要把它更改才可以
+				this.activeIndex = activeIndex;
+
+				wrapper.style.transitionDuration = '0ms';
+				wrapper.style.left = `0px`;
+				wrapper.offsetWidth;
+			}
+			activeIndex++;
+			this.activeIndex = activeIndex;
+			wrapper.style.transitionDuration = speed + 'ms';
+			wrapper.style.left = `${-activeIndex*changeWidth}px`;
+			this.autoFocus();
 		}
 	}
 
