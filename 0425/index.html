@@ -6,47 +6,42 @@
 	<title>轮播图左右运动版</title>
 	<!-- IMPORT CSS -->
 	<link rel="stylesheet" href="css/reset.min.css">
-	<link rel="stylesheet" href="css/index.css">
+	<link rel="stylesheet" href="css/banner-plugin.css">
+	<style>
+		.zhufeng-container {
+			width: 600px;
+			height: 200px;
+		}
+	</style>
 </head>
 
 <body>
-	<div class="container">
-		<!-- WRAPPER存放所有的图 -->
-		<div class="wrapper">
-			<div class="slider">
+	<div class="zhufeng-container" id="banner1">
+		<div class="zhufeng-wrapper">
+			<div class="zhufeng-slide">
 				<img src="images/banner01.png" alt="">
 			</div>
-			<div class="slider">
+			<div class="zhufeng-slide">
 				<img src="images/banner02.png" alt="">
 			</div>
-			<div class="slider">
+			<div class="zhufeng-slide">
 				<img src="images/banner03.jpg" alt="">
 			</div>
-			<div class="slider">
+			<div class="zhufeng-slide">
 				<img src="images/banner04.png" alt="">
 			</div>
-			<div class="slider">
-				<img src="images/banner01.png" alt="">
-			</div>
 		</div>
-
-		<!-- PAGENATION分页器 -->
-		<ul class="pagination">
-			<li class="active"></li>
-			<li></li>
-			<li></li>
-			<li></li>
-		</ul>
-
-		<!-- 左右按钮 -->
-		<a href="javascript:;" class="arrow changeLeft"></a>
-		<a href="javascript:;" class="arrow changeRight"></a>
+		<div class="zhufeng-pagination"></div>
+		<a href="javascript:;" class="zhufeng-arrow-prev"></a>
+		<a href="javascript:;" class="zhufeng-arrow-next"></a>
 	</div>
 
 	<!-- IMPORT JS -->
 	<script src="js/banner-plugin.js"></script>
 	<script>
-		bannerPlugin('.container');
+		bannerPlugin('#banner1', {
+			initialSlide: 2
+		});
 	</script>
 </body>
 
