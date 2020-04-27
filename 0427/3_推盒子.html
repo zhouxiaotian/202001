@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #box {
+      width: 100px;
+      height: 100px;
+      background-color: salmon;
+      /* position: relative; */
+      /* left:60px; */
+      /* transform: translateX(200px); */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box"></div>
+</body>
+
+</html>
+<script>
+  // 按 键盘的上下左右键 控制盒子上下左右的移动；
+  let box = document.getElementById('box');
+  box.t = 0; 
+  box.l = 0;// 记录初始的横纵偏移量；
+  window.onkeydown = function (e) {
+    console.log(e)
+    switch (e.code) {
+
+      case 'ArrowUp':
+        // 按的上键
+        box.t -= 10;
+        // box.style.transform = `translate(${box.l}px,${box.t}px)`
+        break;
+
+      case 'ArrowDown':
+        box.t += 10;
+        // box.style.transform = `translate(${box.l}px,${box.t}px)`
+        break;
+
+      case 'ArrowLeft':
+        box.l -= 10;
+        // box.style.transform = `translate(${box.l}px,${box.t}px)`
+        break;
+
+      case 'ArrowRight':
+        box.l += 10;
+        // box.style.transform = `translate(${box.l}px,${box.t}px)`
+        break;
+    }
+    box.style.transform = `translate(${box.l}px,${box.t}px)`
+ }
+</script>

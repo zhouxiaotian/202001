@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box{
+      width: 100px;
+      height: 100px;
+      background-color: salmon;
+      margin-top: 2000px;
+    }
+  </style>
+</head>
+<body>
+  <div id="box">
+    <button>123</button>
+  </div>
+
+  <input type="text" id="inp">
+</body>
+</html>
+<script>
+  let box = document.getElementById('box');
+  box.onclick = function(e){
+    // e 我们称为事件对象； 是浏览器默认传给这个函数的；
+    e = e || window.event;// 兼容低版本IE浏览器
+    target = e.target || e.srcElement;// 兼容低版本IE浏览器
+    // this  是绑定的那个元素
+    console.log(this)
+    console.log(e.target||e.srcElement); // 事件源  就是点击的那个元素；
+    console.log(e.clientX);// 点击的位置 距离 可视窗口的左边距
+    console.log(e.clientY);// 点击的位置 距离 可视窗口的上边距
+    console.log(e.pageX); // 点击的位置 距离  body的左边距
+    console.log(e.pageY); // 点击的位置 距离  body的上边距
+    console.log(e)
+  }
+  // 高版本的浏览器 可以直接使用ID名当作变量；
+  inp.oninput = function(e){
+    console.log(this.value)
+    console.log(e.target)
+    console.log(e.target.value)
+  }
+  //需求： 当用户输入完成 敲回车键的时候 alert 用户输入的内容；
+  inp.onkeydown = function (e) {
+    console.log(e)// e.code e.key  e.keyCode
+    /* if(e.code.toLowerCase() == 'enter'){
+      alert(e.target.value)
+    } */
+    /* if(e.key.toLowerCase() == 'enter'){
+      alert(e.target.value)
+    } */
+    if(e.keyCode == 13){
+      alert(e.target.value)
+    }
+  }
+</script>

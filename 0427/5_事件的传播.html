@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #outer{
+      width: 400px;
+      height: 400px;
+      background-color: sandybrown;
+      margin: 30px auto;
+    }
+    #inner{
+      width: 200px;
+      height: 200px;
+      background-color: rgb(171, 233, 121);
+      margin: 100px auto;
+    }
+    #center{
+      width: 100px;
+      height: 100px;
+      background-color: rgb(73, 116, 165);
+      margin: 50px auto;
+    }
+  </style>
+</head>
+<body>
+    <div id="outer">
+      <div id="inner">
+        <div id="center"></div>
+      </div>
+    </div>
+</body>
+</html>
+<script>
+  // 事件的传播  点击穿透
+  // 出发了一个元素的某个事件 他会一次把父节点 祖父节点 ... 最外层节点（body或者html）
+  // 事件的传播机制： 先捕获  再处理 再冒泡
+
+  // 捕获： 找到点击的元素 从外向里找
+  // 处理： （目标处理阶段）找到点击的元素之后 ，处理一下事件对象
+  // 冒泡： 找到了点击元素 也处理好了事件对象 再从里向外执行各个层的对应事件
+/* 
+  outer.onclick = function(){
+    console.log('outer')
+  }
+  inner.onclick = function(){
+    console.log('inner')
+  }
+  center.onclick = function(e){
+    console.log(e)
+    console.log('center')
+    e.stopPropagation(); // 阻止冒泡 阻止外传
+    e.cancelBubble = true; // IE低版本
+    
+  }
+  document.body.onclick = function(){
+    console.log('body')
+  } */
+
+  outer.onmouseenter = function(){
+    console.log('enter')
+  }
+  outer.onmouseover  = function () {
+    console.log('over')
+  }
+  /* 
+    当鼠标 从 outer 划入  inner 之后 ；肯定会触发 inner的enter和over事件
+    但是我们发现  outer之后over事件执行了，enter事件没有执行
+    这就说明了  enter事件没有穿透； over事件穿透了(inner的over触发传递给了outer)
+
+    // enter 不具备冒泡的特性
+    // over 具备 冒泡的特性
+  */
+</script>

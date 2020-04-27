@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #linkA {
+      width: 100px;
+      height: 100px;
+      display: block;
+      background-color: salmon;
+      margin-top: 2000px;
+      /* position: relative; */
+      /* left:60px; */
+      /* transform: translateX(200px); */
+    }
+    #box{
+      width: 100px;
+      height: 200px;
+      background-color: sandybrown;
+      position: fixed;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <a href="http://baidu.com" id='linkA'>百度一下</a>
+
+  <div id="box"></div>
+
+  <input type="text" id='inp'>
+</body>
+</html>
+<script>
+  let linkA = document.querySelector('#linkA');
+  linkA.onclick = function(e){
+    // e.preventDefault();// 阻止默认行为  组件标签本身具有的特性/
+    
+    alert(666)
+    return false;// 阻止默认行为  组件标签本身具有的特性/
+  }
+  linkA.oncontextmenu = function(e){
+    e.preventDefault();
+    console.log(666)
+  }
+
+  // 右击实现展示小框框
+  window.oncontextmenu = function(e){
+    e.preventDefault();
+    console.log(e.clientX,e.clientY)// 鼠标点击的位置距离可是从窗口的偏移量
+    console.log(e.pageX,e.pageY)// 鼠标点击的位置距离可是从窗口的偏移量
+    box.style.display = 'block';
+    box.style.left = e.clientX + 'px';
+    box.style.top = e.clientY + 'px';
+  }
+
+  inp.onkeydown = function(e){
+    // e.preventDefault();
+    console.log(e)
+    if((e.keyCode >= 48 && e.keyCode <=57)|| e.keyCode == 8){
+      // 说明 按的键 收 0-9
+      return true;
+    }
+    return false;
+  }
+
+  window.onscroll = function(e){
+    //普通事件 先执行自己的函数 在执行默认行为
+    // onscroll，touchmove  先执行 它的默认行为 再去执行我们的函数  
+    //
+    e.preventDefault();
+  }
+</script>
