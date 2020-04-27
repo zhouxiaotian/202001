@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box{
+      width:200px;
+      height: 200px;
+      background-color: salmon;
+    }
+  </style>
+</head>
+<body>
+  <div id="box" contenteditable="true"></div>
+  <input type="text" id="inp">
+  <ul id='ul_box'>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+  </ul>
+</body>
+</html>
+<script>
+  var ul1 = document.getElementsByTagName('li');
+  var ul2 = document.querySelectorAll('li');
+
+  var box = document.querySelector('#box');
+  // 鼠标事件
+  /* 
+    onclick 单击
+    ondblclick 双击   大致是在 300ms之内连续点击两次
+
+    onmouseenter  鼠标移入
+    onmouseleave  鼠标移出
+
+    onmouseover   鼠标滑过  （onmouseover 和  onmouseenter 的区别）
+    onmouseout    鼠标滑出
+
+    onmousewheel  鼠标的滚轮事件
+
+    onmousedown   鼠标按下 鼠标的左右按滚轮按下就会触发该事件
+    onmouseup     鼠标抬起
+
+    oncontextmenu 右键点击
+
+
+
+  */
+  /* box.onclick = function(){
+    console.log(666)
+  } */
+  /* box.ondblclick = function(){
+    console.log("双击")
+  }
+  box.onmouseenter = function(){
+    console.log('鼠标进入')
+  } */
+
+  /* box.onmouseover = function(){
+    console.log('鼠标滑过')
+  }
+
+  box.onmousewheel = function(){
+    console.log('滚轮')
+  } */
+  /* box.onmousedown = function(){
+    console.log('鼠标按下')
+  }
+  box.oncontextmenu = function(){
+    console.log('右键')
+  } */
+
+  
+  /* box.ondblclick = function(){
+    this.mydbl = true; // 记录一下 当前是执行了双击；
+    console.log("双击")
+  }
+  box.onclick = function(){
+    // 鼠标点击第一次的时候先不着急执行单击函数 等一会 看是否点击了第二下
+    // 若点了第二下 那就会自动执行双击； 这是就不执行单击对应的代码；
+    // console.log('单击')
+    this.mydbl = false;
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      if(this.mydbl)return;
+      console.log('单击')
+    }, 300);
+  } */
+
+
+  /* 
+    键盘事件：
+    onkeydown  键盘按下
+    onkeyup    键盘抬起
+    onkeypress 有些系统键监听不到
+    // 能绑定键盘事件的 有: input  textarea  window  document.body;
+  
+  */
+  /* box.onkeydown = function () {
+    console.log('按下')
+  }
+  window.onkeydown = function(){
+    console.log('window keydown')
+  } */
+
+
+  /* 
+    表单事件：
+    onfocus  光标进去input时 触发的事件
+    onblur   光标离开input时 触发的事件
+    oninput  内容改变时会触发该函数  只要内容发生改变 就会触发该函数
+    onchange  内容发生改变时触发    内容发生改变 并且失焦的时候才会触发
+  
+  */
+
+  inp.onfocus = function(){
+    console.log('聚焦')
+  }
+  inp.onblur = function(){
+    console.log('失焦')
+  }
+  inp.oninput = function(){
+    console.log('input')
+  }
+  inp.onchange = function () {
+    console.log('change')
+  }
+
+
+  /* 
+    系统事件：
+    window.onscroll   页面滚动
+    window.onresize   页面大小发生改变的时候触发
+    window.onload     页面资源加载完毕之后触发
+  
+  */
+ /* window.onresize = function(){
+   console.log('窗口大小发生了改变')
+ }
+ window.onload = function(){
+    // 页面所有资源加载完成触发
+ }
+ $(document).ready(function(){
+    // DOMContentLoaded
+    // DOM所有节点 加载完成后触发
+ })
+ // 可简写成 ：
+ $(function(){
+
+ }) */
+ // window.onload  和 JQ的ready事件 有什么区别？
+
+ /* 
+  移动端的常用事件
+    onclick
+    ondblclick
+
+
+    ontouchstart  // 手指碰到屏幕
+    ontouchend  // 手指离开屏幕
+    ontouchmove  // 手指在屏幕上移动
+ */
+box.ontouchstart = function(){
+  console.log('start')
+}
+box.ontouchend = function(){
+  console.log('end')
+}
+box.ontouchmove = function(e){
+  console.log(e)
+  console.log('move')
+}
+
+
+</script>
