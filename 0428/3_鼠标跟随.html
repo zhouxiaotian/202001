@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #lit_imgbox{
+      width: 200px;
+      height: 200px;
+      overflow: hidden;
+    }
+    #lit_imgbox img{
+      width: 100%;
+      height: 100%;
+    }
+    #big_imgbox{
+      display: none;
+      width: 400px;
+      height: 400px;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+    #big_imgbox img{
+      width: 100%;
+      height: 100%;
+    }
+
+  </style>
+</head>
+<body>
+ <!--  
+    $.extend({}) // 扩展到JQ自己身上  $.
+    $.fn.extend({}) // 扩展到JQ的原型上  $().
+    $.extend = $.fn.extend = function(){}
+  -->
+
+  <div id="lit_imgbox">
+    <img src="https://dknet.gitee.io/daily_work/%E6%9D%8E%E6%99%93%E5%A8%9F/images/%E4%B8%8B%E8%BD%BD.jfif" alt="">
+  </div>
+  <div id="big_imgbox">
+    <img src="https://dknet.gitee.io/daily_work/%E6%9D%8E%E6%99%93%E5%A8%9F/images/%E4%B8%8B%E8%BD%BD.jfif" alt="">
+  </div>
+</body>
+</html>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+  let $lit = $('#lit_imgbox'),$big = $('#big_imgbox');
+  $lit.on('mouseenter',function(){
+    $big.show();
+  })
+  $lit.on('mousemove',function(e){
+    $big.css({
+      transform:`translate(${e.clientX+5}px,${e.clientY+5}px)`
+    })
+  })
+  $lit.on('mouseleave',function(){
+    $big.hide();
+  });
+</script>
+<script src=''>
+  let lit = document.getElementById('lit_imgbox');
+  let big = document.querySelector('#big_imgbox');
+  lit.onmouseenter = function(){
+    // 滑过小盒子 让大盒子显示
+    big.style.display = 'block';
+  }
+  lit.onmousemove = function(e){
+    console.log(e.clientX,e.clientY);
+    // big.style.display = 'block';
+    big.style.transform = `translate(${e.clientX+5}px,${e.clientY+5}px)`
+  }
+  lit.onmouseleave = function(){
+    big.style.display = 'none';
+  }
+</script>

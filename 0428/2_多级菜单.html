@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .hide{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- 
+    给 ul  绑定点击事件； 通过事件委托的方式 查出点击元素，然后控制点击元素的兄弟元素 加不加hide类名即可
+   -->
+  <ul id='box'>
+    <li>
+      <span>一级菜单1</span>
+      <ul>
+        <li>
+          <span>二级菜单1</span>
+          <ul>
+            <li>
+              <span>三级菜单1</span>
+            </li>
+            <li>
+              <span>三级菜单2</span>
+              <ul>
+                <li>
+                  <span>四级菜单1</span>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <span>二级菜单2</span>
+          <ul>
+            <li>
+              <span>三级菜单1</span>
+            </li>
+            <li>
+              <span>三级菜单2</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <span>一级菜单2</span>
+      <ul>
+        <li>
+          <span>二级菜单1</span>
+          <ul>
+            <li>
+              <span>三级菜单1</span>
+            </li>
+            <li>
+              <span>三级菜单2</span>
+              <ul>
+                <li>
+                  <span>四级菜单1</span>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <span>二级菜单2</span>
+          <ul>
+            <li>
+              <span>三级菜单1</span>
+            </li>
+            <li>
+              <span>三级菜单2</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <span>一级菜单3</span>
+      <ul>
+        <li>
+          <span>二级菜单1</span>
+          <ul>
+            <li>
+              <span>三级菜单1</span>
+            </li>
+            <li>
+              <span>三级菜单2</span>
+              <ul>
+                <li>
+                  <span>四级菜单1</span>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <span>二级菜单2</span>
+          <ul>
+            <li>
+              <span>三级菜单1</span>
+            </li>
+            <li>
+              <span>三级菜单2</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</body>
+</html>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+  $("#box").on('click',function(e){
+    var $tar = $(e.target);
+    if($tar[0].nodeName.toLowerCase() === 'span'){
+      let $next = $tar.siblings('ul');
+      $next.toggleClass('hide');
+      if($next.hasClass('hide')){
+        $next.find('ul').addClass('hide');
+        // $next.children('ul');
+        // find 是所有后代  children是获取子代
+      }
+    }
+  });
+</script>
+<script src=''>
+  /* 
+    box.classList
+     add(类名)  新增类名
+     remove(类名) 删除类名
+     toggle(类名)  切换类名 有这个类名就删除 没有这个类名就添加
+     contains(类名)  查看是否包含这个类名; 包含 就是true 不包含就是false
+  
+  */
+  let box = document.querySelector('#box');
+  box.onclick = function(e){
+    e = e || window.event;
+    // console.log(6666)
+    let tar = e.target || e.srcElement;// 容错机制
+    if(tar.nodeName.toLowerCase() == 'span'){
+      // 证明点击的是 span
+      // console.dir(tar);
+      let next = tar.nextElementSibling;// 获取点击元素的弟弟元素节点
+      // 判断弟弟元素节点是否存在， 存在的话 在判断是否是ul
+      if(next && next.nodeName.toLowerCase() == 'ul'){
+        next.classList.toggle('hide');
+        // 当 这个 ul被遮住之后 要让所有的后代都遮住
+        // 就是 判断 这个ul 有没有 hide; 有hide 就让所有的后代 ul 都加上hide
+        if(next.classList.contains('hide')){
+          let uls = next.getElementsByTagName('ul');
+          for(let i = 0; i < uls.length; i++){
+            uls[i].classList.add('hide')
+          }
+        }
+      }
+    }
+  }
+</script>
