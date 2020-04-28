@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #box{
+      width: 100px;
+      height: 100px;
+      background-color: sandybrown;
+    }
+    #outer{
+      width: 400px;
+      height: 400px;
+      background-color: sandybrown;
+      margin: 30px auto;
+    }
+    #inner{
+      width: 200px;
+      height: 200px;
+      background-color: rgb(171, 233, 121);
+      margin: 100px auto;
+    }
+    #center{
+      width: 100px;
+      height: 100px;
+      background-color: rgb(73, 116, 165);
+      margin: 50px auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="box"></div>
+  <div id="outer">
+    <div id="inner">
+      <div id="center"></div>
+    </div>
+  </div>
+</body>
+</html>
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script>
+  // JQ的事件绑定 利用的是 DOM2级事件绑定；
+  // JQ的 $(function(){})  利用的就是 DOMContentLoaded 这个事件
+  $('#box').on('click',function(){
+    console.log(666)
+  });
+  let fn = function(){
+    console.log(777)
+  }
+  $('#box').on('click',fn);
+  $('#box').off('click',fn);
+  window.addEventListener('load',function(){
+    console.log('资源加载完成');
+  });
+  document.addEventListener('DOMContentLoaded',function(){
+    console.log('节点加载完成');
+  });
+</script>
+<script src=''>
+  let box = document.getElementById('box');
+  box.onclick = function () {
+    console.log(666)
+  }
+</script>
+
+<script src=''>
+  /* box.onclick = function(){
+    console.log(777)
+  } */
+  /* 
+    DOM2级事件绑定：同一个元素的同一个事件类型 可以绑定多个回调函数
+      执行顺序 先绑定的先执行
+    元素.addEventListener(事件类型，回调函数，bol(可省略))       添加事件
+    元素.removeEventListener(事件类型，回调函数，bol(可省略))    移除事件
+      移除事件时 要保证 移除的那个事件对应函数地址是存在的，不是一个新地址；
+    // 第三个参数 bol默认时false; false 代表 函数要在冒泡阶段执行； 
+                                true 代表 函数要在 捕获阶段执行； 
+
+
+     // IE 低版本
+     元素.attachEvent(on事件类型,回调函数)     绑定
+     元素.detachEvent(on事件类型,回调函数)     移除                      
+  */
+  let fn = function(){
+    console.log(777)
+  }
+  
+  box.addEventListener('click',fn);
+  box.addEventListener('click',function(){
+    console.log(888)
+  });
+  box.removeEventListener('click',fn);
+
+
+  outer.addEventListener('click',function(){
+    console.log('outer')
+  },true);
+  inner.addEventListener('click',function(){
+    console.log('inner')
+  },true);
+  center.addEventListener('click',function(){
+    console.log('center')
+  },true);
+</script>

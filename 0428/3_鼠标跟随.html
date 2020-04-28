@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    #lit_imgbox{
+    .lit_imgbox{
       width: 200px;
       height: 200px;
       overflow: hidden;
+      margin: 20px;
     }
-    #lit_imgbox img{
+    .lit_imgbox img{
       width: 100%;
       height: 100%;
     }
@@ -36,8 +37,17 @@
     $.extend = $.fn.extend = function(){}
   -->
 
-  <div id="lit_imgbox">
-    <img src="https://dknet.gitee.io/daily_work/%E6%9D%8E%E6%99%93%E5%A8%9F/images/%E4%B8%8B%E8%BD%BD.jfif" alt="">
+  <div class="lit_imgbox">
+    <img src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=28057649,500045150&fm=26&gp=0.jpg" alt="">
+  </div>
+  <div class="lit_imgbox">
+    <img src="https://dss0.bdstatic.com/-0U0bnSm1A5BphGlnYG/tam-ogel/0176cb5938268a444a09a472232a3ee9_259_194.jpg" alt="">
+  </div>
+  <div class="lit_imgbox">
+    <img src="https://dss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=184164756,4275686560&fm=173&app=49&f=JPEG?w=312&h=208&s=D5A5FC5852F3B06F1A085B1D0300C0C4" alt="">
+  </div>
+  <div class="lit_imgbox">
+    <img src="https://dss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=3124272852,4033309804&fm=173&app=49&f=JPEG?w=312&h=208&s=F9A01B7004BA5396820051E90300A020" alt="">
   </div>
   <div id="big_imgbox">
     <img src="https://dknet.gitee.io/daily_work/%E6%9D%8E%E6%99%93%E5%A8%9F/images/%E4%B8%8B%E8%BD%BD.jfif" alt="">
@@ -46,6 +56,26 @@
 </html>
 <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
 <script>
+  let $lit = $('.lit_imgbox'),
+      $big = $('#big_imgbox');
+    $lit.on('mouseenter',function(){
+      $big.show();
+      // 当划过小图的时候  要获取到小图的图片地址
+      this.img = $(this).find('img').attr('src');
+      console.log(this.img)
+      // 获取到小图的地址之后 再赋给 大图
+      $big.find('img').attr('src',this.img)
+    })    
+    $lit.on('mousemove',function(e){
+      $big.css({
+        transform:`translate(${e.clientX+5}px,${e.clientY+5}px)`
+      })
+    })   
+    $lit.on('mouseleave',function(){
+      $big.hide()
+    })   
+</script>
+<script src=''>
   let $lit = $('#lit_imgbox'),$big = $('#big_imgbox');
   $lit.on('mouseenter',function(){
     $big.show();

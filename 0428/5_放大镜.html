@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #fd{
+      margin: 2000px auto;
+    }
+    .lit_box{
+      width: 200px;
+      height: 200px;
+      border: 1px solid #ccc;
+      position: relative;
+    }
+    .lit_box .mask{
+      position: absolute;
+      cursor: move;
+      display:none;
+      left: 0;
+      top:0;
+      width:100px;
+      height: 100px;
+      background: rgba(0, 0, 0, 0.5);
+    }
+    .lit_box img{
+      width: 100%;
+      height: 100%;
+    }
+    .big_box{
+      width: 300px;
+      height: 300px;
+      border:1px solid #ccc;
+      position: relative;
+      left: 205px;
+      top:-202px;
+      overflow: hidden;
+      display:none;
+    }
+    .big_box img{
+      width: 600px;
+      height: 600px;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+  <div id="fd">
+    <div class="lit_box">
+      <div class="mask"></div>
+      <img src="https://img12.360buyimg.com/n1/s450x450_jfs/t1/91729/1/15790/72702/5e74233aE10f66d08/8a7fc4d0245a3b62.jpg" alt="">
+    </div>
+    <div class="big_box">
+      <img src="https://img12.360buyimg.com/n1/s450x450_jfs/t1/91729/1/15790/72702/5e74233aE10f66d08/8a7fc4d0245a3b62.jpg" alt="">
+    </div>
+  </div>
+</body>
+</html>
+<script>
+  // 宽度比：  蒙层/小图 = 大盒子/大图片   100/200 = 300/x
+  // 初始的时候 小蒙层 和 大盒子 处于隐藏的状态；
+  let lit = document.querySelector('.lit_box'),
+      mask = document.querySelector('.mask'),
+      big = document.querySelector('.big_box'),
+      bigImg = big.querySelector('img');
+  lit.onmouseenter = function(){
+    // 划入小盒子的时候  要让  蒙层和大盒子显示出来
+    mask.style.display = 'block';
+    big.style.display = 'block';
+  }   
+  lit.onmouseleave = function(){
+    // 离开小盒子  要让  蒙层和大盒子 隐藏；
+    mask.style.display = 'none';
+    big.style.display = 'none';
+  } 
+  //鼠标再小盒子上移动时  要让 蒙层跟着移动；
+  lit.onmousemove = function(e){
+    // 由于 蒙层是相对于小盒子 进行移动的
+    // 想实现蒙层跟着鼠标移动  需要算出 鼠标 距离 小盒子的偏移量；
+    // 把这个偏移量设置给 蒙层 就正好是蒙层再盒子上的位置；
+    // 偏移量： 用鼠标到body的偏移 - 盒子到body的偏移
+    // 偏移量： 用鼠标到可视窗口的偏移 -  盒子到 可视窗口的 偏移
+    console.log(e.pageX,e.clientX);
+    let o = offset(this);// 算出 this(lit)小盒子到body 偏移量；
+    let l = e.pageX - o.l - mask.clientWidth/2,
+        t = e.pageY - o.t - mask.clientHeight/2;// l t 分别对应蒙层再小盒子中的偏移量
+
+    // 考虑边界问题？
+    // 向左走 最多走到0 不能是负数；向右走 最多到  小盒子宽 - 蒙层宽；
+    // 向上  最多走到0  不能为负数； 向下 最多到   小盒子高 - 蒙层高
+    let maxL = this.clientWidth - mask.clientWidth,
+        maxT = this.clientHeight - mask.clientHeight;// 右下边界就算出来了；
+    // l 的左边界是0； 右边界是 maxL;
+    // t 的上边界是0   下边界是是 maxT;
+    // 超出边界 做什么？
+    // 超出边界 就让 对应的值 等于 边界即可
+    l = l < 0 ? 0 : (l > maxL ? maxL : l); 
+    if(t < 0){
+      t = 0
+    }else if(t > maxT){
+      t = maxT
+    }else{
+      t = t;
+    }     
+
+    mask.style.left = l + 'px';
+    mask.style.top = t + 'px';   
+    
+    // 大图移动的方向跟 蒙层的方向是相反的
+    let n = big.clientHeight / mask.clientHeight;
+    bigImg.style.left = -l*n +'px';
+    bigImg.style.top = -t*n +'px';
+  }
+
+  function offset(ele){
+    // 可以获取到 ele 这个元素到body的偏移量
+    let l = ele.offsetLeft,
+        t = ele.offsetTop;// 获取当前元素到父级参照物的偏移量
+    let parent = ele.offsetParent;// 获取父级参照物 
+    while(parent){
+      // 若父级参照物存在；
+      l += (parent.clientLeft||0) + parent.offsetLeft;
+      t += (parent.clientTop||0) + parent.offsetTop;
+      parent = parent.offsetParent;
+    }  
+    return {
+      l,t
+    }
+  }
+</script>
+<!-- 
+  先用JQ写一版
+  
+  再封装成JQ插件
+
+  再用面向对象实现
+
+
+ -->
+<script>
+  new fd('#fd');
+  new fd('#fd2');
+  new fd('#fd3');
+</script>
