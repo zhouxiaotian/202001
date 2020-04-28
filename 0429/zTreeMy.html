@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>zTree树形结构菜单</title>
+	<!-- import css -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		.container {
+			box-sizing: border-box;
+			margin: 20px auto;
+			padding: 10px;
+			width: 600px;
+			border: 1px dashed #AAA;
+			-webkit-user-select: none;
+		}
+
+		.level {
+			display: none;
+			font-size: 14px;
+			margin-left: 10px;
+		}
+
+		.level.level0 {
+			display: block;
+			margin-left: 0;
+		}
+
+		.level li {
+			position: relative;
+			padding-left: 15px;
+			line-height: 30px;
+		}
+
+		.level li .icon {
+			position: absolute;
+			left: 0;
+			top: 9px;
+			box-sizing: border-box;
+			width: 12px;
+			height: 12px;
+			line-height: 8px;
+			text-align: center;
+			border: 1px solid #AAA;
+			background: #EEE;
+			cursor: pointer;
+		}
+
+		.level li .icon:after {
+			display: block;
+			content: "+";
+			font-size: 12px;
+			font-style: normal;
+		}
+
+		.level li .icon.open:after {
+			content: "-";
+		}
+
+		.level li .title {
+			color: #000;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<ul class="level level0" id="tree1">
+			<li>
+				<a href="javascript:;" class="title">前端开发热门点</a>
+				<em class="icon open"></em>
+				<ul class="level level1">
+					<li>
+						<a href="javascript:;" class="title">TypeScript</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="container">
+		<ul class="level level0" id="tree2"></ul>
+	</div>
+
+	<!-- import js -->
+	<script src="js/jquery.min.js"></script>
+</body>
+
+</html>
