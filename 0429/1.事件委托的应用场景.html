@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		.box {
+			font-size: 16px;
+		}
+
+		.newsList {
+			margin-bottom: 10px;
+		}
+
+		.newsList li {
+			line-height: 30px;
+			border-bottom: 1px solid lightblue;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="box">
+		<ul class="newsList">
+			<li>
+				新闻1
+				<a href="javascript:;">删除</a>
+			</li>
+			<li>
+				新闻2
+				<a href="javascript:;">删除</a>
+			</li>
+			<li>
+				新闻3
+				<a href="javascript:;">删除</a>
+			</li>
+			<li>
+				新闻4
+				<a href="javascript:;">删除</a>
+			</li>
+			<li>
+				新闻5
+				<a href="javascript:;">删除</a>
+			</li>
+		</ul>
+		<a href="javascript:;" id="addNews">新增</a>
+	</div>
+
+
+	<!-- IMPORT JS -->
+	<script src="js/jquery.min.js"></script>
+	<script>
+		/* 给动态绑定渲染的元素的每个事件行为绑定方法 => 事件委托 */
+		let $addNews = $('#addNews'),
+			$newsList = $('.newsList'),
+			count = 5;
+		$newsList.click(function (ev) {
+			let target = ev.target,
+				$target = $(target);
+			if (target.tagName === 'A') {
+				// 点击的是删除按钮
+				$target.parent().remove();
+			}
+		});
+
+		// 新增
+		$addNews.click(function () {
+			let str = ``;
+			for (let i = 0; i < 5; i++) {
+				str += `<li>
+					新闻${++count}
+					<a href="javascript:;">删除</a>
+				</li>`;
+			}
+			$newsList.append(str);
+		});
+	</script>
+
+
+	<script>
+		/* let $addNews = $('#addNews'),
+			$newsList = $('.newsList'),
+			$links = $newsList.find('a'), //=>只获取了默认的五个
+			count = 5;
+
+		// 只给默认的五个A点击事件行为绑定方法
+		$links.click(function () {
+			// this:当前点击的删除按钮A
+			$(this).parent().remove();
+		});
+
+		$addNews.click(function () {
+			let str = ``;
+			for (let i = 0; i < 5; i++) {
+				str += `<li>
+					新闻${++count}
+					<a href="javascript:;">删除</a>
+				</li>`;
+			}
+			$newsList.append(str);
+			// 新增加的删除按钮，没有绑定点击事件，需要在每一次新增完成，重新获取到所有的A，给其点击事件行为绑定方法
+			$links = $newsList.find('a');
+			$links.click(function () {
+				$(this).parent().remove();
+			});
+		}); */
+	</script>
+</body>
+
+</html>

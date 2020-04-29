@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		/* .shopBox {
+			position: relative;
+			box-sizing: border-box;
+			display: block;
+			width: 100px;
+			height: 35px;
+			line-height: 35px;
+			text-align: center;
+			background: lightblue;
+			color: #000;
+		}
+
+		.shopBox .detail {
+			display: none;
+			position: absolute;
+			top: 35px;
+			left: 0;
+			width: 300px;
+			height: 100px;
+			line-height: 100px;
+			text-align: center;
+			background: lightcoral;
+		}
+
+		.shopBox:hover .detail {
+			display: block;
+		} */
+
+		html,
+		body {
+			min-height: 100%;
+			background: #F4F4F4;
+		}
+
+		.shopBox {
+			position: relative;
+			box-sizing: border-box;
+			display: block;
+			width: 100px;
+			height: 35px;
+			line-height: 35px;
+			text-align: center;
+			background: lightblue;
+			color: #000;
+		}
+
+		.detail {
+			display: none;
+			width: 300px;
+			height: 100px;
+			line-height: 100px;
+			text-align: center;
+			background: lightcoral;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 
+		不基于JS实现鼠标滑过展示详情，鼠标在按钮和详情区“展示详情”，只要离开这两个区域，详情区域就“隐藏”
+		=> 1.详情区域必须要是当前盒子的后代元素
+		=> 2.基于CSS3中的:hover即可实现
+	-->
+	<!-- <a href="javscript:;" class="shopBox">
+		购物车
+		<div class="detail">
+			暂无购物车信息
+		</div>
+	</a> -->
+
+	<a href="javscript:;" class="shopBox">
+		购物车
+	</a>
+	<div class="detail">
+		暂无购物车信息
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="js/jquery.min.js"></script>
+	<script>
+		/* 点击购物车，按照详情区域现在的状态控制显示隐藏；点击详情区域中的信息，不做任何的处理（也就不隐藏）；但是点击除这两个区域以外的“任何区域”，都让详情消失； =>这种除啥啥事件源以外的其它事件源，操作的时候统一做啥事的，基本上都要基于事件委托解决 */
+		/* let $detail = $('.detail');
+		$(document).click(function (ev) {
+			let target = ev.target,
+				$target = $(target);
+			if ($target.hasClass('shopBox')) {
+				// 点击的是购物车按钮：toggle/slideToggle是JQ自带的方法，可以控制元素显示隐藏的切换（对应的是show/hide(slideDown/slideUp)）
+				$detail.slideToggle(300);
+				return;
+			}
+			if ($target.hasClass('detail')) {
+				// 点击的是DETAIL则啥都不处理
+				return;
+			}
+			// 以上条件不成立（除两个之外的其它事件源），则让DETAIL消失 
+			$detail.slideUp(300);
+		}); */
+
+
+		let $detail = $('.detail');
+		//只要点击DOCUMENT中的任意元素，都会触发此方法执行（冒泡机制）
+		$(document).click(function (ev) {
+			let target = ev.target,
+				$target = $(target);
+			if ($target.hasClass('shopBox')) {
+				$detail.slideToggle(300);
+				return;
+			}
+			$detail.slideUp(300);
+		});
+		$detail.click(function (ev) {
+			// 点击DETAIL的时候，我们阻止冒泡传播，也就不会再把上面的方法执行了
+			ev.stopPropagation();
+		});
+	</script>
+</body>
+
+</html>
