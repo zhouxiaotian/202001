@@ -65,22 +65,38 @@
 </head>
 
 <body>
-	<ul class="level level0" id="zTree1">
-		<!-- <li>
-			<a href="javascript:;" class="title">前端开发热门点</a>
-			<em class="icon"></em>
-			<ul class="level level1" style="display: block;">
-				<li>
-					<a href="javascript:;" class="title">TypeScript</a>
-				</li>
-			</ul>
-		</li> -->
-	</ul>
+	<div class="container">
+		<ul class="level level0" id="zTree1">
+			<!-- <li>
+				<a href="javascript:;" class="title">前端开发热门点</a>
+				<em class="icon"></em>
+				<ul class="level level1" style="display: block;">
+					<li>
+						<a href="javascript:;" class="title">TypeScript</a>
+					</li>
+				</ul>
+			</li> -->
+		</ul>
+	</div>
+	<div class="container">
+		<ul class="level level0" id="zTree2"></ul>
+	</div>
 
 
 	<!-- import js -->
 	<script src="js/jquery.min.js"></script>
-	<script src="js/zTreeMy.js"></script>
+	<script src="js/zTree-plugin.js"></script>
+	<script>
+		$.ajax({
+			url: './data.json',
+			method: 'get',
+			dataType: 'json',
+			success: result => {
+				$('#zTree1').zTree(result);
+				$('#zTree2').zTree(result);
+			}
+		});
+	</script>
 </body>
 
 </html>

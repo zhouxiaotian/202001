@@ -1,45 +1,48 @@
 ~ function ($) {
-	function ztree(data) {
-		let count = 0,
-			$this = $(this);
+	// $:jQuery是保证当前闭包中的$一定是JQUERY
+	function zTree(data) {
+		// this:基于JQ获取的容器(JQ对象)
+		let $this = this,
+			level = 0;
 
-		//=>数据绑定
-		let bindHTML = function (result) {
+		// 绑定数据
+		let bindHTML = function bindHTML(data) {
+			level++;
 			let str = ``;
-			result.forEach(item => {
-				count++;
+			data.forEach(item => {
 				let {
 					name,
-					open,
-					children
+					children,
+					open
 				} = item;
 				str += `<li>
-					<a href="" class="title">${name}</a>
-					${children?`<em class="icon ${open?'open':''}"></em>
-					<ul class="level level${count}" 
-						style="display:${open?'block':'none'}">
-						${bindHTML(children)}
-					</ul>`:``}
+					<a href="javascript:;" class="title">${name}</a>
+					${
+						children && children.length>0?`
+						<em class="icon ${open?'open':''}"></em>
+						<ul class="level level${level}" 
+						style="display: ${open?'block':'none'};">
+							${bindHTML(children)}
+						</ul>`:``
+					}
 				</li>`;
-				count--;
 			});
+			level--;
 			return str;
 		};
-		$this.html(bindHTML(data));
+		let HTML = bindHTML(data);
+		$this.html(HTML);
 
-		//=>基于事件委托实现点击操作
+		// 基于事件委托
 		$this.click(function (ev) {
 			let target = ev.target,
-				$target = $(target),
-				$next = $target.next('ul');
+				$target = $(target);
 			if (target.tagName === 'EM') {
+				let $next = $target.next('ul');
 				$target.toggleClass('open');
-				$next.stop().slideToggle(100);
+				$next.stop().slideToggle(300);
 			}
 		});
 	}
-
-	$.fn.extend({
-		ztree: ztree
-	});
+	$.fn.zTree = zTree;
 }(jQuery);

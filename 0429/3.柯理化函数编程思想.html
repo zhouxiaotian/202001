@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		html,
+		body {
+			height: 100%;
+			overflow: hidden;
+			background: lightblue;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/*
+		 * 柯理化函数编程思想（基于闭包预先存储信息的思想）
+		 *    闭包:保护和保存（市面上认为的闭包是不销毁的执行上下文，里面的私有变量被保存下来，这样下级上下文就可以调用这些信息了） 
+		 */
+		/* function func(x, y) {
+			//第一次执行FUNC目的：把一些信息提前存储到不销毁的私有上下文中（预先存储）
+			return function anonymous(z) {
+				console.log(z + x + y);
+			}
+		}
+
+		// 最终的目的是执行ANONYMOUS这个函数，执行之前先把FUNC执行预先存储一些信息，当执行ANONYMOUS的时候，我们可以用到之前存储的信息
+		let f = func(10, 20);
+		f(100); */
+	</script>
+
+	<script>
+		// document.body.onclick = function () {
+		// 	console.log(this); //=>BODY
+		// };
+
+		// document.body.onclick = func(); =>不是把FUNC绑定给BODY的CLICK事件，是把FUNC先执行，把它的返回结果绑定给BODY的CLICK事件，触发BODY点击行为的时候，执行的不是FUNC，是最开始绑定的返回结果  “事件注册/事件绑定：是把函数本身作为值赋值给事件才可以”
+
+		let obj = {
+			name: '珠峰培训'
+		};
+
+		function func() {
+			console.log(this, arguments);
+		}
+
+		// document.body.onclick = func; //=>this:BODY  如果我想在点击BODY执行FUNC的时候，让其方法中的THIS变为OBJ，我们应该怎么处理？
+
+		// document.body.onclick = func.call(obj); //=>这样不行，不等点击，直接立即执行了，基于APPLY也是一个意思
+
+		// 原本点击是直接执行FUNC，现在我们在FUNC执行的外层包裹一层匿名函数，把匿名函数注册给BODY事件，点击触发的时候，先执行匿名函数，在匿名函数中在把需要执行的FUNC执行即可（此时随便改变THIS即可）
+		// document.body.onclick = function () {
+		// 	//匿名函数中的 this => body
+		//  
+		// 	func.call(obj);  //=>此时再执行FUNC，方法中的THIS=>OBJ
+		// };
+
+		// document.body.onclick = func.bind(obj); //=>CALL/APPY/BIND都是改变函数中的THIS指向，只不过CALL/APPLY都是把函数立即执行了，BIND没有立即执行函数，它相当于预先改变了函数中的THIS指向（这种预先处理的思想就是柯理化编程思想）
+
+		/*
+		 * 执行BIND会返回一个匿名函数，我们是把匿名函数赋值给BODY事件（事件触发先执行匿名函数，在匿名函数执行中在把最后需要执行的FUNC执行即可）
+		 */
+		/* Function.prototype.bind = function bind(context) {
+			// this:func 要操作的函数（实例）
+			let _this = this;
+
+			return function anonymous() {
+				// 在此匿名函数执行的时候，把最后要执行的FUNC执行，改变里面的THIS即可
+				// this:BODY
+				_this.call(conntext);
+			};
+		};
+
+		document.body.onclick = func.bind(obj);
+		// => document.body.onclick = function anonymous() { ... } 点击事件触发，执行的是匿名函数ANONYMOUS
+		// => 执行BIND其实就是把最后要执行的函数和改变的THIS都预先保存在不销毁的上下文中（后期其下级上下文中，如果需要用到直接拿来使用即可） */
+
+
+		//==========================
+		/* Function.prototype.bind = function bind(context) {
+			context = context || window;
+			let _this = this,
+				params = [].slice.call(arguments, 1);
+
+			return function anonymous() {
+				// 事件触发执行的都是ANONYMOUS匿名函数，很多时候浏览器会给其默认传递很多实参信息，例如：事件对象
+				let defaults = [].slice.call(arguments, 0);
+				params = params.concat(defaults);
+
+				_this.call(context, ...params);
+			};
+		}; */
+
+		Function.prototype.bind = function bind(context = window, ...params) {
+			return ev => {
+				ev ? params.push(ev) : null;
+				this.call(context, ...params);
+			}
+		};
+
+		document.body.onclick = func.bind(obj, 10, 20, 30, 40);
+		// => 执行BIND不仅在上下文中存储函数和THIS，还可以把后期需要传递给FUNC函数的实参信息预先存储在上下文中 （PARAMS）
+		// => document.body.onclick = function anonymous(ev) { ... }
+	</script>
+</body>
+
+</html>
