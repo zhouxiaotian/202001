@@ -31,7 +31,100 @@
 	<div class="box"></div>
 
 	<!-- IMPORT JS -->
-	
+	<script>
+		/* let box = document.querySelector('.box'),
+			minL = 0,
+			maxL = document.documentElement.clientWidth - box.offsetWidth,
+			minT = 0,
+			maxT = document.documentElement.clientHeight - box.offsetHeight;
+
+		// 鼠标按下
+		function down(ev) {
+			// this => box  
+			// 拖拽开始的时候：记录盒子的起始位置和鼠标按下的起始位置（把信息存储到THIS当前盒子的自定义属性上，这样在其它方法中，只要THIS是当前操作的盒子，基于自定义属性即可获取到这些值）
+			this.startLeft = this.offsetLeft;
+			this.startTop = this.offsetTop;
+			this.startX = ev.pageX;
+			this.startY = ev.pageY;
+
+			this.addEventListener('mousemove', move);
+			this.addEventListener('mouseup', up);
+			// 针对IE和火狐的
+			this.setCapture();
+		}
+
+		// 鼠标滑动
+		function move(ev) {
+			// this => box
+			// 拖拽中：获取鼠标最新的位置，然后用最新的位置-鼠标起始的位置，得到鼠标的偏移，而鼠标偏移多少，也是盒子要移动的距离；盒子最新的位置=鼠标当前位置-鼠标起始位置+盒子的起始位置；
+			let curLeft = ev.pageX - this.startX + this.startLeft,
+				curTop = ev.pageY - this.startY + this.startTop;
+			// 做一个边界判断
+			curLeft = curLeft < minL ? minL : (curLeft > maxL ? maxL : curLeft);
+			curTop = curTop < minT ? minT : (curTop > maxT ? maxT : curTop);
+			// 设置样式（盒子运动到这个位置）
+			this.style.left = curLeft + 'px';
+			this.style.top = curTop + 'px';
+		}
+
+		// 鼠标抬起
+		function up(ev) {
+			// this => box
+			this.removeEventListener('mousemove', move);
+			this.removeEventListener('mouseup', up);
+			this.releaseCapture();
+		}
+
+		// 只有鼠标按下的时候，拖拽才开始（在DOWN方法中在给MOUSE-MOVE绑定方法），同理当鼠标抬起的时候，拖拽结束，此时我们应该移除MOVE方法的绑定；
+		box.addEventListener('mousedown', down); */
+	</script>
+
+
+	<script>
+		let box = document.querySelector('.box'),
+			minL = 0,
+			maxL = document.documentElement.clientWidth - box.offsetWidth,
+			minT = 0,
+			maxT = document.documentElement.clientHeight - box.offsetHeight;
+
+		box.addEventListener('mousedown', down);
+
+		// 鼠标按下
+		function down(ev) {
+			// this => box  
+			this.startLeft = this.offsetLeft;
+			this.startTop = this.offsetTop;
+			this.startX = ev.pageX;
+			this.startY = ev.pageY;
+
+			// 这样处理也有问题：this不在是之前的盒子，而是变成了window，但是我们需要在move中让this是当前的盒子（只有这样才能拿到信息）
+			// window.addEventListener('mousemove', move);
+			// window.addEventListener('mouseup', up);
+
+			// move.bind(this) 返回的是匿名函数，也就是绑定时候绑定的是匿名函数（为了后边能够移除绑定，我们需要把匿名函数存储起来）
+			this._MOVE = move.bind(this);
+			this._UP = up.bind(this);
+			window.addEventListener('mousemove', this._MOVE);
+			window.addEventListener('mouseup', this._UP);
+		}
+
+		// 鼠标滑动
+		function move(ev) {
+			// this => box
+			let curLeft = ev.pageX - this.startX + this.startLeft,
+				curTop = ev.pageY - this.startY + this.startTop;
+			curLeft = curLeft < minL ? minL : (curLeft > maxL ? maxL : curLeft);
+			curTop = curTop < minT ? minT : (curTop > maxT ? maxT : curTop);
+			this.style.left = curLeft + 'px';
+			this.style.top = curTop + 'px';
+		}
+
+		function up(ev) {
+			// this => box
+			window.removeEventListener('mousemove', this._MOVE);
+			window.removeEventListener('mouseup', this._UP);
+		}
+	</script>
 </body>
 
 </html>
