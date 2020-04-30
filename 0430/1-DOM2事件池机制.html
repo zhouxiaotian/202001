@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+		html,
+		body {
+			height: 100%;
+			background: lightblue;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/*
+		 * DOM事件绑定
+		 *   DOM0事件绑定
+		 *      元素.onxxx=function(){}
+		 *   DOM2事件绑定 
+		 *      EventTarget.prototype 每一个DOM元素对象最后都能找到这个原型
+		 *         addEventListener
+		 *         removeEventListener
+		 *         dispatchEvent
+		 * 
+		 * DOM0 VS DOM2
+		 *    DOM0事件绑定，是给当前元素对象的私有属性(onxxx)赋值，只是赋值的是一个函数，当事件行为触发，浏览器会帮我们把绑定的方法执行
+		 *    => 只有拥有这个属性（事件属性）我们才能做事件绑定，例如：元素没有ontransitionend这个属性，所以无法基于这种方式监听transitionend事件
+		 *    => 只能给当前这个属性赋值一个函数，重复赋值，以最后赋值的为主 “基于DOM0事件绑定只能给当前元素的某个事件行为绑定一个方法”
+		 *    DOM0事件绑定的移除：元素.onxxx=null;
+		 *    
+		 *    DOM2事件绑定：利用浏览器的事件池机制完成的，addEventListener相当于向浏览器事件池中注入相应的事件和方法
+		 *    => 可以给当前元素的某个事件行为注册“多个不同”的方法，当事件行为被触发，会通知对应的方法依次执行(按照注入的顺序执行)（执行方法的时候，也会给每个方法传递一个事件对象，方法中的THIS也是当前元素本身）
+		 *    => 只要是浏览器支持的事件行为都可以基于这种办法进行监听绑定，例如：transitionend/DOMContentLoaded...
+		 *    DOM2移除事件绑定，需要知道具体的元素、事件、方法、阶段等信息，所以在做事件绑定的时候，我们一般不会给其绑定匿名函数（因为这样后期是没办法移除的），我们绑定的一般都是实名函数
+		 *    
+		 */
+		// 新增事件绑定：元素.addEventListener([事件类型],[方法],[控制在捕获阶段TRUE/还是在冒泡阶段FALSE触发执行，默认是FALSE])
+		/* function fn1(ev) {
+			console.log(1);
+		}
+
+		function fn2(ev) {
+			console.log(2);
+		}
+
+		function fn3(ev) {
+			console.log(3);
+			// 第一次执行FN3的时候，我把绑定的方法都从事件池移除掉（相当于绑定只有一次）
+			document.body.removeEventListener('click', fn1);
+			document.body.removeEventListener('click', fn2);
+			document.body.removeEventListener('click', fn3);
+		}
+		document.body.addEventListener('click', fn1);
+		document.body.addEventListener('click', fn2);
+		document.body.addEventListener('click', fn3); */
+
+		/* 在IE6~8中不支持addEventListener，需要使用attacheEvent/detachEvent，但是这样处理相对于标准浏览器有很多兼容性
+		 *   =>没有做去重：可以给当前元素的某个事件行为注入多个相同的方法
+		 *   =>顺序问题：在绑定的方法比较多的情况下，并不是按照注入的顺序触发执行的（乱序处理的）
+		 *   =>方法执行，方法中的THIS不是当前元素（是window），而且也没有传递事件对象（需要基于window.event获取）
+		 */
+		// document.body.attacheEvent('onclick',fn1);
+		// document.body.attacheEvent('onclick',fn2);
+		// document.body.detachEvent('onclick',fn3);
+
+		// 面试题：
+		// window.onload和document.ready的区别？  => window.onload 和 JQ中$(document).ready(function(){}) 方法的区别？
+		// JQ中的操作：
+		//    1.基于DOM2级事件绑定方式实现的：在同一个页面中$(document).ready()可以使用很多次，每一次绑定不同的方法（而window.onload是基于DOM0事件绑定处理的，一个页面只会以最后一次绑定的方法为主）
+		//    2.监听的是DOMContentLoaded事件：无需等待所有资源加载完成，只需要DOM结构加载完就被触发执行（而window.onload是所有资源都加载完才会被触发执行）
+
+		// 1.两种绑定方式的机制不同，所以可以共存
+		// 2.按照正常来说，执行顺序是按照绑定的顺序完成的（不同浏览器表现形式不一样，所以顺序没有严格的规则）
+		// document.body.onclick = function () {
+		// 	// 这个会被下一次赋值绑定给替换掉
+		// 	console.log(4);
+		// };
+		/* 
+		document.body.addEventListener('click', function () {
+			console.log(1);
+		});
+		document.body.addEventListener('click', function () {
+			console.log(2);
+		});
+		document.body.onclick = function () {
+			console.log(5);
+		};
+		document.body.addEventListener('click', function () {
+			console.log(3);
+		}); 
+		*/
+	</script>
+</body>
+
+</html>
