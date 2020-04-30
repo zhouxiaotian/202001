@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/*
+		 * 所有的设计模式都是一种思想：优化代码也业务逻辑的 
+		 *   [发布订阅设计模式 => 观察者模式的升级版]
+		 *   情景再现：当某一个时间点或者某个条件到达的时候，我们需要处理很多事情，例如，我们从服务器获取数据（一般是异步获取），需要后续处理很多的事情
+		 */
+
+		/* 
+		// 单例设计模式（简单的模块划分）
+		let xxxModule = (function () {
+			function func() {}
+
+			return {
+				func,
+				init() {
+					// 命令模式（控制业务逻辑的进行）
+				}
+			}
+		})();
+		xxxModule.init(); 
+		*/
+	</script>
+
+	<script src="js/subscribe.js"></script>
+	<script>
+		function fn1() {
+			console.log(1);
+		}
+
+		function fn2() {
+			console.log(2);
+			// 第一次通知MARRY执行，执行到FN2的时候，我们从事件池中移除 FN1/FN2
+			sub.off('marry', fn1);
+			sub.off('marry', fn2);
+		}
+
+		function fn3() {
+			console.log(3);
+		}
+
+		function fn4() {
+			console.log(4);
+		}
+
+		let sub = subscribe();
+		sub.on('marry', fn1);
+		sub.on('marry', fn2);
+		sub.on('marry', fn3);
+		sub.on('marry', fn4);
+		sub.on('divorce', fn2);
+		sub.on('divorce', fn3);
+		
+		let i = 0;
+		let timer = setInterval(() => {
+			i++;
+			if (i > 2) {
+				clearInterval(timer);
+				return;
+			}
+			sub.fire('marry', 10, 20);
+		}, 2000);
+	</script>
+</body>
+
+</html>
