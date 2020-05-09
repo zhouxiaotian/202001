@@ -85,7 +85,7 @@ ajax1(1, result1 => {
 */
 
 //===================基于PROMISE解决AJAX异步串行
-function ajax1(id) {
+/* function ajax1(id) {
 	return new Promise(resolve => {
 		$.ajax({
 			url: `/api/userInfo?id=${id}`,
@@ -130,4 +130,4 @@ async function send() {
 	let result3 = await ajax3(result2.list);
 	console.log(result3);
 }
-send();
+send(); */
