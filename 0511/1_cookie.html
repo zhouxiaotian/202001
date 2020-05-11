@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- 
+    前端  通过浏览器 跟用户交互；
+    后端  负责提供数据和数据交互；
+
+    cookie  前端用来存储内容的区域；后端可以操作前端的cookie;后端也可直接种植cookie到前端
+            cookie的大小有限制，不同浏览器不一样 大概是在5k左右;会随着请求发送给后端；
+    session  这是一个后端存储 也就是 后端的cookie    ； cookie--》浏览器； session--》服务器   
+
+
+    在H5之后  又新增了 localStorage  和  sessionStorage 这两个存储空间；  
+    大概是在5兆左右 只能前端操作 后端操作不了；不会随着请求发给后端；
+    localStorage 存储的内容 若不主动清除 那么 永远存在；       
+    localStorage.getItem(属性名) 是用来获取对应的localStorage属性；
+    localStorage.setItem(属性名,属性值)用来设置 localStorage;属性值 必须是字符串串 若不是，则会默认调用自己的toString转成字符串
+                          在工作用 我们一般会使用 JSON.stringify(属性值) 处理引用数据类型；当我们获取的时候 需要再用JSON.parse转成对象；
+    localStorage.removeItem(属性名) 删除对应的属性；
+    localStorage.clear()  删除所有的属性
+
+    sessionStorage 的api 等同于 localStorage;这两者的区别在于 localStorage永远不会清除 sessionStorage 会在浏览器关闭的时候自动清除
+   
+    --> 
+</body>
+</html>
+<script>
+  function getcookie(key) {
+    // 可以通过document.cookie获取大部分cookie
+    //  /BAIDUID=([^; ]+)/  /PSTM=([^; ]+)/
+    let str = document.cookie;
+    let reg = new RegExp(`${key}=([^; ]+)`);
+    let res = str.match(reg)
+    return res ? res[1] : null;
+  }
+  getcookie('name');// 返回值就是name属性名对应的属性值
+
+  function setCookie(key,value,date){
+    // key 是我们要设置的属性名
+    // value 是对应的属性值
+    // date 是对应的过期日期
+    if(date){
+      document.cookie = `${key}=${value}; expires=${new Date(date)}`
+    }else{
+      document.cookie = `${key}=${value}`
+    }
+  }
+  function removeCookie(key){
+    // 删除cookie 只要让 expires过期日期 失效（就是这个cookie已经过期了） 那么浏览器会自动删除这个cookie
+    document.cookie = `${key}=null; expires=${new Date(100)}`
+  }
+
+  var Cookie = (function(){
+    function get(key){
+      let str = document.cookie;
+      let reg = new RegExp(`${key}=([^; ]+)`);
+      let res = str.match(reg)
+      return res ? res[1] : null;
+    }
+    function set(){
+
+    }
+    function remove(){
+
+    }
+    return {
+      get,
+      set,
+      remove
+    }
+  })();
+</script>

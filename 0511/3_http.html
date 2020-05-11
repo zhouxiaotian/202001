@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    .til{
+      background-color: royalblue;
+    }
+  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title class='til'>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  /* 
+    http 
+    http事务 http请求： 都是指的一次完整的http请求（请求+响应）
+
+    http报文
+
+    通用头
+    Request URL: https://www.baidu.com/favicon.ico     // 请求路径（也就是接口地址）
+    Request Method: GET                                // 请求方法
+    Status Code: 200 OK                                // 请求状态码
+    Remote Address: 61.135.169.121:443                 // 域名对应的IP地址
+    Referrer Policy: unsafe-url
+
+    请求头   前端设置的 有些是默认设置， 也可以前端自己设置；
+    Accept: image/webp,image/apng,image/*,/*;q=0.8
+    Accept-Encoding: gzip, deflate, br
+    Accept-Language: zh-CN,zh;q=0.9
+    Connection: keep-alive
+    Cookie: BAIDUID=5053091B246A483CB14DF5B21DFB2F42:FG=1; PSTM=1586178248; BIDUPSID=1576AEB74DA19AB0B382BED68DDCA865; BDRCVFR[vwFKrGJV4b3]=mk3SLVN4HKm; BD_HOME=1; H_PS_PSSID=; BD_UPN=1a314753
+    Host: www.baidu.com
+    Referer: https://www.baidu.com/?tn=44004473_17_oem_dg&ctsutp8=16
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.25 Safari/537.36 Core/1.70.3741.400 QQBrowser/10.5.3863.400
+
+    响应头：  是后台给的 前端没办法修改
+    Accept-Ranges: bytes
+    Content-Encoding: gzip
+    Content-Length: 984
+    Content-Type: image/x-icon
+    Date: Mon, 11 May 2020 07:08:33 GMT
+    Etag: "423e-55c8139094a40"
+    Last-Modified: Fri, 27 Oct 2017 06:16:01 GMT
+    Server: Apache
+    Vary: Accept-Encoding,User-Agent
+    Set-Cookie: qqq=123  // 后端可以通过这个响应头 来设置前端的cookie
+   
+
+    http 状态码
+      200  代表本次请求成功
+
+      301  代表永久重定向；
+      302  代表临时重定向； 只能重定向get
+      304  代表后台告诉前端  这个请求的内容的内容没有发生改变 可以使用之前的缓存；
+      307  代表临时重定向   get post都可以；
+
+      403  请求被拒绝
+      404  路径错误 （接口地址错误）
+      405  方法使用错误；后台要求使用get 你用了其他方式；
+
+      5xx  5开头的都是后端问题；
+   
+   */
+</script>

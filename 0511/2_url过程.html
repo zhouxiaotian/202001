@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  /* 
+    后台服务器 对应的都是 IP地址  32位的2进制； 一般都会传成点位十进制 192.168.0.1
+    我们输入的网址 都是  域名
+
+    域名 ---》 IP 地址；  域名是需要购买的；
+
+    云服务器  租一台  对应的 有一个IP地址
+
+    输入域名之后  浏览器怎么就能找到对应的IP地址呢？
+
+    DNS域名解析系统 domain  name  system
+    DNS解析过程：先在本机的缓存区去查找域名对应的IP，若本机缓存没有找到，那么就到本区域的DNS服务器查找，本区域没有 就上层 DNS查找，一直找到顶级，找到之后，
+      他会在每一层做一个缓存；有利于本区域的访问；
+    DNS 就是为了找到 域名对应的IP地址，然后让浏览可以找到对应的服务器；
+
+    在地址栏输入网址之后 敲回车  都经历那些过程？
+
+    1、通过 域名找到 对应的IP地址，
+    2、根据对应的IP地址 找到对应的服务器，从服务器获取对应的资源；返回的基本都是html代码
+    3、解析html，根据DOM结构 渲染出一个 DOM节点树；同时进行的css样式树的渲染；
+          合并 样式树和节点树 形成render树  渲染render树（painting）
+
+
+  
+   */
+</script>

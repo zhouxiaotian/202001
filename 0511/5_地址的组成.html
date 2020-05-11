@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- <a href="http://127.0.0.1:5500/0511/5_%E5%9C%B0%E5%9D%80%E7%9A%84%E7%BB%84%E6%88%90.html#qqqq">hash</a> -->
+  <!-- <a href="http://127.0.0.1:5500/0511/5_%E5%9C%B0%E5%9D%80%E7%9A%84%E7%BB%84%E6%88%90.html?qqq=234">search</a> -->
+  <a href="#css">css</a>
+  <a href="#html">html</a>
+  <a href="#js">js</a>
+  <a href="#JQ">JQ</a>
+</body>
+</html>
+<script>
+  /* 
+    URL   统一资源路径
+    URN   统一资源名称
+    URI   统一资源标识符（URL + URN）
+  
+  */
+  /* 
+    https://www.baidu.com/s?wd=zf&from=wx#qqq
+
+    https  协议 http  https  ftp(向服务器文件上传的一个协议)
+            https是在http的基础上 多了一个 SSL 安全套阶层
+    www.baidu.com 属于域名部分
+    域名后边 是一个端口号 :端口号， https 默认端口号是443  http默认端口是80  ftp 默认21；
+    /s 是我们的路径部分
+    ?wd=zf&from=wx  这一部分是属于 search部分 其实就是一些参数；search修改时 会造成页面的刷新
+    #qqq  这一部分 属于 hash部分（目前主要应用在 路由控制上） hash更改的时候不会有页面更新；
+
+    location.href  获取的是整个当前的地址
+    location.search  获取的是问号部分（search部分）
+    location.hash  获取的是#部分 （hash部分）
+
+    我们前端可以通过  window.onhashchange = function(){}这个事件来监听 hash的改变
+   */
+
+   /* 
+      基于hash 实现选项卡？
+
+   
+    */
+</script>

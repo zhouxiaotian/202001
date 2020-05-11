@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  /* 
+    参考地址：https://juejin.im/post/5eb7f811f265da7bbc7cc5bd
+    浏览器缓存： 强缓存    协商缓存
+
+    强缓存： 这种请求 是到不了后台的；直接是从本地缓存中获取资源 然后相应这个请求
+      Expires: 过期时间，在这个过期时间之内 的请求，都会直接从本地缓存获取资源；
+      cache-control: max-age=3600 ； max-age 缓存的有效时间；3600秒
+
+    协商缓存：如果没有命中强缓存 ，才会有可能走协商缓存，
+              确实是去后台要东西了；但是后台告诉前端，这个请求可以使用缓存的内容；（304）
+            etag/if-none-match  :etag是后端生成的一个字符串；那么下一次请求的时候 浏览器会在请求头中添加一个if-none-match 的属性
+                                  这个属性对应的值 就是后台给的etag对应的值
+            last-modified/if-modified-since : last-modified  后端生成的一个时间，其实就是当前请求对应的内容最后一次更改的时间  
+                                  下一次请求，请求头中 会带上 if-modified-since这个属性 值是  last-modified 对应的值；            
+    既没有走强缓存 也没有走协商缓存， 那么这个请求才是一个真正的请求；           
+   */
+</script>
