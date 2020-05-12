@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  function ajax(options){
+    let {
+      method='get',//默认get
+      url,
+      data={},//默认空对象
+      async=true,// 默认异步
+      cache=false,//默认不走缓存
+      success,
+      error
+    } = options;
+    method = method.toLowerCase();
+    // data 是要传给后台的数据 若是post请求 需要把参数放到请求体，get请求 需要把参数拼接到url后边；
+    // 但是 不管是get还是post都需要search字符串
+    let searchStr = '';
+    Object.keys(data).forEach(key=>{
+      searchStr += `${key}=${data[key]}&`
+    })
+    searchStr = searchStr.replace(/&$/,'');// 'qqq=123&bbb=2342&sda=121'
+    if(method == 'get'){
+      if(url.indexOf('?')==-1){
+        // /\?/.test(url)
+        // 说明传进来的url上没有带？
+        url += ('?'+searchStr)
+      }else{
+        // 若传进来的url上由？则我们需要把拼接好的字符串 不到原来的search后边
+        url += ('&'+searchStr)
+      }
+      if(!cache){
+        // 不走缓存 为啥要get里边？ 因为只有get请求有缓存
+        // url += `&_=${Date.now()}`
+        url += (url.indexOf('&')==-1 ? `_=${Date.now()}` : `&_=${Date.now()}`)
+      }
+      
+    }
+
+    let xhr = new XMLHttpRequest();
+    xhr.open(method,url,async);
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState == 4){
+        if(/200|304/.test(xhr.status)){
+          //请求成功
+          let data ;
+          data = JSON.parse(xhr.response)
+          success && success(data);// success函数存在 才去执行
+        }else{
+          //请求失败
+          error(xhr);
+        }
+      }
+    }
+    xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+    xhr.send(searchStr);// 因为  get请求 不会 理会send的参数
+  }
+</script>
+<script>
+  ajax({url:'./data.json'})
+  ajax({
+    method:'Get', // 不是必传 不传默认get
+    url:'./data.json?q=123',
+    data:{a:123,b:234},//传给后台的参数
+    async:true,//true 代表异步 false代表同步
+    cache:false,//默认是false 是否可以走缓存 false就是不可以
+    success(data){
+      console.log(data)
+    },
+    error(){
+      console.log('error')
+    }
+  });
+  ajax({
+    method:'post',
+    url:'./data.json',
+    data:{q:1,b:2}
+  });
+  ajax.get('./data.json',function(data){
+
+  })
+  ajax.get('./data.json',{w:12,f:345},function(data){
+
+  })
+  ajax.post('./data.json',{q:1,w:2},function(data){
+
+  });
+</script>

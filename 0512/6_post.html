@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" placeholder="姓名">
+  <input type="password" placeholder="密码">
+  <button id='btn'>提交</button>
+</body>
+</html>
+<script>
+  /* 
+    ajax的请求方式：
+      get形式的请求 get  head  delete    把请求的参数放到了请求的地址后边(search)
+      post形式的请求  post  put  option  把请求的参数放到了请求体中
+      工作中常用的 只有 get 和 post
+    xhr.open('get')  
+    xhr.open('head')  
+    xhr.open('delete')  
+
+    xhr.open('post')  
+    xhr.open('put')  
+    xhr.open('option')  
+  */
+  let inp = document.querySelectorAll('input');
+  function postData(obj){
+    let xhr = new XMLHttpRequest();
+    // live-server这个vscode插件 不支持post
+    // post 请求的参数 是放在请求体中的；代码体现 就是send(参数) send的参数只能是字符串
+    xhr.open('post','./data.json',true);
+    let str = '';
+    Object.keys(obj).forEach(key=>{
+      str += `${key}=${obj[key]}&`
+    })
+    str = str.replace(/&$/,'');
+    xhr.onreadystatechange = function(){
+
+    }
+    xhr.setRequestHeader('content-type','application/x-www-form-urlencoded')
+    // xhr.send(JSON.stringify(obj));// send的参数只能是字符串 这种是给后台传递了一个JSON字符串
+    xhr.send(str) // 若后台需要 FORM DATA的格式 我们前端怎么设置？
+    // 1  把send的参数转成search字符串（a=123&vv=123&nn=566）
+    // 2  设置请求头的 Content-Type属性 值是 application/x-www-form-urlencoded
+
+  }
+  btn.onclick = function(){
+    postData({
+      name:inp[0].value,
+      psw:inp[1].value,
+      _:Math.random(), // 解决缓存
+      t:Date.now() // 解决缓存  两者任用其一即可
+    })
+  }
+  /* 
+      get 与 post请求的区别？
+      get 有缓存  post没有缓存
+      get 传参是通过search传参  post使用过请求体
+      get 传参的大小有限制  post理论上没有； get传参大小限制 是由浏览器限制的；一个url，浏览器是由长度限制的 
+      get 传参相对不太安全  post相对安全；   
+  
+  */
+</script>

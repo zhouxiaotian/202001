@@ -14,7 +14,7 @@
     ajax:  async javascript  and  xml
   */
   let xhr = new XMLHttpRequest();// 创造实例
-  xhr.open('get','./data.json',true);// false代表同步 true代表异步 默认true
+  xhr.open('get','./data.json?q=123&aaa=555&c=999',true);// false代表同步 true代表异步 默认true
   xhr.onreadystatechange = function(){
     //当 readystate发生改变的是 触发该函数
     /* 
@@ -25,9 +25,23 @@
       3  loading   正在加载响应体
       4  done    代表请求完成；   
     */
-    console.log(xhr.readyState);
+    // console.log(xhr.readyState);
+    if(xhr.readyState==4 && /200|304/.test(xhr.status)){
+      //xhr.status http状态码  200  304  404 405 5xx
+      //请求完成 并且请求成功了；
+      console.log("success")
+      console.log(xhr.response)
+      console.log(xhr.getResponseHeader('Date')) // 获取响应头中对应的属性名的属性值
+      console.log(xhr.getAllResponseHeaders()) // 获取所有的响应头
+    }
   }
-  
-  xhr.send();// 最后一步是把请求发出去；
+  xhr.timeout = 2000;// 最长的请求时间 当我们请求时间超过这个时间时 会自动打断请求；
+  xhr.ontimeout = function(){
+    // 这个事件 会在 超时的时候触发；
+    alert('超时')
+  }
+  xhr.setRequestHeader('qqq',666);// 设置请求头；
+  xhr.setRequestHeader('Accept-Language','zh-CN')
+  xhr.send('a=12&b=13');// 最后一步是把请求发出去；
   // send之后 先去三握 建立通道 然后数据交互 2 3  数据交互完成 四次挥手 断开通道  4；
 </script>

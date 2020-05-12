@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" placeholder="姓名">
+  <input type="password" placeholder="密码">
+  <button id='btn'>提交</button>
+</body>
+</html>
+<script>
+  let inp = document.querySelectorAll('input');
+  function getData(obj){
+    // get请求 我们是通过 search 给后台传参数的；
+    // get传参 就是向 接口地址后边补search
+    // get 请求若不想走缓存 可以设置一个时间戳 或者 随机数
+    console.log(obj)
+    let str = '';
+    Object.keys(obj).forEach(item=>{
+      // item 就是对象中的每一个属性名
+      str += `${item}=${obj[item]}&`
+    })
+    console.log(str);
+    str = str.replace(/&$/,'');
+    let xhr = new XMLHttpRequest();
+    xhr.open('get','./data.json?'+str,true);
+    xhr.onreadystatechange = function () {
+      if(xhr.readyState == 4){
+        if(/200|304/.test(xhr.status)){
+          // 请求成功
+        }else{
+          // 其他的http状态码 就是失败
+        }
+      }
+    }
+    xhr.send();
+  }
+  btn.onclick = function(){
+    getData({
+      name:inp[0].value,
+      psw:inp[1].value,
+      _:Math.random(), // 解决缓存
+      t:Date.now() // 解决缓存  两者任用其一即可
+    })
+  }
+</script>
