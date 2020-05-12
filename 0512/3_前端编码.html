@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  /* 
+    encodeURI(字符) 编码
+    decodeURI(字符) 解码
+
+    encodeURIComponent(字符)  比encodeURI 多转义了一些特殊字符
+    decodeURIComponent(字符)
+
+    escape 
+    unescape  这种方式的编码后端能直接解码
+
+    以上是编码  不是加密
+
+    md5加密 md5是一个插件 ；非对称加密(不可逆加密)
+  
+  */
+ function jm(str){
+   return encodeURI('培训'+str+"珠峰")
+ }
+ function jiem(str){
+   str = decodeURI(str);
+   return str.replace(/培训|珠峰/g,'')
+ }
+</script>

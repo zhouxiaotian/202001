@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: #000000;
+    }
+
+    ul,
+    ol,
+    li {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+
+    .wrap {
+      width: 960px;
+      margin: 50px auto;
+    }
+
+    #list {
+      width: 100%;
+      font-size: 0;
+    }
+
+    a {
+      display: inline-block;
+      width: 239px;
+      height: 48px;
+      font-size: 24px;
+      line-height: 48px;
+      text-align: center;
+      box-sizing: border-box;
+      border: solid 1px #000000;
+      margin: 0 0.5px;
+      background: #eee;
+
+    }
+
+    a.cur {
+      background: #fff;
+      border-bottom-color: #ffffff;
+      font-weight: bold;
+    }
+
+    #owner {
+      width: 959px;
+      height: 300px;
+      border: #000000 1px solid;
+      margin: -2px 0.5px 0;
+      box-sizing: border-box;
+    }
+
+    #owner li {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      line-height: 300px;
+      font-size: 50px;
+      display: none;
+    }
+
+    #owner li.cur {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <nav id="list">
+      <a href="#QQ">QQ</a>
+      <a href="#DD">钉钉</a>
+      <a href="#ML">米聊</a>
+      <a href="#YX">云信</a>
+    </nav>
+    <ul id="owner">
+      <li id="owner1">腾讯的</li>
+      <li id="owner2" class="">阿里的</li>
+      <li id="owner3" class="">小米的</li>
+      <li id="owner4" class="">网易的</li>
+    </ul>
+  </div>
+</body>
+
+</html>
+<script>
+  /* 
+    cookie  localStorage sessionStorage  
+    session
+    URL URN URI
+    DNS  域名解析  把域名解析程对应的IP地址
+
+    协议://域名:端口号/路径?search#hash
+    强缓存  协商缓存
+  */
+  let lis = document.querySelectorAll('li');
+  let as = document.querySelectorAll('a');
+
+  function tab(n) {
+    // n 对应的是点击的那一项的索引
+    [...as].forEach((item, index) => {
+      if (n == index) {
+        item.classList.add('cur');
+        lis[index].classList.add('cur');
+      } else {
+        item.classList.remove('cur');
+        lis[index].classList.remove('cur');
+      }
+    })
+  }
+  function init(){
+    switch (location.hash) {
+      case '#QQ':
+        tab(0)
+        break;
+      case '#DD':
+        tab(1)
+        break;
+      case '#ML':
+        tab(2)
+        break;
+      case '#YX':
+        tab(3)
+        break;
+
+      default:
+        // tab(0)
+        location.hash  = '#QQ'
+        break;
+    }
+  }
+  init();
+  window.onhashchange = function () {
+    // 只要hash发生改变
+    console.log(location.hash);
+    init();
+  }
+</script>

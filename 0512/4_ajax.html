@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+  /* 
+    ajax:  async javascript  and  xml
+  */
+  let xhr = new XMLHttpRequest();// 创造实例
+  xhr.open('get','./data.json',true);// false代表同步 true代表异步 默认true
+  xhr.onreadystatechange = function(){
+    //当 readystate发生改变的是 触发该函数
+    /* 
+      readyState 有 五个值
+      0  unsent  创造出实例的时候 readystate 就是0
+      1  opend   执行完open函数之后 readystate 会由0 变成 1；
+      2  header-received   接收完响应头之后触发；
+      3  loading   正在加载响应体
+      4  done    代表请求完成；   
+    */
+    console.log(xhr.readyState);
+  }
+  
+  xhr.send();// 最后一步是把请求发出去；
+  // send之后 先去三握 建立通道 然后数据交互 2 3  数据交互完成 四次挥手 断开通道  4；
+</script>
