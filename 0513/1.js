@@ -48,4 +48,7 @@ function send() {
 		}
 	});
 }
-send();
+// send();
+
+// 获取客户端本机的时间（不准：用户可以自己修改）
+// console.log(new Date());
