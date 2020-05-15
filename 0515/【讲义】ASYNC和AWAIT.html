@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><title>ASYNC和AWAIT</title><meta charset='utf-8'><link href='https://cdn.maxiang.io/res-min/themes/marxico.css' rel='stylesheet'><style>
+.note-content  {font-family: "Helvetica Neue", Arial, "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, Song, sans-serif;}
+
+</style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+
+
+<h4>ES6/ES7中的Generator、Await</h4>
+
+<ul><li><p>Generator</p></li>
+</ul>
+
+<pre class="prettyprint with-line-number hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment line-number">1.</span><span class="hljs-function"><span class="hljs-keyword">function</span>* <span class="hljs-title">gen</span>(<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line"><span class="hljs-comment line-number">2.</span>    <span class="hljs-keyword">yield</span> <span class="hljs-number">1</span>;
+</div><div class="hljs-line"><span class="hljs-comment line-number">3.</span>    <span class="hljs-keyword">yield</span> <span class="hljs-number">2</span>;
+</div><div class="hljs-line"><span class="hljs-comment line-number">4.</span>    <span class="hljs-keyword">yield</span> <span class="hljs-number">3</span>;
+</div><div class="hljs-line"><span class="hljs-comment line-number">5.</span>}
+</div><div class="hljs-line"><span class="hljs-comment line-number">6.</span><span class="hljs-keyword">const</span> inter = gen();
+</div><div class="hljs-line"><span class="hljs-comment line-number">7.</span><span class="hljs-built_in">console</span>.log(inter.next()); <span class="hljs-comment">// {value: 1, done: false}</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">8.</span><span class="hljs-built_in">console</span>.log(inter.next()); <span class="hljs-comment">// {value: 2, done: false}</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">9.</span><span class="hljs-built_in">console</span>.log(inter.next()); <span class="hljs-comment">// {value: 3, done: fasle}</span>
+</div><div class="hljs-line"><span class="hljs-comment line-number">10.</span><span class="hljs-built_in">console</span>.log(inter.next()); <span class="hljs-comment">// {value: undefined, done: true}</span>
+</div></code></pre>
+
+<ul><li><p>Await</p></li>
+</ul>
+
+
+
+<pre class="prettyprint with-line-number hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment line-number">1.</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">yieldPromise</span>(<span class="hljs-params">generator</span>) </span>{
+</div><div class="hljs-line"><span class="hljs-comment line-number">2.</span>    <span class="hljs-keyword">let</span> interator = generator();
+</div><div class="hljs-line"><span class="hljs-comment line-number">3.</span>    recursFunc.call(interator);
+</div><div class="hljs-line"><span class="hljs-comment line-number">4.</span>}
+</div><div class="hljs-line"><span class="hljs-comment line-number">5.</span><wbr>
+</div><div class="hljs-line"><span class="hljs-comment line-number">6.</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">recursFunc</span>(<span class="hljs-params">value</span>) </span>{
+</div><div class="hljs-line"><span class="hljs-comment line-number">7.</span>    <span class="hljs-keyword">let</span> interator = <span class="hljs-keyword">this</span>,
+</div><div class="hljs-line"><span class="hljs-comment line-number">8.</span>        result = interator.next(value);
+</div><div class="hljs-line"><span class="hljs-comment line-number">9.</span>    <span class="hljs-keyword">if</span> (result.done) <span class="hljs-keyword">return</span>;
+</div><div class="hljs-line"><span class="hljs-comment line-number">10.</span><wbr>
+</div><div class="hljs-line"><span class="hljs-comment line-number">11.</span>    <span class="hljs-built_in">Promise</span>.resolve(result.value).then(<span class="hljs-function"><span class="hljs-params">value</span> =&gt;</span> {
+</div><div class="hljs-line"><span class="hljs-comment line-number">12.</span>        recursFunc.call(interator, value);
+</div><div class="hljs-line"><span class="hljs-comment line-number">13.</span>    });
+</div><div class="hljs-line"><span class="hljs-comment line-number">14.</span>}
+</div><div class="hljs-line"><span class="hljs-comment line-number">15.</span><wbr>
+</div><div class="hljs-line"><span class="hljs-comment line-number">16.</span>yieldPromise(<span class="hljs-function"><span class="hljs-keyword">function</span>* (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line"><span class="hljs-comment line-number">17.</span>    <span class="hljs-keyword">let</span> v1 = <span class="hljs-keyword">yield</span> <span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-number">100</span>);
+</div><div class="hljs-line"><span class="hljs-comment line-number">18.</span>    <span class="hljs-built_in">console</span>.log(v1);
+</div><div class="hljs-line"><span class="hljs-comment line-number">19.</span>    <span class="hljs-keyword">let</span> v2 = <span class="hljs-keyword">yield</span> <span class="hljs-built_in">Promise</span>.resolve(<span class="hljs-number">200</span>);
+</div><div class="hljs-line"><span class="hljs-comment line-number">20.</span>    <span class="hljs-built_in">console</span>.log(v2);
+</div><div class="hljs-line"><span class="hljs-comment line-number">21.</span>});
+</div></code></pre></div></body></html>
