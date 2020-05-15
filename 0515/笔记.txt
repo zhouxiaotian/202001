@@ -71,3 +71,47 @@ RETURN
 测试本地或者服务器接口的时候，接口文档中给的是具体地址，我们需要补齐前缀
 本地测试：http://localhost:9999 或者 http://127.0.0.1:9999
 服务器测试：找后台要类似的前缀信息
+
+==========================
+基于PROMISE封装一版AJAX库
+   【常规使用】
+   _ajax([options]);
+   _ajax({
+      //请求的地址:baseURL+url
+      url:'',
+      baseURL:'',
+      method:'get',
+      responseType:'json', //预处理服务器返回数据格式 text/xml/arraybuffer/blob
+      withCredentials:false, 
+      params:{}, //GET请求下传递给服务器的信息
+      data:{}, //POST请求下传递给服务器的信息
+      cache:true, //设置为FALSE可以清除GET请求下的缓存信息
+      headers:{}, //设置请求头
+      transformRequest:(data,config)=>{
+         return {
+            data,
+            config
+         };
+      }, //设置请求拦截器（在发送给服务器之前对传递给服务器的参数信息进行拦截 应用于GET/POST）
+      transformReponse:[result=>{},reason=>{}], //响应拦截器（从服务器获取结果到执行自己的.THEN的时候，进行处理的方法）
+      validateStatus:status=>{}, //自定义成功的条件
+   }).then(result=>{
+      //result={
+         // data:{}  响应主体信息
+         // status:200 
+         // statusText:''
+         // headers:{} 响应头信息
+         // request:{} 原生的AJAX对象XHR
+      //};
+   }).catch(reason=>{});
+
+   _ajax.get/delete/options/head([url],[options]);
+      [options]={
+         [params]:{}
+      }
+   
+   _ajax.post/put([url],[data],[options]);
+
+   统一修改默认的配置项
+   _ajax.defaults.xxx=xxx;
+
