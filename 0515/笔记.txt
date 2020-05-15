@@ -87,11 +87,9 @@ RETURN
       data:{}, //POST请求下传递给服务器的信息
       cache:true, //设置为FALSE可以清除GET请求下的缓存信息
       headers:{}, //设置请求头
-      transformRequest:(data,config)=>{
-         return {
-            data,
-            config
-         };
+      transformRequest:config=>{
+         
+         return config;
       }, //设置请求拦截器（在发送给服务器之前对传递给服务器的参数信息进行拦截 应用于GET/POST）
       transformReponse:[result=>{},reason=>{}], //响应拦截器（从服务器获取结果到执行自己的.THEN的时候，进行处理的方法）
       validateStatus:status=>{}, //自定义成功的条件

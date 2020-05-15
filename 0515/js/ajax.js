@@ -10,7 +10,6 @@
 		return url.includes('?') ? '&' : '?';
 	};
 
-
 	/* ===AJAX核心处理=== */
 	class MyAJAX {
 		constructor(options = {}) {
@@ -19,20 +18,39 @@
 			return this.init();
 		}
 		init() {
+			// 请求拦截器只是把我们配置好的CONFIG信息（发送给服务器的）再进行重新修改配置（把现有的CONFIG传递给拦截器函数，接收函数返回最新的CONFIG进行处理）
+			let transformRequest = this.config.transformRequest;
+			if (typeof transformRequest === "function") {
+				this.config = transformRequest(this.config);
+			}
+			// 按照最新的CONFIG处理即可
 			let {
 				method,
+				validateStatus,
+				transformResponse,
+				withCredentials
 			} = this.config;
-
+			!Array.isArray(transformResponse) ? transformResponse = [null, null] : null;
 			return new Promise((resolve, reject) => {
 				// 发送AJAX请求
 				let xhr = new XMLHttpRequest;
 				xhr.open(method, this.handleURL());
 				this.handleHeaders(xhr);
+				xhr.withCredentials = withCredentials;
 				xhr.onreadystatechange = () => {
-
+					if (xhr.readyState === 2) {
+						let flag = validateStatus(xhr.status);
+						if (!flag) {
+							reject(this.handleResult(xhr, false));
+							return;
+						}
+					}
+					if (xhr.readyState === 4) {
+						resolve(this.handleResult(xhr, true));
+					}
 				};
 				xhr.send(this.handleData());
-			});
+			}).then(...transformResponse);
 		}
 		// URL处理:CACHE/PARAMS
 		handleURL() {
@@ -81,16 +99,52 @@
 			}
 			return data;
 		}
-	}
+		// 获取返回的信息
+		handleResult(xhr, flag) {
+			// 获取响应头信息
+			let headers = {};
+			xhr.getAllResponseHeaders().split(/(?:\n|\r)/g).filter(item => item.length > 0).forEach(item => {
+				let [key, value = ''] = item.split(': ');
+				key ? headers[key] = value : null;
+			});
 
+			if (flag) {
+				let responseType = this.config.responseType;
+				let data = xhr.responseText;
+				switch (responseType.toLowerCase()) {
+					case 'json':
+						data = JSON.parse(data);
+						break;
+					case 'xml':
+						data = xhr.responseXML;
+						break;
+				}
+				return {
+					status: xhr.status,
+					statusText: xhr.statusText,
+					headers,
+					request: xhr,
+					config: this.config,
+					data
+				};
+			}
+			return {
+				status: xhr.status,
+				statusText: xhr.statusText,
+				headers,
+				request: xhr,
+				config: this.config
+			};
+		}
+	}
 
 	/* ===配置出_AJAX应有的接口并暴露到全局上=== */
 
 	// 把用户传递的OPTIONS信息和DEFAULTS默认信息进行合并处理
 	function initParams(options = {}) {
 		// 有些配置项不能直接硬性替换（二级数据）：此时需要深层替换  HEADERS
-		_ajax.defaults.headers = !isObj(_ajax.defaults.headers) ? {} : null;
-		options.headers = !isObj(options.headers) ? {} : null;
+		!isObj(_ajax.defaults.headers) ? _ajax.defaults.headers = {} : null;
+		!isObj(options.headers) ? options.headers = {} : null;
 		options.headers = Object.assign(_ajax.defaults.headers, options.headers);
 		return Object.assign(_ajax.defaults, options);
 	}
@@ -115,7 +169,7 @@
 			"Content-Type": "application/json"
 		},
 		transformRequest: null,
-		transformReponse: null,
+		transformResponse: null,
 		validateStatus: status => {
 			return status >= 200 && status < 300;
 		}
@@ -139,5 +193,8 @@
 			return new MyAJAX(options);
 		};
 	});
+	_ajax.all = function all(promiseArr = []) {
+		return Promise.all(promiseArr);
+	};
 	window._ajax = _ajax;
 })();

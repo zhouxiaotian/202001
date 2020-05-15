@@ -10,7 +10,76 @@
 </head>
 
 <body>
+	<!-- <input type="file" id="fileInp"> -->
+
 	<!-- IMPORT JS -->
+	<script src="js/ajax.js"></script>
+	<script src="js/qs.js"></script>
+	<script>
+		// 修改默认配置信息（所有请求公共的信息）
+		_ajax.defaults.baseURL = "http://127.0.0.1:9999";
+		_ajax.defaults.headers["Content-Type"] = "application/x-www-form-urlencoded";
+		_ajax.defaults.validateStatus = status => {
+			return status >= 200 && status < 400;
+		};
+		_ajax.defaults.transformRequest = config => {
+			let data = config.data;
+			if (data !== null && typeof data === "object") {
+				config.data = Qs.stringify(data);
+			}
+			return config;
+		};
+		_ajax.defaults.transformResponse = [result => {
+			// 只把响应主体信息传递给下一级使用
+			return result.data;
+		}, reason => {
+			// 把请求失败的处理统一在这提示
+			// ...
+			return Promise.reject(reason);
+		}];
+
+		// 发送请求进行相关处理
+		_ajax.get('/queryList', {
+			params: {
+				limit: 20,
+				page: 1,
+				search: ''
+			},
+			cache: false
+		}).then(result => {
+			console.log(result);
+		});
+
+		_ajax.post('/insertInfo', {
+			name: '张三',
+			age: 25,
+			sex: '男'
+		}).then(result => {
+			console.log(result);
+		});
+
+		/*
+		内部原理就是PROMIOSE.ALL 
+		_ajax.all([ajax请求,ajax请求,...]).then(results=>{
+
+		}) */
+
+
+
+
+
+		/* fileInp.onchange = function (ev) {
+			let file = ev.target.files[0];
+			if (!file) return;
+
+			let fileReader = new FileReader();
+			// .readAsBinaryString   readAsArrayBuffer   readAsDataURL
+			fileReader.readAsDataURL(file);
+			fileReader.onload = ev => {
+				console.log(ev.target.result);
+			};
+		}; */
+	</script>
 </body>
 
 </html>
