@@ -1,0 +1,241 @@
+.tableBox,
+.tableBox thead,
+.tableBox tbody {
+	display: block;
+}
+
+.tableBox a {
+	margin: 0 4px;
+	color: #29E;
+}
+
+.tableBox thead {
+	background: #F5F5F5;
+	border-top: 1px solid #E6E6E6;
+}
+
+.tableBox tr {
+	position: relative;
+	display: block;
+	line-height: 40px;
+	font-size: 0;
+	border-bottom: 1px solid #E6E6E6;
+}
+
+.tableBox tr th,
+.tableBox tr td {
+	display: inline-block;
+	text-align: center;
+	font-size: 14px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.tableBox tr td.wrap {
+	overflow: auto;
+	text-overflow: clip;
+	white-space: pre-wrap;
+	line-height: 25px;
+	text-align: left;
+}
+
+.tableBox tbody tr:hover {
+	background: #F9F9F9;
+}
+
+.w3 {
+	width: 3%;
+}
+
+.w5 {
+	width: 5%;
+}
+
+.w8 {
+	width: 8%;
+}
+
+.w10 {
+	width: 10%;
+}
+
+.w12 {
+	width: 12%;
+}
+
+.w14 {
+	width: 14%;
+}
+
+.w15 {
+	width: 15%;
+}
+
+.w20 {
+	width: 20%;
+}
+
+.w25 {
+	width: 25%;
+}
+
+.w30 {
+	width: 30%;
+}
+
+.w35 {
+	width: 35%;
+}
+
+.w40 {
+	width: 40%;
+}
+
+.w45 {
+	width: 45%;
+}
+
+.w50 {
+	width: 50%;
+}
+
+.w70 {
+	width: 70%;
+}
+
+
+/* ==filterBox== */
+.filterBox {
+	padding: 10px;
+	text-align: right;
+}
+
+.selectBox,
+.searchInp,
+.deleteAll {
+	box-sizing: border-box;
+	margin-right: 10px;
+	padding: 0 5px;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	border: 1px solid #CCC;
+	vertical-align: middle;
+}
+
+.searchInp {
+	padding: 0 10px;
+	width: 250px;
+}
+
+.deleteAll {
+	background: #EEE;
+	padding: 0;
+	cursor: pointer;
+}
+
+/* ===infoBox== */
+.infoBox {
+	box-sizing: border-box;
+	padding: 30px;
+	font-size: 14px;
+}
+
+.infoBox .form {
+	/* margin-bottom: 15px; */
+}
+
+.infoBox .form>.inpBox {
+	display: flex;
+}
+
+.infoBox .form>.inpBox>span {
+	margin-right: 15px;
+	width: 100px;
+	line-height: 30px;
+	text-align: right;
+}
+
+.infoBox .form>.inpBox>input[type='text'] {
+	box-sizing: border-box;
+	width: 300px;
+	padding: 0 10px;
+	height: 30px;
+	line-height: 30px;
+}
+
+.infoBox .form>.inpBox>input[type='radio'],
+.infoBox .form>.inpBox>input[type='checkbox'],
+.infoBox .form>.inpBox>label {
+	box-sizing: border-box;
+	height: 30px;
+	line-height: 30px;
+	vertical-align: middle;
+}
+
+.infoBox .form>.inpBox>label {
+	margin-right: 20px;
+}
+
+.infoBox .form>.inpBox>select {
+	box-sizing: border-box;
+	width: 150px;
+	padding: 0 10px;
+	height: 30px;
+	line-height: 30px;
+}
+
+.infoBox .form>.inpBox>textarea {
+	box-sizing: border-box;
+	width: 300px;
+	padding: 0 10px;
+	height: 90px;
+	line-height: 30px;
+}
+
+.infoBox .form>span {
+	display: block;
+	padding-left: 115px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 12px;
+	color: lightcoral;
+}
+
+.infoBox .submit {
+	margin-left: 110px;
+	border: none;
+	background: #29E;
+	color: #FFF;
+	width: 150px;
+	height: 40px;
+	line-height: 40px;
+	cursor: pointer;
+}
+
+/* ==分页== */
+.pageBox {
+	font-size: 0;
+	line-height: 50px;
+	text-align: center;
+}
+
+.pageBox a,
+.pageBox .pageNum,
+.pageBox .pageNum li {
+	display: inline-block;
+	font-size: 14px;
+	margin: 0 5px;
+	color: #000;
+}
+
+.pageBox .pageNum li {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.pageBox .pageNum li.active {
+	color: #29E;
+	font-weight: bold;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训-CRM客户管理系统</title>
+	<link rel="shortcut icon" href="images/icon.png" type="image/x-icon">
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="../css/reset.min.css">
+	<link rel="stylesheet" href="../css/iconfont.css">
+	<link rel="stylesheet" href="../css/page.css">
+	<style>
+		.containerBox {
+			padding: 10px 0;
+			display: flex;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="containerBox">
+		<table class="tableBox" style="width:50%">
+			<thead>
+				<tr>
+					<th class="w5">编号</th>
+					<th class="w15">日期</th>
+					<th class="w70">回访纪要</th>
+					<th class="w10">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="w5">1</td>
+					<td class="w15">2019-09-17</td>
+					<td class="w70 wrap">今天天气真的不错，我去拜访了客户，客户给我一根雪糕，但是雪糕还化了</td>
+					<td class="w10">
+						<a href="javascript:;">删除</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="infoBox" style="width:50%">
+			<div class="form">
+				<div class="inpBox">
+					<span>拜访日期</span>
+					<input type="date" class="visitTime">
+				</div>
+				<span></span>
+			</div>
+
+			<div class="form">
+				<div class="inpBox">
+					<span>拜访纪要</span>
+					<textarea class="visitText"></textarea>
+				</div>
+				<span></span>
+			</div>
+
+			<button class="submit">确认提交</button>
+		</div>
+	</div>
+
+	<!-- IMPORT JS -->
+</body>
+
+</html>

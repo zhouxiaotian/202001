@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>珠峰培训-CRM客户管理系统</title>
+	<link rel="shortcut icon" href="images/icon.png" type="image/x-icon">
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="css/iconfont.css">
+	<link rel="stylesheet" href="css/index.css">
+	<script>
+		~ function () {
+			function computed() {
+				let winH = document.documentElement.clientHeight,
+					container = document.querySelector('.container'),
+					headerBox = document.querySelector('.headerBox'),
+					footerBox = document.querySelector('.footerBox');
+				container.style.height = winH - headerBox.offsetHeight - footerBox.offsetHeight + 'px';
+			}
+			window.addEventListener('load', computed);
+			window.addEventListener('resize', computed);
+		}();
+	</script>
+</head>
+
+<body>
+	<!-- HEADER -->
+	<header class="headerBox">
+		<h1 class="logo">CRM客户管理系统</h1>
+		<nav class="navBox">
+			<a href="">组织结构</a>
+			<a href="">客户管理</a>
+		</nav>
+		<div class="baseBox">
+			<span>您好：珠峰培训</span>
+			<a href="javascript:;">安全退出</a>
+		</div>
+	</header>
+
+	<!-- CONTAINER -->
+	<main class="container">
+		<!-- MENU -->
+		<div class="menuBox">
+			<div class="itemBox">
+				<h3>
+					<i class="iconfont icon-yuangong"></i>
+					员工管理
+				</h3>
+				<nav class="item">
+					<a href="">员工列表</a>
+					<a href="">新增员工</a>
+				</nav>
+			</div>
+			<div class="itemBox">
+				<h3>
+					<i class="iconfont icon-guanliyuan"></i>
+					部门管理
+				</h3>
+				<nav class="item">
+					<a href="">部门列表</a>
+					<a href="">新增部门</a>
+				</nav>
+			</div>
+			<div class="itemBox">
+				<h3>
+					<i class="iconfont icon-zhiwuguanli"></i>
+					职务管理
+				</h3>
+				<nav class="item">
+					<a href="">职务列表</a>
+					<a href="">新增职务</a>
+				</nav>
+			</div>
+			<div class="itemBox">
+				<h3>
+					<i class="iconfont icon-kehuguanli"></i>
+					客户管理
+				</h3>
+				<nav class="item">
+					<a href="">我的客户</a>
+					<a href="">全部客户</a>
+					<a href="">新增客户</a>
+				</nav>
+			</div>
+		</div>
+
+		<!-- IFRAME -->
+		<iframe src="" class="iframeBox"></iframe>
+	</main>
+
+	<!-- FOOTER -->
+	<footer class="footerBox">
+		<span>北京珠峰世纪技术培训有限公司</span>
+		<span>京ICP备09041920号</span>
+		<span>京公网安备110108400531号</span>
+	</footer>
+
+	<!-- IMPORT JS -->
+</body>
+
+</html>
