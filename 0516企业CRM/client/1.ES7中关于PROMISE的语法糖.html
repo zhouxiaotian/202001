@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		// ASYNC AWAIT ：PROMISE的语法糖，可以简化PROMISE的使用代码
+
+		// ASYNC修饰符：可以让一个普通函数返回的结果都变为PROMISE实例（它更重要的作用是结合AWAIT来处理）
+		/* function func() {
+			return new Promise(resolve => {
+				resolve(10);
+			});
+		} */
+
+		/* async function func() {
+			return 10;
+		}
+		func().then(result => {
+			console.log(result); //=>10
+		}); */
+
+		// AWAIT修饰符：等待PROMISE成功，并获取到它的结果（有点类似于同步的效果，但是不算是同步）  在函数中使用AWAIT，那么当前函数一定要用ASYNC修饰
+		function func1() {
+			return new Promise(resolve => {
+				setTimeout(() => {
+					resolve(1);
+				}, 1000);
+			});
+		}
+
+		function func2() {
+			return new Promise(resolve => {
+				setTimeout(() => {
+					resolve(2);
+				}, 1000);
+			});
+		}
+
+		function func3() {
+			return new Promise((_, reject) => {
+				setTimeout(() => {
+					reject(3);
+				}, 1000);
+			});
+		}
+
+		function AAA() {
+			return 10;
+		}
+
+		// 需求：异步串行  FUNC1先执行（等待1S），成功后执行FUNC2（等待1S），成功后执行FUNC3（等待1S），成功后输出‘OK’
+		async function func() {
+			/* func1().then(result => {
+				console.log(`第一个函数：${result}`);
+				return func2();
+			}).then(result => {
+				console.log(`第二个函数：${result}`);
+				return func3();
+			}).then(result => {
+				console.log('OK');
+			}).catch(reason => {
+				console.log('NO');
+			}); */
+
+			let result1 = await func1();
+			// 只有AWAIT后面的PROMISE实例的状态变为成功，我们把PROMISE的VALUE值赋值给RESULT1，然后才会执行下面的代码
+			console.log(result1);
+
+			let result2 = await func2();
+			console.log(result2);
+
+			let result3 = await AAA();
+			console.log(result3);
+
+			/* let result3 = await func3();
+			// AWAIT只有在PROMISE实例是成功的时候才会继续执行下面代码，如果PROMISE实例状态为失败，下面代码将不会再先执行（报错：Uncaught (in promise)）
+			console.log(result3); */
+		}
+		func();
+	</script>
+</body>
+
+</html>
