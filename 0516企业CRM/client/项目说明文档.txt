@@ -1,0 +1,55 @@
+|- admin
+	|- server.js    服务文件
+	|- config.js    配置文件
+	|- API.TXT      API接口文档
+	|- json 存放数据的文件夹
+		|- user.json
+		|- customer.json
+		|- xxx.json
+	|- routes 存放各个板块后台功能的实现代码
+		|- user.js
+		|- xxx.js
+	|- utils 存放公共的方法
+	|- package.json 有模块依赖清单
+
+后台技术栈：NODE + EXPRESS + JSON存储数据（真实项目中是基于数据库存储 mongodb/mysql/sqlserver/oracle...）
+
+===========================
+
+|- client
+	|- css  项目的CSS
+		|- reset.min.css
+		|- ...
+	|- font 字体图片
+	|- images 静态资源图片
+	|- js
+		|- axios.min.js
+		|- axios.defaults.js  依赖于axios.min.js
+		|- jquery.min.js
+		|- md5.min.js
+		|- utils.js
+		|- login.js  以下都是我们自己实现每个页面的功能JS
+		|- xxx.js
+	|- page 具体的单独的业务页面
+		|- userlist.html
+		|- xxx.html
+	|- login.html 登录页面
+	|- index.html 首页面（公共的头、尾、左侧导航等信息，后期会基于IFRAME把page下的指定页面嵌入到首页中）
+
+客户端技术栈：JQ + AXIOS + MD5加密 + 单例设计模式/发布订阅设计模式 + AJAX的串行和并行 + 本地存储(COOKIE/LOCAL-STORAGE) ...
+
+==================================
+【管理系统类的项目】
+	CRM客户管理系统
+	进销存管理系统
+	考勤管理系统
+	.....
+
+	OA 企业办公管理系统（包含CRM部分）：钉钉、今目标...
+	ERP 企业战略计划管理系统，一般比OA还要大
+	CMS 内容管理系统（网站中所看到的信息，一般都是用户或者公司的编辑人员管理录入的，CMS就是这样一个供人员管理和上传信息的网站）：帝国/织梦CMS  ，系统中还可能包含用户行为分析
+	TIM 即使通讯系统：QQ、微信、飞信
+
+一般这里系统，都是需要用户先登录才能继续使用的（一般这些系统都是对内部员工使用的）	
+
+==================================
