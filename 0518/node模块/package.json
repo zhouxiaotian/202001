@@ -1,0 +1,22 @@
+{
+  "name": "mynode",
+  "version": "1.0.0",
+  "description": "这是我自己的包 瞎写的",
+  "main": "1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ccc":"lessc index.less aaa.css",
+    "start":"node 1.js"
+  },
+  "keywords": [
+    "qqq"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "less": "^3.11.1",
+    "less-loader": "^6.1.0",
+    "qqqqqqq": "^1.0.5"
+  }
+}
