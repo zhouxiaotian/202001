@@ -16,6 +16,8 @@ let indexModule = (function () {
 		$baseBoxSingout.click(async () => {
 			let result = await axios.get('/user/signout');
 			if (result.code == 0) {
+				// 清除之前本地缓存的数据信息
+				localStorage.clear();
 				window.location.href = 'login.html';
 				return;
 			}
