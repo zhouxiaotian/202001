@@ -4,7 +4,8 @@ let indexModule = (function () {
 		$baseBoxSingout = $baseBox.find('a'),
 		$menuBox = $('.menuBox'),
 		$navBoxList = $('.navBox>a'),
-		$itemBoxList = null;
+		$itemBoxList = null,
+		$iframeBox = $('.iframeBox');
 
 	// 基于发布订阅管理我们获取到个人信息和权限信息后要处理的事情
 	let $plan = $.Callbacks();
@@ -32,8 +33,8 @@ let indexModule = (function () {
 					员工管理
 				</h3>
 				<nav class="item">
-					<a href="">员工列表</a>
-					<a href="">新增员工</a>
+					<a href="page/userlist.html" target="iframeBox">员工列表</a>
+					<a href="page/useradd.html" target="iframeBox">新增员工</a>
 				</nav>
 			</div>`;
 		}
@@ -45,8 +46,8 @@ let indexModule = (function () {
 					部门管理
 				</h3>
 				<nav class="item">
-					<a href="">部门列表</a>
-					<a href="">新增部门</a>
+					<a href="page/departmentlist.html" target="iframeBox">部门列表</a>
+					<a href="page/departmentadd.html" target="iframeBox">新增部门</a>
 				</nav>
 			</div>`;
 		}
@@ -58,8 +59,8 @@ let indexModule = (function () {
 					职务管理
 				</h3>
 				<nav class="item">
-					<a href="">职务列表</a>
-					<a href="">新增职务</a>
+					<a href="page/joblist.html" target="iframeBox">职务列表</a>
+					<a href="page/jobadd.html" target="iframeBox">新增职务</a>
 				</nav>
 			</div>`;
 		}
@@ -71,9 +72,9 @@ let indexModule = (function () {
 					客户管理
 				</h3>
 				<nav class="item">
-					<a href="">我的客户</a>
-					${power.includes('customerall')?`<a href="">全部客户</a>`:``}
-					<a href="">新增客户</a>
+					<a href="page/customerlist.html?lx=my" target="iframeBox">我的客户</a>
+					${power.includes('customerall')?`<a href="page/customerlist.html?lx=all" target="iframeBox">全部客户</a>`:``}
+					<a href="page/customeradd.html" target="iframeBox">新增客户</a>
 				</nav>
 			</div>`;
 		}
@@ -81,7 +82,7 @@ let indexModule = (function () {
 		$itemBoxList = $menuBox.find('.itemBox');
 	});
 
-	// 控制组织结构和客户管理
+	// 权限处理（控制组织结构和客户管理点击切换）
 	function handleGroup(index) {
 		// 先把ITEMBOX分组  $gropu1客户管理  $gropu2组织结构
 		let $gropu1 = $itemBoxList.filter((_, item) => {
@@ -104,7 +105,7 @@ let indexModule = (function () {
 	}
 	$plan.add(power => {
 		// 控制默认显示哪一个
-		let initialIndex = 0;
+		let initialIndex = power.includes('customer') ? 0 : 1;
 		$navBoxList.eq(initialIndex).addClass('active')
 			.siblings().removeClass('active');
 		handleGroup(initialIndex);
@@ -127,6 +128,14 @@ let indexModule = (function () {
 		});
 	});
 
+	// 权限处理（控制默认IFRAME嵌套的页面）
+	$plan.add(power => {
+		let url = 'page/customerlist.html?lx=my';
+		if (!power.includes('customer')) {
+			url = 'page/userlist.html';
+		}
+		$iframeBox.attr('src', url);
+	});
 
 	return {
 		async init() {
