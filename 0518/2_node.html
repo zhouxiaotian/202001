@@ -26,10 +26,19 @@
     node  文件名  在node环境下 执行了 我们的JS文件；
 
     node 遵循commonJS 规范；这个规范规定了 导入模块使用 require  导出模块使用exports
-    在node环境下 我们一般把一个JS文件当作一个模块；
+    在node环境下 我们一般把一个JS文件当作一个模块；每一个模块都有五个私有变量
+       require  module   exports  __dirname __filename
+
       require() exports 是node自带的属性；
       node的全局变量是 global不是window
       浏览器的全局变量 是 window;
+    
+    node的模块 有三类：内置模块(node自带的)  三方模块（npm  yarn cnpm 安装的）   自定义模块  
+    内置模块和三方模块 导入时  直接require('模块名') 即可 不用加路径
+    自定义模块的 导入 必须指定路径
 
+
+    npm init -y  或者  yarn init -y 是默认把文件夹变成一个包，包的名字就是文件夹的文字，包的名字不能有中文
+    若不想走默认  npm init  一步一步的设置
   */
 </script>

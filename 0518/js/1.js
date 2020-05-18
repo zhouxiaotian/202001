@@ -11,3 +11,5 @@ let a = 123;
 // console.log(new ppp)
 // console.log(window)
 // console.log(global)
+console.log(__dirname);// 当前文件 所在文件夹的绝对目录；
+console.log(__filename)// 当前文件的绝对目录
