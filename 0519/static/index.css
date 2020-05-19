@@ -5,6 +5,9 @@
 html,body{
   background-color: bisque;
 }
+h1,h2{
+  text-align: center;
+}
 img{
   width: 300px;
   height: 150px;
