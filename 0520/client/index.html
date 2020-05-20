@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/1.css">
+</head>
+<body>
+  <h1>hello  world</h1>
+  <button id='list'>list</button>
+  <button id='add'>add</button>
+</body>
+</html>
+<script src="./js/1.js"></script>
+<script>
+  list.onclick = function(){
+    let xhr = new XMLHttpRequest;
+    xhr.open('get','http://localhost:8080/list?name=zhufeng&age=11');
+    xhr.onreadystatechange = function(){}
+    xhr.send();
+  }
+  add.onclick = function(){
+    let xhr = new XMLHttpRequest;
+    xhr.open('post','http://localhost:8080/add');
+    // xhr.setRequestHeader('content-type','application/x-www-form-urlencoded')
+    xhr.onreadystatechange = function(){}
+    xhr.send(JSON.stringify({a:123,b:234}));
+    // xhr.send('a=123&b=234')
+  }
+</script>

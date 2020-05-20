@@ -20,7 +20,7 @@ function render(){
       let str = '';
       let ary = JSON.parse(xhr.response);
       ary.forEach(item=>{
-        str += `<li>${item}</li>`
+        str += `<li>${item}<button>X</button></li>`
       })
       ul.innerHTML = str;
     }

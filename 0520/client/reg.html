@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="nameInp">
+  <input type="password" id="pswInp">
+  <button id='btn'>注册</button>
+</body>
+</html>
+<script src="./js/axios.min.js"></script>
+<script src="./js/axios.defaults.js"></script>
+<script>
+  btn.onclick = function(){
+    axios.post('/reg',{username:nameInp.value,psw:pswInp.value}).then(data=>{
+      console.log(data)
+    })
+  }
+</script>

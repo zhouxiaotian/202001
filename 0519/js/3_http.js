@@ -5,6 +5,7 @@ http.createServer((request,response)=>{
   //request 存放的是请求信息
   //response 存放的是响应信息；
   // console.log(request)
+  response.setHeader
   console.log(request.url)// 前端的请求路径
   if(request.url == '/favicon.ico'){
     // 前端这是要 小图标

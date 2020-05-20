@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="text" id="nameInp">
+  <input type="password" id="pswInp">
+  <button id='btn'>登录</button>
+
+  
+  <button id='info'>获取用户信息</button>
+</body>
+</html>
+<script src="./js/axios.min.js"></script>
+<script src="./js/axios.defaults.js"></script>
+<script>
+  btn.onclick = function(){
+    axios.post('/login',{username:nameInp.value,psw:pswInp.value}).then(data=>{
+      console.log(data)
+    })
+  }
+  info.onclick = function(){
+    // 当点击这个按钮的时候  后端需要把当前登录的这个人的用户名密码传给前端
+    axios.get('/info').then(data=>{
+      console.log(data)
+    })
+  }
+</script>
