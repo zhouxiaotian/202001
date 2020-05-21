@@ -1,0 +1,315 @@
+<!DOCTYPE html><html><head><title>从零开始学webpack（v4.0）</title><meta charset='utf-8'><link href='https://cdn.maxiang.io/res-min/themes/marxico.css' rel='stylesheet'><style>
+.note-content  {font-family: "Helvetica Neue", Arial, "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, Song, sans-serif;}
+
+</style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+<h3 id="从零开始学webpackv40">从零开始学webpack（v4.0）</h3>
+
+<blockquote>
+  <p>webpack是一个现代JavaScript应用程序的静态模块打包工具。当webpack处理应用程序时，它会在内部构建一个依赖图(dependency [/dɪˈpendənsi/]  graph [/ɡræf/])，此依赖图会映射项目所需的每个模块，并生成一个或多个bundle包！webpack本身是基于node.js开发的！</p>
+  
+  <ul><li><p>grunt</p></li>
+  <li><p>gulp</p></li>
+  <li><p>fis</p></li>
+  <li><p>webpack（Browserify / Parcel [ˈpɑːsl]）</p></li>
+  <li><p>snowpack</p></li>
+  <li><p>…</p></li>
+  </ul>
+  
+  <p>官网：<a href="https://webpack.docschina.org/" target="_blank">https://webpack.docschina.org/</a></p>
+</blockquote>
+
+<p><strong>为啥要使用webpack</strong></p>
+
+<ul><li><p>代码转换：TypeScript编译成JavaScript、LESS/SCSS编译成CSS、ES6/7编译为ES5、虚拟DOM编译为真实的DOM等等…</p></li>
+<li><p>文件优化：压缩JS、CSS、HTML代码，压缩合并图片，图片BASE64等</p></li>
+<li><p>代码分割：提取多个页面的公共代码、提取首屏不需要执行部分的代码等</p></li>
+<li><p>模块合并：在采用模块化的项目里会有很多个模块和文件，需要构建功能把模块分类合并成一个文件</p></li>
+<li><p>自动刷新：监听本地源代码的变化，自动重新构建、刷新浏览器</p></li>
+<li><p>代码校验：Eslint代码规范校验和检测、单元测试等</p></li>
+<li><p>自动发布：自动构建出线上发布代码并传输给发布系统</p></li>
+<li><p>……</p></li>
+</ul>
+
+<hr>
+
+<h4 id="1前端开发的模块化进化史">1.前端开发的模块化进化史</h4>
+
+<p>JavaScript本身是弱化命名空间概念的，只有全局作用域和函数的私有作用域（ES6中新增块作用域），而模块化开发，从某种意义上来说，是强化了命名空间的概念！</p>
+
+<ul><li><p>有利于代码分离、解耦以及复用</p></li>
+<li><p>团队并行开发</p></li>
+<li><p>避免命名冲突</p></li>
+<li><p>相互引用，按需加载</p></li>
+<li><p>……</p></li>
+</ul>
+
+<p>模块化的发展史：</p>
+
+<ul><li><p>单例设计模式（Singleton Pattern）</p></li>
+<li><p>AMD （Asynchronous Module Definition 异步模块定义）</p></li>
+<li><p>CMD （Common Module Definition 通用模块定义）</p></li>
+<li><p>CommonJS（一般应用于服务器开发，例如：Node.js）</p></li>
+<li><p>ES6 Module （ESM : JS官方标准模块定义方式）</p></li>
+<li><p>……</p></li>
+</ul>
+
+<p><strong>单例设计模式</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> xxxModule=(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+</div><div class="hljs-line">    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fn</span>(<span class="hljs-params"></span>)</span>{
+</div><div class="hljs-line">        <span class="hljs-comment">//...</span>
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> {
+</div><div class="hljs-line">        init(){
+</div><div class="hljs-line">            <span class="hljs-comment">//...        </span>
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">})();
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">xxxModule.init();
+</div></code></pre>
+
+<p><strong>AMD require.js</strong> <br>
+<a href="https://requirejs.org" target="_blank">https://requirejs.org</a></p>
+
+<p><img longdesc="./1590079118549.png" alt="Alt text" title="" type="image/png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALYAAADGCAYAAAB/0nrFAAAZfklEQVR4Ae1de5Bb1Xn/7drrtzF+rG4MXrx+Eb+uKGNa1dgl/1ikQ9CWpNMyg+kMraWCM/ElQAm4WsK03gsDLbajzQwwkqd0ij2TyRCMRDzU4h9cClETwiAlmMRg1jYxudq1YfHa6/Xa6865L109V48r6ereTzM7uveec77zfb/zu0ffPdL5bdu5c+eugl6EgM0QaLdZPBQOISAjQMQmItgSASK2LYeVgiJiEwdsiQAR25bDSkERsYkDtkSAiG3LYaWgiNjEAVsiQMS25bBSUERs4oAtESBi23JYKSgiNnHAlghYj9jJMAShD3HJlnhTUA1CwHrEblDg1I29EWijn63ae4CdGl0DZ+xxjI87FWaKu9EI1EjsM3j7uYfxTPQzlObsBQy8shuPvZScpB4AOccOI6kjISHeJ0AQtD/Kv3Vo6KAoAlOLlpRVsBCbt9+Hj8Xd2I2H8XDPEnTktWOk7kfo45UQdrgLlOc1yLqQDIuIcX6Eet3ydSluJH1WVTohBHQEapyxAcxy477gfeASu7E7b+Y2kvqv0T1L77fMAwmSBLi6Ob0+5w3AmznVr9MBIWBEoHZiM2sFyV0rqZlhDt4eHumYCEGgmdo4cHRcGgFzV0UuJPGS+BIkz3Z8Z/xneF5OPyqcqVmOHQH8oQCU5EMJQIr3QYylAfB5ZaVDpFInImDOjK0hp8/c/eivhtSanQLvnLcXoZAfPFJIZJ4sC9SkS4QAUOPDYwEIGbnFEO4rUFT5JQnxcBLugBeUVleOnpNbmE9ss9GUYhCFmG6V94cQMOYoegkdEAIZBKxJbFe3OkNz8PaG4M34S0eEQFkImJtjl9Vl6UoSW9+jFyFQIwIWI3YS0VgafA/l1DWOq+ObW4rYghCB5AtSDu14WtYOgLnr2LX7QxYIAVMQsNSMbUpEZIQQAEDEJhrYEgFTiX3o0CFbgkRBtR4CphK79cInj+2KABHbriPr8LiI2A4ngF3DJ2LbdWQdHhcR2+EEsGv4RGy7jqzD42pZYifDAoSwtuNA3cmunUtx9JGalKOp3bLEdvSoUfCTImDN32NP6nZuBfrddi4iTj+34Iw9PrmojtNHjeKfFIHGEHv8GH4SfAzh976axKEzSDzfi2eilW42UHLsvjyJ1hwVKS0Hn8QLKm59BBpD7I5VuFvYgrP7xRLkZqR+Fj/Dd7C9x4ytu2nExDAQCCEUYn9+8KmI4YGz9QePIiiOQGOIzfrnvHjssWLkzpD6B9s9WFjc34pKeH+vQTXKjYCfB1IJgy5gReaocgsh0DhiM1AKkrs+pAZcMCijKUPCdcMFRTathcaIXK0CgcYSmzmYRe4BPf0wc6auAgdqYjMEGk/sLHLvlnPqRpFaSiaQdnngNiOFtxkR7BZO89ax2cy9u56KIcrDI6dpAEpxhGNpuHxuUpWyG4sLxNM8YhdwxtxLLvj83YgKAiKqYZcviF7SIDYXZotaM3WXOtsadscdd1g0VHLLSQg0J8d2EsIUa1MQIGI3BXbqtN4IELHrjTDZbwoCROymwE6d1hsBIna9ESb7TUGAiN0U2KnTeiNAxK43wmS/KQgQsZsCO3VabwSI2PVGmOw3BQEidlNgp07rjQARu94Ik/2mIEDEbgrs1Gm9ESBi1xthst8UBIjYTYGdOq03AkRsUxEuJgNRopNkGIIQru8GY1nyTYCT1Ccst9Fg+OPn8OHgJ5jW2YcNKxcAF0/ho6P9OHM+iavoQFvbLZi/cifWctNKsMUZRUy/MJLi4dd2CTkj7LKitByxcfksrlw5jsuXmf9n8fsPvouhcaCt4w7MmwVc/OoLtM8gUkOKI5pyweVKIZEE3KX+vzznRW+ontvwyuJaQytZj9jG8IeT+GJ8HMBduMHzALqMZQ4/ljcm8z0IdkchRuOQ3PTfjI2UsDax563A7Dbgy6s/x2e/5DDe7cUNnXNQttMstxQT8Pg9SERiSMuRqx/dLLeNpFQsCnycZ5UDcPkQ7M0hj2xfs8uq+OExoCvF+yAO9CAUMEynmk9Bo5iPoREAuV1M8ZaV8P5Qzn8rlpBMsH/N7QbnBvhYFEnJaxAHyrbHZncZB71P9iwgItOFCz69LKdti56WzZHmxNeFtWt/iPc/ehqjYy/i9O9exOmBHVjFfwvcjHI9SiMWBYKhEDgoAxoRBIWooUDmWjipE1AhFuALhnSysHxWFAYy+axKas4fQq/KWznnTTOpnupfct8JD4Ih9SaS+xEQNpI7GUUszcMv9+uGh48gEk3Ca7yBSriQDIuIcX6EVMeleJ0fXkv4Uq8iy6+KtM+/FRs2xvAnX+/D3CkdwFg/Pj72SQV4uOALaDMtB28Pz6bf/Gu69FkS0Vga2fJogDvgBw8ln2WdJ6MxpHl/1kzqDgThq4XVYH3D4JsiMMRcTrFEWn0lEymA90D7HHB7KpFuU5SwXAaZLM4b0G9grY9Wf7fcjH1h/DMZ0/apygPixATQ3g7M6bwFN138Ft4+cRBXJy7ViDsHrphojiRBAo8ejTV6T2xmBKKSogTL3lgqYOpL7juNlCgglmuY3Y/yK4lEiqUOhr7dHvCITP4QKbdXbu5YRIQQK5CCqb20+ptFiC3h9x+8irGJ4xg+z4izEfO+NgfAUaTe+VeMTN+Ia2YAF76KA+jA9Nl2fowsTTYpHkUKRchf7kOkO4BQSM3lWVqG0n22IsktQuyzGBv5OYavAm1tGzGv+xGsZLweAabM7AJGD2F4rANtU27FtUvux9ouVlinF8eBQ6zA7MdmSoDzsKlembXl9CBrnU3CQOaZT3FQnoWRUZ+SBtSH2AL+F+1bq6s8NBYU/pEfdhOlHyI1M+o75+1FyJtEWCh3ts8xYOFTi+TYa8BvimHz5hg2bXoS66+fA9mxOWuwfsOz2LT5DaVs406s71qglNUNVDd6fC6kIn0w6sgnwxGkXD41RVFz9VQk69s8uY7BL87tgSsdQ1RPj5MI6ysxhor6oZLupCLZD3Ps4U72RUoikXbBU0h80N0DnyuNRFK56eR/PtUXV29BvQP5poyHC1031mn9Y4vM2NYCks1kQfRBNOa6fGYVQfaWfZz72ZKhAPZhzl68PwifJCKhnjNl2YAvAVGvw8Mf9EES9RpaTf3dHQjBz75RlFME9TLr2wskwzGkXb4iopoc3B4XYmzpzxvQ7RU8kGIQhUwWn7+cWLBVS10kibOWGq4qnZWXDAfQ46Cv3i2SilQ5YNSsPARK5fXlWWi5WkTslhuySh2WEI+m4PL16OvelVpoxfqUY7fiqJXls7LaIf9oQM7Riy3cl2Ws5SoRsVtuyMp12I0AW6x26ItSEYcOvN3DJmLbfYQdGh8R26EDb/ewidh2H2GHxkfEdujA2z1sIrbdR9ih8RGxHTrwdg+biG33EXZofERshw683cMmYps6whZUgmK/7BOcpQLFhtRyX6mTElTpOy1XmkGuzX4LUuYO9dLW7VNqOWKTElQZ5MrSOFF+7NQXL/J/4h2oAsUQtB6xjeNKSlBGNIocK1vZxAG2JcxZv+ArAoh82drEJiUoeZAm27ol5e0gNgy5vHsmAY+u9GR/FSgWvbWJDVKCUuTJcpSgDLxFMqwqrhp0RozlOcdOUIFiIVt+VYSUoLzIVYJCmm3GFSCwv0glu2OcoQLFiG25GZuUoIqI4ehKUPkCmYrUQgHRzJzZmuXgTOLN7ipQFiI2KUFlOFi5KpO7xweXWKZYjgNUoBiWFklFVCWo80dlJahrl+UoQY0dwvBwHJfbb8W1S/8TG2SZqAwVTD2S1Zgy4pMZ26oSlEH0zygUqdQrrgSl2ym1Y7xo33pr0w5kFahQttCmacYtYMgixCYlKIULkyhBFSGMrPzq8qhCOmxdW0CfUcZKbyfBCSpQLFzL5dj6GDTxwKpKUDok8sNjRskJuSpVesUCBw5QgWJRkxJUgbG31SUHqkCx8bNIKmIrKlkrmFI5vbU8NdUbIrapcFrNmDNVoNgoUI5tNS6a4o+zVaCI2KaQyIpGnK0CxUaEUhEr8pJ8qhkBInbNEJIBKyJAxLbiqJBPNSMwdfjcRM1GjAbMtme0TceEQLkI0IxdLlJUr6UQIGK31HCRs+UiQMQuFymq11IIELFbarjI2XIRIGKXixTVaykEiNgtNVzkbLkIELGNSH24D08En8KRQePFCo5rbV9BV1S1NAKN+xHU0EH89vM3gdnfw7rlq4GJs0gf/zHSF97D1avjQBuPGQsfw6rrF5T2mEoJgTIQaByxr0iYmDgOXGFeXcLQJ49DuvAZ0H4bZsyaj6uj76FtapNJvXYbdolloFasSq3ti9ml6xUj0DhiZ7l2HF8yUmMD5i17HDfMySqkE0KgZgSaROwlmDW9A6Nj72H4xIs46boLixdy6Kgg4z/68vdxANtwD/bhwFEFh0W378SD3wCO7Hka8SHjtYym3eBbTyF0OK0Dp7RRy1mOvB+4R9yGNQC0PoSumKENr5frRrSDnPYYfBM/2vs6VFeARXdCeGgLOrX69F43BJpE7Dm4bvlujB17HCOXX8Pw6dcw/Me/wsLl9+O62RXEenQffr11L3bdC0Am1dN44jCwml1bq13bhyNr/xm3yWxK4fApH3aJqvqMTLynsb9zL7ay+oVeR/fhQNdO7BIZ+SX5pjnwcgq77jUq2BRqmML+va9j0da9eFC2LeHIy/I/gC5Uma6ZjEAFc6TJPU9bgWXrforVy3bjmulLgInXcObEuxitpJs12zKEXHsnvIsA5F1L4/0PmRIpe/HYaiRkJ4+bFwFDg1q5Ws34tuhO3PMNbcbncNs3eeDo/0H9kDDWzD4elDAEF7r06ZnDbffSbJ0NUv3OGjZjj44p5Glr65CjmZgA2tuBjmtWY2n73+DoJ3tw+eqI8mxZQ7yLulyTtE5hf3AfPjLUYvdD0VcnV13q0LkFt695HQf2fh/xNdvKmOGLekAFVSBQZ2JfQvr4ixgZP4/Ri79gonOYde0KAGfxh6P3YxgbMH06WxF5E5eZFsT05ZhVRRDlNtHyaz1VUVOL98s1UGG9NffuxS61jyeCyqfJ5ClMhZ1Q9YII1DkVGcH4xSM4f/EIJtg69fxnsFSeHsfRPpUHrryLi+dfw9hVHjPnv4gbV66o4141CUd/nQZ7WCyaTxeEqNaLHG57aC92bS0zham1O2ovI1DnGXsBrl/7U1yfBzaH67/+wwLX8yqaeIFDZycwdIqtiCg58+Bb++TVk5KpSEkPlLRmSF6N0fJwtcHgm9j/IY+ten5e0hAVmoxAnYltsrc1mltz7zasDrKvzRVDi27fBu+ifahXKjJ0WFmlUXorsUxYY1zUPB+Bts9OD1/Nv1zdlf/9nzew6S/+srrGdmjFlhz/eymtVVtgLOucY1sgwga6MFhq2bCBflBXpCtiIgdSOHw4jdXfpLVqE0Gt2pSjcuyqUSrV0PC1ufz1fLFvMEvZoDLTESBi1wpp5xY8KG6p1Qq1NxkByrFNBpTMWQMBIrY1xoG8MBmBqfPmmstts+2ZHC+ZcwgC5rLaIaBRmNZHgIht/TEiD6tAgIhdBWjUxPoIELGtP0bkYRUIELGrAI2aWB8BIrb1x4g8rAIBInYVoIH9U1BBQDhZTWMz20iI9wkQqnak1vZmxmKurcZ9pf75q3h3IA7M3YGN69fISlCnftuPk1/9SlWCcmP24sdx8/Imi+aYiy9ZaxICjfuX06dewNsnDgJz92DzTSvwhw++i0/PfQZM+QZmz5mPiZFfYeqSCG7qahIS1K2tEGjcjJ0F2ycYYqTGBixauxOr52UV0gkhUDMCTSJ2F+bO7MC50fcw9NEL+GjJt7F8MYdpFWT8ybCACPzwI4JICnD5guj1sn2Hhv9Ky+Bx+RDs9aq7HNmFnHJetQE/QgG3Wh5Fd7AXsjkVYq0/uQ7LscUEPFqdZBhCBPD7gYjijN6n3E7XyXHBp7XJHbpcGwbfEe+DGFPVq7LiYTmyiIRHjV33qwcDYgRatxlscjvNac+iZ7hqDZkSiz8EGZbcphY/bxKx52D5ur248MEP8OX4QQx9ehBDJ+/CdesewPJrKkAsFUHCH0IooLVRSAt2jXFUHSixDyrRlHLJF0RIZa0kk0bW0tGMVPmeQiThRyjjjEISdsNknIGgOJN102Q6NNpQfBWFGGOXakO5Fo671Zs40zJzlEZMTMAfCkGGRb5hwoi7s2/UTP3MEcMiIvkQDKkTQTKMcKa4pY4qmCNNjmvGCqz3vII/W7cHC2YuAa4cxOnfvYORSrpx+dCjEpg1k+JRpHh/1gzj7vHBlU4gKanlLh8ChqmY8/bCP5laWVk+ueDLdgbRFA+/cbpz98DnSiPBnCn4MtZ3o8fHxH/yr6UTSRSzwMzy/gB0WCbtM+OINJAGOC7z6eYOZGGZqWn9o4bN2COjqhJU+zQZFU0Jatr8NVi78m4kUs9hfOJ8ZUpQxkFgxGYDk4pAEHKBV9ShWLnL484MXG61ms45xonMSxpAGilE8p3BZFpVGSMslequ0F8Xuo1+ZBkrfSJPAiLDr0TKVNqEZUrrTOxLOPWbF/Dl+HmMnH9X1vO4ZpGiBPXxLwMYxC2YNYutiMQxzpSgZi3H3BqhKZ5Psuy6wa+sfLjBfVfTHedFb8jLEm0IooAYWpfgdU5FRjA2+haGz7+FK21uzHY9izWLGeLjaJ/mBi6/g/PDBzE64cZcVxgb+NqUoLhuFyb7mM4vlyDlfa6nMZB1rVCdSZjDdesp0CQ1rVfsDiAUCk6SNlnPbaNHdSb2Aqz801ewefMb2LzpWdx8IwflI4LDypufxKZNMbXsSdx0YxdmGD2r4phze+BKxxCOG1mZRFj9Zk7Jt7PLpXgY2oKD0qUbHh5IReN6HptfpwznODc8rjRi4Ywd1ioZDqufHOxBUEBflq9l2K2xClv1EPqyfdJMZnzTrrTue51TkQYDwz5Kg0CfKIItJigv5eNUPi5QzlIXPy8iolUH4A74wQsRyCsS8ophfh1D9SKHHLyKM7odVlFOlYq0aP7l7GeCUmld830t7UHjvnks7UdTS7PWqJvqSaM7V9axB3pac626FFp1TkVKdU1lzUdAAltIsuOLiG3HUS0zJnndP+e7gDKbWr6avXJsy8NtDQczX5vz8GvfMlrDNdO8oBzbNCjJkJUQoFTESqNBvpiGABHbNCjJkJUQMDUVsVJg5IuzEaAZ29njb9voidi2HVpnB0bEdvb42zZ6IrZth9bZgRGxnT3+to2eiG3boXV2YKYS+4qG5fgYxrTjSt/Z7g2hDzX/TFlWazLBTp7/inpSw35HXbc48gKz1QWTiH0Gn//HT3BGg6bjGD7vfxPD2jm9EwINRsAEYn+O0+Hv4atjZ7NdH3wSf+x/FWdHsy9PeiZvS5pcKmBSO02uwKQMiu1UabJrjui+NmKPnsDJ/ntw7vN1mPvQdsPu6/Xoeug5TPvi3zHY/18YrJTcjoCegqwnAtX/bHX0GE70/yMu4h+w4NG/Q+fMbDenzP9zLHv0AE5G7sPZfzuLq48+CFdOnewW6pmmiBRStTG082A3omIM2u/icxWKFOEbrdQFn9+Tb15WSsrYkIVomO6Heh26mpQsUoI+MQauhBJS5uefRsUpZVeKso8ypmwLU3erSznqVcxBZfsVZEUnbe9lK2/Jyge9OVeqJ/anh3Bx5C7M25lPaj2UmUtxwwP9GNh1Py58+iBQ9X+tTSES7kYwFJI1NmQSR8JIquRXSM3BH+pVhWIUxaS04TNEIS+TJQupKkwKAYUwkzbzotc/ACESRdLLbigJ8XAMjOhGvRs9LgDpmGhQocpWaPL2huBmClMJjy51xtrKW4yN6lXyTavsz2Q3qiwYJV8rT7nJ6A8dZyNQfSqy7A7MmHMQw6VSDZaqvLADY1P/FrOWZXdc2ZkLvkBGf4/z9oBHCglZKCSJaCydrX4ENwJBn5HWSEYZUQMGaTEO3h62HT2h7BqXFZNSiMYlyLvSka0YledvluKUotqUL+2Q10qWK9NvFrlPWbopcwNVoNxUwDpdUhGofsaeuQpLd7ykphonML69F9d1ZnC98sUvcLL/EVya8UDBVCVTs5yjHJUlYxNJggQ+S+rMWKwcK7og6ZRx97pWS9M34+AN+JAQRYiyUEzmRtJqGt9d1cotGY2ox2baKmDekZeqJzaDi6UaOw7gdPhhnNvzPNJPaQ+Qv8GpPY/gUuc/odP/bSwoJ7duAPy5eXlel6pkmpap55XThZZBoPpURA9xMa4L/BjXrMr5TwSd/4Kv7WgUqbW0RHeKCfnpD5qAMuOnlNzFUCn7MBmOgCmxBn3IE7rJrklnVkfABGKzEBdi8d/fjYVatOOrsHjHFjREz53zQk6V2cOk1j/TwDaKPDMRHFneKZL9f2OkuK4axR5AIykePV4Ocg5vUJRiZYJgtK93VPSAYwqV6QFdTapoRSqoCwK1pSI5Lk3RzjumY7p23IB3dyAEP1tK05VNefiDPkhiItM7++LHzwTaBWTEWJVd2kyEkQmr835tVcWNgJ+HEBER5kLoyVgp/0h+CBQVn9TlvvIbU81aEaCtYbUiSO0tiYBJqYglYyOnHIwAEdvBg2/n0InYdh5dB8dGxHbw4Ns5dCK2nUfXwbERsR08+HYOnYht59F1cGxEbAcPvp1DJ2LbeXQdHBsR28GDb+fQidh2Hl0Hx0bEdvDg2zl0IradR9fBsRGxHTz4dg79/wHbSX62on7TvAAAAABJRU5ErkJggg==" class=""></p>
+
+<p>main.js</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-comment">//全局配置</span>
+</div><div class="hljs-line"><span class="hljs-built_in">require</span>.config({
+</div><div class="hljs-line">    <span class="hljs-attr">baseUrl</span>: <span class="hljs-string">'js/lib'</span>,
+</div><div class="hljs-line">});
+</div><div class="hljs-line"><span class="hljs-built_in">require</span>([<span class="hljs-string">'moduleB'</span>, <span class="hljs-string">'moduleA'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">moduleB, moduleA</span>) </span>{
+</div><div class="hljs-line">    <span class="hljs-built_in">console</span>.log(moduleB.average(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>));
+</div><div class="hljs-line">});
+</div></code></pre>
+
+<p>moduleA.js</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line">define(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> {
+</div><div class="hljs-line">        sum(...args) {
+</div><div class="hljs-line">            <span class="hljs-keyword">return</span> args.reduce(<span class="hljs-function">(<span class="hljs-params">total, item</span>) =&gt;</span> {
+</div><div class="hljs-line">                <span class="hljs-keyword">return</span> total + item;
+</div><div class="hljs-line">            });
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">    };
+</div><div class="hljs-line">});
+</div></code></pre>
+
+<p>moduleB.js</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line">define([<span class="hljs-string">'moduleA'</span>], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">moudleA</span>) </span>{
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> {
+</div><div class="hljs-line">        average(...args) {
+</div><div class="hljs-line">            args.sort(<span class="hljs-function">(<span class="hljs-params">a, b</span>) =&gt;</span> a - b);
+</div><div class="hljs-line">            args.pop();
+</div><div class="hljs-line">            args.shift();
+</div><div class="hljs-line">            <span class="hljs-keyword">return</span> moudleA.sum(...args) / args.length;
+</div><div class="hljs-line">        }
+</div><div class="hljs-line">    };
+</div><div class="hljs-line">});
+</div></code></pre>
+
+<p><strong>CMD sea.js</strong> <br>
+<a href="http://seajs.org/" target="_blank">http://seajs.org/</a></p>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line">define(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">require, exports, module</span>) </span>{
+</div><div class="hljs-line">  <span class="hljs-comment">// 通过 require 引入依赖</span>
+</div><div class="hljs-line">  <span class="hljs-keyword">let</span> $ = <span class="hljs-built_in">require</span>(<span class="hljs-string">'jquery'</span>);
+</div><div class="hljs-line">  <span class="hljs-keyword">let</span> spinning = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./spinning'</span>);
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">  <span class="hljs-comment">// 通过 module.exports 提供接口</span>
+</div><div class="hljs-line">  <span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">      init(){}
+</div><div class="hljs-line">  };
+</div><div class="hljs-line">});
+</div></code></pre>
+
+<p><strong>CommonJs规范</strong> <br>
+在 CommonJS 模块中，如果你 require 了一个模块，那就相当于你执行了该文件的代码并最终获取到模块输出的 module.exports 对象的一份拷贝，并且重复引入的模块并不会重复执行，再次获取模块只会获得之前获取到的模块的拷贝</p>
+
+<ul><li><p>module.exports</p></li>
+<li><p>require</p></li>
+</ul>
+
+<p><strong>ES6 Module模块规范</strong> <br>
+<a href="https://es6.ruanyifeng.com/#docs/module" target="_blank">https://es6.ruanyifeng.com/#docs/module</a></p>
+
+<h4 id="2npm的操作指南">2.NPM的操作指南</h4>
+
+<p><strong>常规操作</strong></p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs stylus"><div class="hljs-line"><span class="hljs-comment">// 安装模块</span>
+</div><div class="hljs-line">$ npm install xxx
+</div><div class="hljs-line">$ npm <span class="hljs-selector-tag">i</span> xxx -g
+</div><div class="hljs-line">$ npm <span class="hljs-selector-tag">i</span> xxx@xx<span class="hljs-selector-class">.xx</span>
+</div><div class="hljs-line">$ npm uninstall xxx / -g
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line">$ npm root -g
+</div><div class="hljs-line">$ npm view xxx versions &gt; xxx<span class="hljs-selector-class">.version</span><span class="hljs-selector-class">.json</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">// 全局安装：</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 1.所有项目都能使用</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 2.一般可以基于命令来操作</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 3.容易导致版本冲突</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 4.不能在项目中导入对应的模块</span>
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">// 本地安装:</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 1.只能本地项目使用</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 2.默认不支持命令操作（可以基于package.json或者npx[npm &gt; 5.2]）</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 3.不会导致版本冲突</span>
+</div><div class="hljs-line"><span class="hljs-comment">// 4.可以在本地代码中导入对应的模块</span>
+</div></code></pre>
+
+<p><strong>优化速度</strong></p>
+
+<ul><li><p>nrm</p></li>
+<li><p>yarn</p></li>
+<li><p>cnpm</p></li>
+<li><p>…… </p></li>
+</ul>
+
+<p><strong>跑环境和依赖项</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs stylus"><div class="hljs-line">$ npm init -y
+</div><div class="hljs-line">$ npm <span class="hljs-selector-tag">i</span> xxx --save / --save-dev
+</div><div class="hljs-line">$ npm <span class="hljs-selector-tag">i</span>
+</div><div class="hljs-line">$ npm <span class="hljs-selector-tag">i</span> --production  
+</div></code></pre>
+
+<h4 id="3webpack的基础操作">3.webpack的基础操作</h4>
+
+<p>目前@vue/cli和create-react-app基本上采用的是webpack 4.0以上版本，所以本次课程以第四代版本为主；第四代版本需要我们安装webpack和webpack-cli（可执行命令）</p>
+
+<p><strong>安装</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs stata"><div class="hljs-line"><span class="hljs-comment">// 为防止全局安装webpack导致版本冲突，真实项目中以本地安装为主 </span>
+</div><div class="hljs-line">$ npm init -<span class="hljs-built_in">y</span>
+</div><div class="hljs-line">$ npm install webpack webpack-<span class="hljs-keyword">cli</span> --<span class="hljs-keyword">save</span>-dev
+</div><div class="hljs-line">OR
+</div><div class="hljs-line">$ yarn add webpack webpack-<span class="hljs-keyword">cli</span> -<span class="hljs-built_in">D</span>
+</div></code></pre>
+
+<p><strong>零配置使用</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs gams"><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * 默认会打包SRC目录中的JS文件（入口默认index.js）</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * 打包完成的目录默认是DIST/MAIN.JS</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * webpack默认支持CommonJS和ES6 Module的模块规范，依此进行依赖打包</span>
+</div><div class="hljs-line"><span class="hljs-comment"> */</span>
+</div><div class="hljs-line"><span class="hljs-symbol">$</span> npx webpack
+</div></code></pre>
+
+<p><strong>自定义基础配置</strong></p>
+
+<blockquote>
+  <p>webpack.config.js OR webpackfile.js</p>
+</blockquote>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;打包模式  开发环境development  生产环境production</span>
+</div><div class="hljs-line">    mode: <span class="hljs-string">'production'</span>,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;入口</span>
+</div><div class="hljs-line">    entry: <span class="hljs-string">'./src/index.js'</span>,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;输出</span>
+</div><div class="hljs-line">    output: {
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;输出文件的文件名</span>
+</div><div class="hljs-line">        filename: <span class="hljs-string">'bundle.js'</span>,
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;输出目录的"绝对路径"</span>
+</div><div class="hljs-line">        path: path.resolve(__dirname, <span class="hljs-string">'dist'</span>)
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<p><strong>自定义配置文件名</strong></p>
+
+<ul><li><p>$ npx webpack –config  webpack.config.development.js</p></li>
+<li><p>可在package.json中配置可执行的脚本命令（区分开发环境）</p></li>
+</ul>
+
+<pre class="prettyprint hljs-dark"><code class="hljs xquery"><div class="hljs-line"><span class="hljs-string">"scripts"</span>: {
+</div><div class="hljs-line">    <span class="hljs-string">"serve"</span>: <span class="hljs-string">"webpack --config webpack.config.development.js"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"build"</span>: <span class="hljs-string">"webpack --config webpack.config.production.js"</span>
+</div><div class="hljs-line">},
+</div></code></pre>
+
+<p><strong>webpack-dev-server</strong></p>
+
+<blockquote>
+  <p><a href="https://webpack.js.org/configuration/dev-server/" target="_blank">https://webpack.js.org/configuration/dev-server/</a> <br>
+  $ npm install webpack-dev-server –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="hljs groovy"><div class="hljs-line"><span class="hljs-comment">/* webpack.config.js */</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;配置DEV-SERVER</span>
+</div><div class="hljs-line"><span class="hljs-string">devServer:</span> {
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;端口</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    port:</span> <span class="hljs-number">3000</span>,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;显示编译进度</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    progress:</span> <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;指定访问资源目录</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    contentBase:</span> <span class="hljs-string">'./dist'</span>,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;自动打开浏览器</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    open:</span> <span class="hljs-literal">true</span>
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">/* package.json */</span>
+</div><div class="hljs-line"><span class="hljs-string">"scripts"</span>: {
+</div><div class="hljs-line">    <span class="hljs-string">"serve"</span>: <span class="hljs-string">"webpack-dev-server"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"build"</span>: <span class="hljs-string">"webpack"</span>
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<p><strong>html-webpack-plugin</strong></p>
+
+<blockquote>
+  <p><a href="https://www.webpackjs.com/plugins/html-webpack-plugin/" target="_blank">https://www.webpackjs.com/plugins/html-webpack-plugin/</a> <br>
+  $ npm i html-webpack-plugin –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> HtmlWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">'html-webpack-plugin'</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    ...,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;在webpack中使用插件</span>
+</div><div class="hljs-line">    plugins: [
+</div><div class="hljs-line">        <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;指定自己的模板</span>
+</div><div class="hljs-line">            template: <span class="hljs-string">'./src/index.html'</span>,
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;输出的文件名</span>
+</div><div class="hljs-line">            filename: <span class="hljs-string">'index.html'</span>,
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;给引入的文件设置HASH戳（清除缓存的），也可以在output中设置 filename: 'bundle.[hash].js' 来生成不同的文件</span>
+</div><div class="hljs-line">            hash: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;控制是否以及以何种方式最小化输出 </span>
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;https://github.com/kangax/html-minifier</span>
+</div><div class="hljs-line">            minify: {
+</div><div class="hljs-line">                <span class="hljs-attr">collapseWhitespace</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">                <span class="hljs-attr">removeComments</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">                <span class="hljs-attr">removeAttributeQuotes</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">                <span class="hljs-attr">removeEmptyAttributes</span>: <span class="hljs-literal">true</span>
+</div><div class="hljs-line">            }
+</div><div class="hljs-line">        })
+</div><div class="hljs-line">    ]
+</div><div class="hljs-line">}
+</div></code></pre></div></body></html>
