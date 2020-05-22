@@ -20,33 +20,8 @@ let useraddModule = (function () {
 
 	// 绑定部分和职务的信息
 	async function bindDepartAndJob() {
-		// 首先看本地是否存在缓存信息，如果存在，在验证时效性；不存在或者过期了，我们重新发送请求，否则直接用本地的信息即可
-		let departmentData = null,
-			jobData = null,
-			isStorage = false;
-		let departmentANDjob = localStorage.getItem('departmentANDjob');
-		if (departmentANDjob) {
-			departmentANDjob = JSON.parse(departmentANDjob);
-			if (new Date().getTime() - departmentANDjob.time < 86400000) {
-				[departmentData, jobData] = departmentANDjob.data;
-				isStorage = true;
-			}
-		}
-
-		// 使用的非缓存数据，我们需要重新获取信息
-		if (!isStorage) {
-			// AJAX并行获取数据
-			[departmentData, jobData] = await axios.all([
-				axios.get('/department/list'),
-				axios.get('/job/list')
-			]);
-			// 获取信息后先把信息缓存到本地（时效性1天）
-			localStorage.setItem('departmentANDjob', JSON.stringify({
-				time: new Date().getTime(),
-				data: [departmentData, jobData]
-			}));
-		}
-
+		let departmentData = await queryDepart(),
+			jobData = await queryJob();
 		if (departmentData.code == 0) {
 			departmentData = departmentData.data;
 			let str = ``;
@@ -55,7 +30,6 @@ let useraddModule = (function () {
 			});
 			$userdepartment.html(str);
 		}
-
 		if (jobData.code == 0) {
 			jobData = jobData.data;
 			let str = ``;
@@ -124,7 +98,7 @@ let useraddModule = (function () {
 			jobId: $userjob.val(),
 			desc: $userdesc.val().trim()
 		};
-		
+
 		// 向服务器发送请求
 		let result = await axios.post('/user/add', params);
 		if (result.code == 0) {
