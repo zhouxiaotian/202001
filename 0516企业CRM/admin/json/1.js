@@ -24,9 +24,9 @@ for (let i = 1; i <= 99; i++) {
 		"phone": ran1(11),
 		"QQ": ran1(8, true),
 		"weixin": ran1(10, true),
-		"type": "重点客户",
+		"type": ["重点客户", "一般客户", "放弃客户"][Math.round(Math.random() * 2)],
 		"address": "北京市昌平区回龙观东大街03号",
-		"userId": Math.round(Math.random() * 3 + 1),
+		"userId": Math.round(Math.random() * 2 + 1),
 		"departmentId": Math.round(Math.random() * 3 + 1),
 		"time": new Date().getTime(),
 		"state": 0

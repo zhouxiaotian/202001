@@ -150,16 +150,6 @@ route.get('/list', (req, res) => {
 		data = data.filter(item => {
 			return parseFloat(item.userId) === parseFloat(userID);
 		});
-	} else {
-		if (!power.includes('departcustomer') && !power.includes('allcustomer')) {
-			data = data.filter(item => {
-				return parseFloat(item.userId) === parseFloat(userID);
-			});
-		} else if (power.includes('departcustomer') && !power.includes('allcustomer')) {
-			data = data.filter(item => {
-				return parseFloat(item.departmentId) === parseFloat(getUserInfo(userID, req).departmentId);
-			});
-		}
 	}
 	
 	//=>分页处理
