@@ -107,6 +107,8 @@ RESULT：{
 	code:0  
 	codeText:'OK'
 }
+修改自己的密码：不需要传递userId，需要把新的密码传递给服务器(MD5)
+重置他人的密码：不需要传递password，只需要传递userId，服务器会帮助我们重置
 ----
 获取用户权限
 URL：/user/power

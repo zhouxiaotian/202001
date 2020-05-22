@@ -18,6 +18,8 @@ let useraddModule = (function () {
 		$userdesc = $('.userdesc'),
 		$submit = $('.submit');
 
+	let userId = null;
+
 	// 绑定部分和职务的信息
 	async function bindDepartAndJob() {
 		let departmentData = await queryDepart(),
@@ -99,7 +101,20 @@ let useraddModule = (function () {
 			desc: $userdesc.val().trim()
 		};
 
-		// 向服务器发送请求
+		// 向服务器发送请求（区分新增还是修改）
+		if (userId) {
+			// 修改
+			params.userId = userId;
+			let result = await axios.post('/user/update', params);
+			if (result.code == 0) {
+				alert('小主，您很棒，奴家已经成功修改了这条数据~~');
+				window.location.href = "userlist.html";
+				return;
+			}
+			alert('小主，当前网络繁忙，请您刷新后重试~~');
+			return;
+		}
+		// 新增
 		let result = await axios.post('/user/add', params);
 		if (result.code == 0) {
 			alert('小主，您很棒，奴家已经成功为您新增一条数据~~');
@@ -109,9 +124,38 @@ let useraddModule = (function () {
 		alert('小主，当前网络繁忙，请您刷新后重试~~');
 	}
 
+	// 从服务器获取用户的基本信息，绑定在对应文本框中
+	async function queryBaseInfo() {
+		let result = await axios.get('/user/info', {
+			params: {
+				userId
+			}
+		});
+		if (result.code == 0) {
+			result = result.data;
+			$username.val(result.name);
+			result.sex == 0 ? $man.prop('checked', true) : $woman.prop('checked', true);
+			$useremail.val(result.email);
+			$userphone.val(result.phone);
+			$userdepartment.val(result.departmentId);
+			$userjob.val(result.jobId);
+			$userdesc.val(result.desc);
+			return;
+		}
+		alert(`小主，当前要编辑的员工不存在，请查证！`);
+		userId = null;
+	}
+
 	return {
 		init() {
 			bindDepartAndJob();
+
+			// 获取到传递的员工ID，从而获取员工的基本信息
+			let params = window.location.href.queryURLParams();
+			if (params.hasOwnProperty('id')) {
+				userId = params.id;
+				queryBaseInfo();
+			}
 
 			// 文本框失去焦点的时候做表单校验
 			$username.blur(checkName);
