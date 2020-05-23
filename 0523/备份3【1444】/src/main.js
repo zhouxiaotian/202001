@@ -9,4 +9,4 @@ const {
 
 console.log(plus(20, 10));
 console.log(minus(20, 10));
-console.log("我是首页面的入口");
+console.log('朱光翼');
