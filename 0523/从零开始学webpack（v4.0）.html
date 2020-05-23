@@ -1,0 +1,401 @@
+<!DOCTYPE html><html><head><title>从零开始学webpack（v4.0）</title><meta charset='utf-8'><link href='https://cdn.maxiang.io/res-min/themes/marxico.css' rel='stylesheet'><style>
+.note-content  {font-family: "Helvetica Neue", Arial, "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun, Song, sans-serif;}
+
+</style></head><body><div id='preview-contents' class='note-content'>
+                        
+                    
+
+
+
+<h3 id="从零开始学webpackv40">从零开始学webpack（v4.0）</h3>
+
+<h4 id="3webpack的基础操作">3.webpack的基础操作</h4>
+
+<p>目前@vue/cli和create-react-app基本上采用的是webpack 4.0以上版本，所以本次课程以第四代版本为主；第四代版本需要我们安装webpack和webpack-cli（可执行命令）</p>
+
+<p><strong>安装</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs stata"><div class="hljs-line"><span class="hljs-comment">// 为防止全局安装webpack导致版本冲突，真实项目中以本地安装为主 </span>
+</div><div class="hljs-line">$ npm init -<span class="hljs-built_in">y</span>
+</div><div class="hljs-line">$ npm install webpack webpack-<span class="hljs-keyword">cli</span> --<span class="hljs-keyword">save</span>-dev
+</div><div class="hljs-line">OR
+</div><div class="hljs-line">$ yarn add webpack webpack-<span class="hljs-keyword">cli</span> -<span class="hljs-built_in">D</span>
+</div></code></pre>
+
+<p><strong>零配置使用</strong></p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs gams"><div class="hljs-line"><span class="hljs-comment">/*</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * 默认会打包SRC目录中的JS文件（入口默认index.js）</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * 打包完成的目录默认是DIST/MAIN.JS</span>
+</div><div class="hljs-line"><span class="hljs-comment"> * webpack默认支持CommonJS和ES6 Module的模块规范，依此进行依赖打包</span>
+</div><div class="hljs-line"><span class="hljs-comment"> */</span>
+</div><div class="hljs-line"><span class="hljs-symbol">$</span> npx webpack
+</div></code></pre>
+
+<p><strong>自定义基础配置</strong></p>
+
+<blockquote>
+  <p>webpack.config.js OR webpackfile.js</p>
+</blockquote>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;打包模式  开发环境development  生产环境production</span>
+</div><div class="hljs-line">    mode: <span class="hljs-string">'production'</span>,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;入口</span>
+</div><div class="hljs-line">    entry: <span class="hljs-string">'./src/index.js'</span>,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;输出</span>
+</div><div class="hljs-line">    output: {
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;输出文件的文件名 'bundle.[hash].js'</span>
+</div><div class="hljs-line">        filename: <span class="hljs-string">'bundle.js'</span>,
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;输出目录的"绝对路径"</span>
+</div><div class="hljs-line">        path: path.resolve(__dirname, <span class="hljs-string">'dist'</span>)
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<p><strong>自定义配置文件名</strong></p>
+
+<ul><li><p>$ npx webpack –config  webpack.config.development.js</p></li>
+<li><p>可在package.json中配置可执行的脚本命令（区分开发环境）</p></li>
+</ul>
+
+<pre class="prettyprint hljs-dark"><code class="hljs xquery"><div class="hljs-line"><span class="hljs-string">"scripts"</span>: {
+</div><div class="hljs-line">    <span class="hljs-string">"serve"</span>: <span class="hljs-string">"webpack --config webpack.config.development.js"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"build"</span>: <span class="hljs-string">"webpack --config webpack.config.production.js"</span>
+</div><div class="hljs-line">},
+</div></code></pre>
+
+<p><strong>html-webpack-plugin</strong></p>
+
+<blockquote>
+  <p><a href="https://www.webpackjs.com/plugins/html-webpack-plugin/" target="_blank">https://www.webpackjs.com/plugins/html-webpack-plugin/</a> <br>
+  $ npm i html-webpack-plugin –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">let</span> HtmlWebpackPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">'html-webpack-plugin'</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    ...,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;在webpack中使用插件</span>
+</div><div class="hljs-line">    plugins: [
+</div><div class="hljs-line">        <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;指定自己的模板</span>
+</div><div class="hljs-line">            template: <span class="hljs-string">'./src/index.html'</span>,
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;输出的文件名</span>
+</div><div class="hljs-line">            filename: <span class="hljs-string">'index.html'</span>,
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;给引入的文件设置HASH戳（清除缓存的），也可以在output中设置 filename: 'bundle.[hash].js' 来生成不同的文件</span>
+</div><div class="hljs-line">            hash: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;控制是否以及以何种方式最小化输出 </span>
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;https://github.com/kangax/html-minifier</span>
+</div><div class="hljs-line">            minify: {
+</div><div class="hljs-line">                <span class="hljs-attr">collapseWhitespace</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">                <span class="hljs-attr">removeComments</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">                <span class="hljs-attr">removeAttributeQuotes</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">                <span class="hljs-attr">removeEmptyAttributes</span>: <span class="hljs-literal">true</span>
+</div><div class="hljs-line">            }
+</div><div class="hljs-line">        })
+</div><div class="hljs-line">    ]
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<p><strong>clean-webpack-plugin</strong></p>
+
+<blockquote>
+  <p>每一次打包之前，清除之前打包的内容 <br>
+  $ npm install clean-webpack-plugin –sav-dev</p>
+</blockquote>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">const</span> { CleanWebpackPlugin } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'clean-webpack-plugin'</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">module</span>.exports={
+</div><div class="hljs-line">    <span class="hljs-attr">plugins</span>:[
+</div><div class="hljs-line">        <span class="hljs-keyword">new</span> CleanWebpackPlugin()
+</div><div class="hljs-line">    ]
+</div><div class="hljs-line">};
+</div></code></pre>
+
+<p><strong>webpack-dev-server</strong></p>
+
+<blockquote>
+  <p><a href="https://webpack.js.org/configuration/dev-server/" target="_blank">https://webpack.js.org/configuration/dev-server/</a> <br>
+  $ npm install webpack-dev-server –save-dev</p>
+</blockquote>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs dts"><div class="hljs-line"><span class="hljs-comment">/* webpack.config.js */</span>
+</div><div class="hljs-line"><span class="hljs-comment">//=&gt;配置DEV-SERVER  内存中编译打包</span>
+</div><div class="hljs-line"><span class="hljs-symbol">devServer:</span> {
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;端口</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    port:</span> <span class="hljs-number">3000</span>,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;开启GZIP压缩</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    compress:</span>true,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;显示编译进度</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    progress:</span> true,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;指定访问资源目录</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    contentBase:</span> path.resolve(__dirname, <span class="hljs-string">"dist"</span>),
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;自动打开浏览器</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    open:</span> true,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;开启热更新</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    hot:</span>true,
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;请求代理</span>
+</div><div class="hljs-line"><span class="hljs-symbol">    proxy:</span>{
+</div><div class="hljs-line">       <span class="hljs-string">"/"</span>:{
+</div><div class="hljs-line"><span class="hljs-symbol">          target:</span><span class="hljs-string">"http://localhost:8888"</span>, 
+</div><div class="hljs-line"><span class="hljs-symbol">          secure:</span> false, <span class="hljs-comment">//若为true则表示是https，false是http</span>
+</div><div class="hljs-line"><span class="hljs-symbol">          changeOrigin:</span> true <span class="hljs-comment">//把请求头当中的host值改成服务器地址</span>
+</div><div class="hljs-line">       } 
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-comment">/* package.json */</span>
+</div><div class="hljs-line"><span class="hljs-string">"scripts"</span>: {
+</div><div class="hljs-line">    <span class="hljs-string">"serve"</span>: <span class="hljs-string">"webpack-dev-server"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"build"</span>: <span class="hljs-string">"webpack"</span>
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<h4 id="4多入口多出口">4.多入口、多出口</h4>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">const</span> htmlPlugins = [<span class="hljs-string">'index'</span>, <span class="hljs-string">'login'</span>].map(<span class="hljs-function"><span class="hljs-params">chunk</span> =&gt;</span> {
+</div><div class="hljs-line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> HtmlWebpackPlugin({
+</div><div class="hljs-line">        <span class="hljs-attr">template</span>: <span class="hljs-string">`./<span class="hljs-subst">${chunk}</span>.html`</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">filename</span>: <span class="hljs-string">`<span class="hljs-subst">${chunk}</span>.html`</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">hash</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">chunks</span>:[chunk,<span class="hljs-string">'jquery'</span>],
+</div><div class="hljs-line">        <span class="hljs-attr">minify</span>: {
+</div><div class="hljs-line">           <span class="hljs-attr">collapseWhitespace</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">           <span class="hljs-attr">removeComments</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">           <span class="hljs-attr">removeAttributeQuotes</span>: <span class="hljs-literal">true</span>,
+</div><div class="hljs-line">           <span class="hljs-attr">removeEmptyAttributes</span>: <span class="hljs-literal">true</span>
+</div><div class="hljs-line">       }
+</div><div class="hljs-line">   });
+</div><div class="hljs-line">});
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-built_in">module</span>.exports={
+</div><div class="hljs-line">    <span class="hljs-attr">entry</span>: {
+</div><div class="hljs-line">        <span class="hljs-attr">index</span>: <span class="hljs-string">"./src/index.js"</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">login</span>: <span class="hljs-string">"./src/login.js"</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">jquery</span>:<span class="hljs-string">"./src/jquery.js"</span>
+</div><div class="hljs-line">    },
+</div><div class="hljs-line">    <span class="hljs-attr">output</span>: {
+</div><div class="hljs-line">        <span class="hljs-attr">filename</span>: <span class="hljs-string">"[name].[hash].js"</span>,
+</div><div class="hljs-line">        <span class="hljs-attr">path</span>: path.resolve(__dirname, <span class="hljs-string">"dist"</span>)
+</div><div class="hljs-line">    },
+</div><div class="hljs-line">    <span class="hljs-attr">plugins</span>:[
+</div><div class="hljs-line">        ...htmlPlugins
+</div><div class="hljs-line">    ]
+</div><div class="hljs-line">};
+</div></code></pre>
+
+<h4 id="5webpack中的加载器loader处理样式的">5.webpack中的加载器loader：处理样式的</h4>
+
+<blockquote>
+  <p>$ npm install css-loader style-loader less less-loader autoprefixer postcss-loader –save-dev</p>
+</blockquote>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;配置模块加载器LOADER</span>
+</div><div class="hljs-line">    <span class="hljs-built_in">module</span>: {
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;模块规则：使用加载器（默认从右向左执行，从下向上）</span>
+</div><div class="hljs-line">        rules: [{
+</div><div class="hljs-line">            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(css|less)$/</span>, <span class="hljs-comment">//=&gt;基于正则匹配哪些模块需要处理</span>
+</div><div class="hljs-line">            use: [
+</div><div class="hljs-line">                <span class="hljs-string">"style-loader"</span>, <span class="hljs-comment">//=&gt;把CSS插入到HEAD中</span>
+</div><div class="hljs-line">                <span class="hljs-string">"css-loader"</span>, <span class="hljs-comment">//=&gt;编译解析@import/URL()这种语法</span>
+</div><div class="hljs-line">                <span class="hljs-string">"postcss-loader"</span>, <span class="hljs-comment">//=&gt;设置前缀</span>
+</div><div class="hljs-line">                {
+</div><div class="hljs-line">                    <span class="hljs-attr">loader</span>: <span class="hljs-string">"less-loader"</span>,
+</div><div class="hljs-line">                    <span class="hljs-attr">options</span>: {
+</div><div class="hljs-line">                        <span class="hljs-comment">//=&gt;加载器额外的配置</span>
+</div><div class="hljs-line">                    }
+</div><div class="hljs-line">                }
+</div><div class="hljs-line">            ]
+</div><div class="hljs-line">        }]
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<p>postcss.config.js</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    <span class="hljs-attr">plugins</span>: [
+</div><div class="hljs-line">        <span class="hljs-built_in">require</span>(<span class="hljs-string">'autoprefixer'</span>)
+</div><div class="hljs-line">    ]
+</div><div class="hljs-line">};
+</div></code></pre>
+
+<p>package.json</p>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="hljs awk"><div class="hljs-line"><span class="hljs-regexp">//</span> https:<span class="hljs-regexp">//gi</span>thub.com<span class="hljs-regexp">/browserslist/</span>browserslist
+</div><div class="hljs-line"><span class="hljs-string">"browserslist"</span>: [
+</div><div class="hljs-line">    <span class="hljs-string">"&gt; 1%"</span>,
+</div><div class="hljs-line">    <span class="hljs-string">"last 2 versions"</span>
+</div><div class="hljs-line">]
+</div></code></pre>
+
+
+
+<h4 id="6mini-css-extract-plugin-抽离css内容">6.mini-css-extract-plugin 抽离CSS内容</h4>
+
+<blockquote>
+  <p><a href="https://www.npmjs.com/package/mini-css-extract-plugin" target="_blank">https://www.npmjs.com/package/mini-css-extract-plugin</a> <br>
+  $ npm install mini-css-extract-plugin –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">const</span> MiniCssExtractPlugin=<span class="hljs-built_in">require</span>(<span class="hljs-string">'mini-css-extract-plugin'</span>);
+</div><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    <span class="hljs-attr">plugins</span>: [
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;使用插件</span>
+</div><div class="hljs-line">        <span class="hljs-keyword">new</span> MiniCssExtractPlugin({
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;设置编译后的文件名字</span>
+</div><div class="hljs-line">            filename: <span class="hljs-string">'main.[hash].css'</span>
+</div><div class="hljs-line">        })
+</div><div class="hljs-line">    ],
+</div><div class="hljs-line">    <span class="hljs-attr">module</span>: {
+</div><div class="hljs-line">        <span class="hljs-attr">rules</span>: [{
+</div><div class="hljs-line">            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(css|less)$/</span>,
+</div><div class="hljs-line">            <span class="hljs-attr">use</span>: [
+</div><div class="hljs-line">                <span class="hljs-comment">// "style-loader",</span>
+</div><div class="hljs-line">                <span class="hljs-comment">//=&gt;使用插件中的LOADER代替STYLE方式</span>
+</div><div class="hljs-line">                MiniCssExtractPlugin.loader,
+</div><div class="hljs-line">                <span class="hljs-string">"css-loader"</span>,
+</div><div class="hljs-line">                <span class="hljs-string">"postcss-loader"</span>,
+</div><div class="hljs-line">                <span class="hljs-string">"less-loader"</span>
+</div><div class="hljs-line">            ]
+</div><div class="hljs-line">        }]
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<h4 id="7设置优化项压缩cssjs">7.设置优化项压缩CSS/JS</h4>
+
+<blockquote>
+  <p>$ npm install optimize-css-assets-webpack-plugin  uglifyjs-webpack-plugin terser-webpack-plugin –save-dev</p>
+</blockquote>
+
+
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-keyword">const</span> UglifyjsWebpackPlugin=<span class="hljs-built_in">require</span>(<span class="hljs-string">'uglifyjs-webpack-plugin'</span>);
+</div><div class="hljs-line"><span class="hljs-keyword">const</span> TerserPlugin = <span class="hljs-built_in">require</span>(<span class="hljs-string">'terser-webpack-plugin'</span>);
+</div><div class="hljs-line"><span class="hljs-keyword">const</span> OptimizeCssAssetsWebpackPlugin= <span class="hljs-built_in">require</span>(<span class="hljs-string">'optimize-css-assets-webpack-plugin'</span>);
+</div><div class="hljs-line"><wbr>
+</div><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    <span class="hljs-comment">//=&gt;设置优化项</span>
+</div><div class="hljs-line">    optimization: {
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;设置压缩方式</span>
+</div><div class="hljs-line">        minimizer: [
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;压缩CSS（但是必须指定JS的压缩方式）</span>
+</div><div class="hljs-line">            <span class="hljs-keyword">new</span> OptimizeCssAssetsWebpackPlugin(),
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;压缩JS</span>
+</div><div class="hljs-line">            <span class="hljs-comment">//new UglifyjsWebpackPlugin({</span>
+</div><div class="hljs-line">                <span class="hljs-comment">//cache: true, //=&gt;是否使用缓存</span>
+</div><div class="hljs-line">                <span class="hljs-comment">//parallel: true, //=&gt;是否是并发编译</span>
+</div><div class="hljs-line">                <span class="hljs-comment">//sourceMap: true, //=&gt;启动源码映射（方便调试）</span>
+</div><div class="hljs-line">            <span class="hljs-comment">//}),</span>
+</div><div class="hljs-line">            <span class="hljs-keyword">new</span> TerserPlugin()
+</div><div class="hljs-line">        ]
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">};
+</div></code></pre>
+
+
+
+<h4 id="8webpack中图片的处理">8.webpack中图片的处理</h4>
+
+<blockquote>
+  <p>$ npm install file-loader url-loader html-withimg-loader –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    <span class="hljs-attr">module</span>: {
+</div><div class="hljs-line">        <span class="hljs-comment">//=&gt;模块规则：使用加载器（默认从右向左执行）</span>
+</div><div class="hljs-line">        rules: [{
+</div><div class="hljs-line">            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.(png|jpe?g|gif)$/i</span>,
+</div><div class="hljs-line">            <span class="hljs-attr">use</span>: [{
+</div><div class="hljs-line">                <span class="hljs-comment">//=&gt;把指定大小内的图片BASE64</span>
+</div><div class="hljs-line">                <span class="hljs-comment">//=&gt;不在指定范围的采用file-loader进行处理</span>
+</div><div class="hljs-line">                loader: <span class="hljs-string">'url-loader'</span>,
+</div><div class="hljs-line">                <span class="hljs-attr">options</span>: {
+</div><div class="hljs-line">                    <span class="hljs-attr">limit</span>: <span class="hljs-number">200</span> * <span class="hljs-number">1024</span>,
+</div><div class="hljs-line">                    <span class="hljs-attr">outputPath</span>:<span class="hljs-string">'/images'</span>,
+</div><div class="hljs-line">                    <span class="hljs-comment">//name:'[name].[ext]'</span>
+</div><div class="hljs-line">                }
+</div><div class="hljs-line">            }],
+</div><div class="hljs-line">            <span class="hljs-attr">include</span>: path.resolve(__dirname, <span class="hljs-string">'src'</span>),
+</div><div class="hljs-line">            <span class="hljs-attr">exclude</span>: <span class="hljs-regexp">/node_modules/</span>
+</div><div class="hljs-line">        }, {
+</div><div class="hljs-line">           <span class="hljs-attr">test</span>:<span class="hljs-regexp">/\.(svg|eot|ttf|woff|woff2)$/i</span>,
+</div><div class="hljs-line">           <span class="hljs-attr">use</span>:<span class="hljs-string">"file-loader"</span>
+</div><div class="hljs-line">        }, {
+</div><div class="hljs-line">            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.html$/</span>,
+</div><div class="hljs-line">            <span class="hljs-attr">use</span>: [<span class="hljs-string">'html-withimg-loader'</span>]
+</div><div class="hljs-line">        }]
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<h4 id="9基于babel实现es6的转换和eslint语法检测">9.基于babel实现ES6的转换和ESLint语法检测</h4>
+
+<blockquote>
+  <p><a href="https://babeljs.io/" target="_blank">https://babeljs.io/</a> <br>
+  <a href="https://eslint.org/" target="_blank">https://eslint.org/</a>  <br>
+  <span>$</span> npm install babel-loader @babel/core @babel/preset-env @babel/plugin-proposal-class-properties  @babel/plugin-proposal-decorators @babel/plugin-transform-runtime –save-dev <br>
+  <span>$</span> npm insall @babel/runtime @babel/polyfill <br>
+  <span>$</span> npm install  eslint eslint-loader –save-dev</p>
+</blockquote>
+
+<pre class="prettyprint hljs-dark"><code class="language-javascript hljs"><div class="hljs-line"><span class="hljs-built_in">module</span>.exports = {
+</div><div class="hljs-line">    <span class="hljs-attr">module</span>: {
+</div><div class="hljs-line">        <span class="hljs-attr">rules</span>: [{
+</div><div class="hljs-line">            <span class="hljs-attr">test</span>: <span class="hljs-regexp">/\.js$/</span>,
+</div><div class="hljs-line">            <span class="hljs-attr">use</span>: [{
+</div><div class="hljs-line">                <span class="hljs-attr">loader</span>: <span class="hljs-string">'babel-loader'</span>,
+</div><div class="hljs-line">                <span class="hljs-attr">options</span>: {
+</div><div class="hljs-line">                    <span class="hljs-comment">//=&gt;转换的语法预设（ES6-&gt;ES5）</span>
+</div><div class="hljs-line">                    presets: [
+</div><div class="hljs-line">                        <span class="hljs-string">"@babel/preset-env"</span>
+</div><div class="hljs-line">                    ],
+</div><div class="hljs-line">                    <span class="hljs-comment">//=&gt;基于插件处理ES6/ES7中CLASS的特殊语法</span>
+</div><div class="hljs-line">                    plugins: [
+</div><div class="hljs-line">                        [<span class="hljs-string">"@babel/plugin-proposal-decorators"</span>, {
+</div><div class="hljs-line">                            <span class="hljs-string">"legacy"</span>: <span class="hljs-literal">true</span>
+</div><div class="hljs-line">                        }],
+</div><div class="hljs-line">                        [<span class="hljs-string">"@babel/plugin-proposal-class-properties"</span>, {
+</div><div class="hljs-line">                            <span class="hljs-string">"loose"</span>: <span class="hljs-literal">true</span>
+</div><div class="hljs-line">                        }],
+</div><div class="hljs-line">                        <span class="hljs-string">"@babel/plugin-transform-runtime"</span>
+</div><div class="hljs-line">                    ]
+</div><div class="hljs-line">                }
+</div><div class="hljs-line">            }], <span class="hljs-comment">//=&gt;, "eslint-loader"</span>
+</div><div class="hljs-line">            <span class="hljs-comment">//=&gt;设置编译时忽略的文件和指定编译目录</span>
+</div><div class="hljs-line">            include: path.resolve(__dirname, <span class="hljs-string">'src'</span>),
+</div><div class="hljs-line">            <span class="hljs-attr">exclude</span>: <span class="hljs-regexp">/node_modules/</span>
+</div><div class="hljs-line">        }]
+</div><div class="hljs-line">    }
+</div><div class="hljs-line">}
+</div></code></pre>
+
+<p>类的装饰器</p>
+
+<pre class="prettyprint hljs-dark"><code class="hljs fortran"><div class="hljs-line">@<span class="hljs-built_in">log</span>
+</div><div class="hljs-line"><span class="hljs-keyword">class</span> A{
+</div><div class="hljs-line">    a=<span class="hljs-number">1</span>;
+</div><div class="hljs-line">}
+</div><div class="hljs-line"><span class="hljs-function"><span class="hljs-keyword">function</span></span> <span class="hljs-built_in">log</span>(<span class="hljs-keyword">target</span>){}
+</div></code></pre></div></body></html>
