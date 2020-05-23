@@ -1,0 +1,16 @@
+{
+  "name": "0523",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "serve": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  }
+}
