@@ -4,4 +4,7 @@ const {
 	plus
 } = require('./A');
 
+// const $ = require('jquery');
+// console.log($);
+
 console.log(plus(1, 2));
