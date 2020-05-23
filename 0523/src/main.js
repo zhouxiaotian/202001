@@ -9,3 +9,4 @@ const {
 
 console.log(plus(20, 10));
 console.log(minus(20, 10));
+console.log('哈哈');
