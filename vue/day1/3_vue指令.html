@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+      [v-cloak]{
+        /* 有这个 v-cloak 行内属性的元素 会有这个样式’；；  属性选择器 */
+        display: none;
+      }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <h1>{{name}}{{name}}</h1>
+        <i>{{name}}</i>
+        <h2>{{age}}</h2>
+        <!-- 
+          在vue中  v-xxx  的行内属性 我们统称为 vue指令
+         -->
+        <input type="text" v-model='name'>
+        <input type="number" v-model='age'>
+        <!-- <h1>{{age >= 18 ? '成年人' : '未成年人'}}</h1>
+        <h1 v-text = 'name+age'></h1>
+        <h1>{{name+age}}</h1> -->
+
+        <h1>{{str}}</h1>
+        <h1 v-text='str'></h1>
+        <h1 v-html='name'></h1>
+        <h1 v-html='name' v-once></h1>
+        <ul v-pre>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+          <li>4</li>
+          <li>5</li>
+          <li>6</li>
+          <li>7</li>
+          <li>8</li>
+          <li>9</li>
+          <li>10</li>
+          <li>11</li>
+          <li>12</li>
+          <li>13</li>
+          <li>14</li>
+          <li>15</li>
+          <li>16</li>
+          <li>17</li>
+          <li>18</li>
+          <li>19</li>
+          <li>20</li>
+          <li>21</li>
+          <li>22</li>
+          <li>23</li>
+          <li>24</li>
+          <li>25</li>
+          <li>26</li>
+          <li>27</li>
+          <li>28</li>
+          <li>29</li>
+          <li>30</li>
+          <li>31</li>
+          <li>32</li>
+          <li>33</li>
+          <li>34</li>
+          <li>35</li>
+          <li>36</li>
+          <li>37</li>
+          <li>38</li>
+          <li>39</li>
+          <li>40</li>
+          <li>41</li>
+          <li>42</li>
+          <li>43</li>
+          <li>44</li>
+          <li>45</li>
+          <li>46</li>
+          <li>47</li>
+          <li>48</li>
+          <li>49</li>
+          <li>50</li>
+          <li>51</li>
+          <li>52</li>
+          <li>53</li>
+          <li>54</li>
+          <li>55</li>
+          <li>56</li>
+          <li>57</li>
+          <li>58</li>
+          <li>59</li>
+          <li>60</li>
+          <li>61</li>
+          <li>62</li>
+          <li>63</li>
+          <li>64</li>
+          <li>65</li>
+          <li>66</li>
+          <li>67</li>
+          <li>68</li>
+          <li>69</li>
+          <li>70</li>
+          <li>71</li>
+          <li>72</li>
+          <li>73</li>
+          <li>74</li>
+          <li>75</li>
+          <li>76</li>
+          <li>77</li>
+          <li>78</li>
+          <li>79</li>
+          <li>80</li>
+          <li>81</li>
+          <li>82</li>
+          <li>83</li>
+          <li>84</li>
+          <li>85</li>
+          <li>86</li>
+          <li>87</li>
+          <li>88</li>
+          <li>89</li>
+          <li>90</li>
+          <li>91</li>
+          <li>92</li>
+          <li>93</li>
+          <li>94</li>
+          <li>95</li>
+          <li>96</li>
+          <li>97</li>
+          <li>98</li>
+          <li>99</li>
+          <li>100</li>
+        </ul>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:`珠峰`,
+            age:11,
+            str:'<i>你好呀 靓仔</i>'
+        }
+    });
+    /* 
+      v-model = '变量'  相当于 把 这个变量跟这个表单元素绑定在一起了；变量改变 表单元素的内容跟着改变，内容改变 变量也会跟着更新
+      v-text = '变量'   相当于小胡子语法  避免了显示 小胡子的毛病
+      v-html = '变量'   相当于原生的innerHTML 只在可信任的内容上使用该指令；
+
+      v-cloak 后边没有值  就是为了解决小胡子的显示问题；需要配合css使用；原理其实就是 当vue模板渲染之前，走的时普通的html
+        这时， 我们写的css样式可以起作用 让元素display none了；当模板渲染完成之后，vue会自动把这个行内属性移除，这是在页面
+        上展示的 就是渲染好的htm了；
+      v-once 后边也没有值  vue对有这个指令的元素 只渲染一次；
+      v-pre  后边也没有值  告诉vue 这个标签及其子标签 都不用vue渲染;可以用来提升vue的编译效率
+    */
+</script>

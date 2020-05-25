@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <!-- v-on: 我们一般简写成 @ -->
+        <button v-on:click='myfn'>按钮1</button>
+        <button @click='myfn'>按钮2</button>
+
+        <button @click='qqq($event,3,4,5,6,7)'>按钮3</button>
+        <button @click='qqq(4,$event)'>按钮4</button>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            // myfn(){
+            //   console.log(666)
+            //   // 这里边的this不是当前实例 
+            //   console.log(this)
+            // }
+        },
+        methods: {
+          // methods 中的属性也会被挂载到当前的实例上
+          // methods中的属性名和data中的属性名 不能重复
+          // data写都是vue变量  methods写都是 这个实例中用到的方法
+          // methods中的方法 里边的 this  都是当前实例；
+          qqq(e,a,b,c,d){
+            console.log(e,a,b,c,d)
+          },
+          myfn(e){
+            // console.log(666)
+            // console.log(this===vm)
+            // this.name = "hello";
+            // this.qqq();
+            console.log(e)
+          }
+            
+        },
+    });
+    // 事件修饰符   v-show  v-for    vue实现选项卡
+</script>

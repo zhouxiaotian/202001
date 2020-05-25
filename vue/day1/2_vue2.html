@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- 
+      小胡子中 只能编写表达式(变量 赋值表达式 函数执行 三元表达式)  
+      不能写语句（for循环 if  switch  var ...）
+      
+      小胡子中最终展示出来的时那个表达式的结果
+     -->
+    <h1>{{hello}}</h1>
+    <h2>{{str}}</h2>
+  </div>
+
+
+  <div>dgsdgdfh</div>
+  {{hello}}
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+  let vm = new Vue({
+    // 当前这个对象中的属性名 都是vue规定的；
+    el:'#app',// 相当于 告诉 vue ； 只处理app这个元素中的语法；不能是html或者body这两个元素
+    data:{
+      // 存储都是 vue变量
+      // data中的属性 最终 都会被挂载到当前实例上；
+      //当数据更改的时候 视图会自动更新；
+      hello:'hello 珠峰',
+      str:'哈哈哈'
+    }
+  });
+</script>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <div>
+          {{obj}}
+        </div>
+        <span style='display:none'>{{t}}</span>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+  /* 
+    vue 数据更新  视图自动更新的前提 是这个数据被vue劫持了（对应数据 有get和set） 
+    //给对象新增属性的时候 不会触发视图的更新， 但是 数据会改变；
+    // 1- 增加一个无关变量,每次修改数据的时候， 把这个无关变量更新了(为了触发视图更新)
+    // 2- 一开始你就把所有的属性都写上去
+    // 3- 整个对象的替换，每一个后代属性都会被劫持； 可以使用 Object.assign()
+    // 4- 官方提供的方法 vm.$set(对象，属性名，属性值)
+  */
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            t:0,
+            name:"珠峰",
+            obj:{
+              a:123,
+              b:234,
+              // c:undefined
+            }
+        }
+    });
+</script>
