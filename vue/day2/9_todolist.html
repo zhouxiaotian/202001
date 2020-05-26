@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <input type="text" @keydown.enter='fn' v-model='name'>
+        <ul>
+          <!-- <li>1 <button>X</button></li>
+          <li>2 <button>X</button></li>
+          <li>3 <button>X</button></li> -->
+          <li v-for='(qqq,index) in ary' :key='qqq.id123'>
+            {{qqq.val}} 
+            <button @click='del(index,qqq.id123)'>X</button>
+          </li>
+          
+          <!-- <li v-for='(qqq,index) in ary' :key='index'>{{qqq}} <button>X</button></li> -->
+
+        </ul>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            ary:[]
+        },
+        methods: {
+          fn(){
+            this.ary.push({val:this.name,id123:Date.now()})
+            // this.ary.push(this.name)
+            this.name = '';
+          },
+          del(n,id123){
+            // this.ary.splice(n,1)
+            let ary = this.ary.filter(item=>{
+              return item.id123!=id123
+            });// 过滤之后的数组
+            this.ary = ary;
+          }
+        },
+    });
+</script>

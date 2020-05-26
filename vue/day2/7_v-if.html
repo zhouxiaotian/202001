@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- 若 v-if条件判断不成立 则 整个标签都不加载  -->
+        <!-- 若 v-show条件判断不成立 则 整个标签都加载 只是被display none了  -->
+        <!-- v-if 有比较大的切换开销  v-show 有比较大的初始加载开销 -->
+        <!-- <h1 v-if='1 > 2'>{{name}}</h1>
+        <span></span> 
+        <h1 v-else-if='2 > 3'>666</h1>
+        <h1 v-else>888</h1>
+        <h2 v-show='1 > 2'>{{name+666}}</h2> -->
+
+        <!-- <h1 v-if='1>2'>666</h1>
+        <h2 v-if='1>2'>666</h2>
+        <h3 v-if='1>2'>666</h3> -->
+
+        <div v-if='1<2'>
+          <h1>666</h1>
+          <h2>666</h2>
+          <h3>666</h3>
+        </div>  
+
+        <!-- 多个元素条件一样的时候，而且不想添加标签 我们可以使用template抱起来 -->
+        <template v-if='1<2'>
+          <h1>666</h1>
+          <h2>666</h2>
+          <h3>666</h3>
+        </template>
+
+        <div v-if='flag' key='1'><span>用户名</span><input  type="text" placeholder="用户名"></div>
+        <div  v-else key='2'><span>密码</span><input type="text" placeholder="密码"></div>
+        <button @click='flag = !flag'>按钮</button>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        // el:'#app',
+        // template:'<h1>666{{name}}</h1>',// 指定当前渲染的模板，若没有这个属性 则用app作为模板
+        data:{
+            name:"珠峰",
+            flag:true
+        }
+    }).$mount('#app');
+</script>

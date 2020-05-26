@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <ul>
+          <li v-for="(item,index) in ary" :key='index'>
+            <!-- 
+              item和index是自己定义的变量， 两个都写需要加上();
+              item 代表 数组中的当前项
+              index 是对应的索引
+              这两个变量 只能用在当前使用v-for的标签上及其内部
+             -->
+            <i>{{index}}</i>:<strong>{{item}}</strong>
+          </li>
+        </ul>
+        <!-- <div v-for='item in ary'>{{item}}</div>
+
+        <h1 v-for='s in str'>{{s}}</h1>
+
+        <h2 v-for='item in 5' >{{item}}</h2>
+
+        <h3 v-for='(item,key) in obj'>
+          {{key}}:{{item}}
+        </h3> -->
+        <button @click='reverse'>反转</button>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+  // v-for 使用循环展示标签的，可以用来循环数组  字符串 数字 对象；
+  // <h1 v-for = '(值，key) in vue变量'></h1>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            ary:[1,2,3,4,5],
+            str:"hello zhufeng",
+            obj:{name:'qqq',age:100}
+        },
+        methods: {
+          reverse(){
+            this.ary.reverse();
+          }
+        },
+    });
+</script>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        {{obj}}
+        <span style='display: none;'>{{t}}</span>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+  /* 
+    v-xxx 行内属性 成为指令
+    v-model
+    v-text   innerText
+    v-html   innerHTML
+
+    vue 数据更改能触发视图更新的前提是 这个数据被vue劫持了 数据应用到了视图上；Object.defineProperty()
+  */
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            t:0,
+            obj:{q:123}
+        },
+        methods: {
+          // 这里边的函数中的this  都是当前实例
+        },
+    });
+</script>

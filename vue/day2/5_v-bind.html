@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <img v-bind:src="url" v-bind:alt="name">
+        <img :src="url+'?345345535'" :alt="name">
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    // v-bind:src='变量' 是专门用来处理行内属性（src class style ...）的指令
+    // v-bind: 一般简写成 :
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            url:'https://cn.vuejs.org/images/logo.png'
+        }
+    });
+</script>

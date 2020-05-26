@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    header span {
+      display: inline-block;
+      margin: 10px;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    header span.current {
+      background: salmon;
+    }
+
+    main div {
+      height: 200px;
+      line-height: 200px;
+      text-align: center;
+      background: sandybrown;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <h1>{{name}}</h1>
+    <header>
+      <!-- <span>css</span>
+          <span>js</span>
+          <span>vue</span> -->
+      <span 
+        v-for='(item,i) in tilAry' 
+        :key='item' 
+        @click='tab(i)'
+        :class='qqq == i ? "current" :"" '
+        >{{item}}</span>
+    </header>
+    <main>
+      <!-- <div>css好学</div>
+          <div>js好学</div>
+          <div>vue好学</div> -->
+      <div 
+        v-for='(item,index) in bodyAry' 
+        :key='item' 
+        v-show='index == qqq'>{{item}}</div>
+      <!-- 
+            <div index 0 item v-show='0 == qqq'>css好学</div>
+            <div index 1 item v-show='1 == qqq'>css好学</div>
+            <div index 2 item v-show='2 == qqq'>css好学</div>
+           -->
+      <!-- <div>{{bodyAry[qqq]}}</div>      -->
+    </main>
+  </div>
+</body>
+
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+  let vm = new Vue({
+    el: '#app',
+    data: {
+      name: "珠峰",
+      tilAry: ['css', 'js', 'vue'],
+      bodyAry: ['css好学', 'js好学', 'vue好学'],
+      qqq: 2
+    },
+    methods: {
+      tab(n) {
+        this.qqq = n;
+        console.log(n)
+      }
+    },
+  });
+</script>

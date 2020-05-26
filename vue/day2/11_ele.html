@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <el-radio v-model="radio" label="1">男</el-radio>
+        <el-radio v-model="radio" label="2">女</el-radio>
+
+        <el-checkbox-group v-model="checkList">
+          <el-checkbox label="复选框 A"></el-checkbox>
+          <el-checkbox label="复选框 B"></el-checkbox>
+          <el-checkbox label="复选框 C"></el-checkbox>
+          <el-checkbox label="禁用" disabled></el-checkbox>
+          <el-checkbox label="选中且禁用" disabled></el-checkbox>
+        </el-checkbox-group>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            radio:'1',
+            checkList: ['选中且禁用','复选框 A']
+        }
+    });
+</script>

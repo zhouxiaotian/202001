@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <button @click='fn'>{{mybol ? '隐藏' : '显示'}}</button>
+        <h1 v-show='mybol'>{{name}}</h1>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    // v-show 后边跟的是一个布尔类型（其他类型会默认转成布尔） true 就是显示 ；false 就是display:none
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            mybol:false,
+            str:'显示'
+        },
+        methods: {
+          fn(){
+            if(this.mybol){
+              this.str = '隐藏'
+            }else{
+              this.str = '显示'
+            }
+            this.mybol = !this.mybol
+          }
+        },
+    });
+</script>

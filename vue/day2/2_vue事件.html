@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+      .outer{
+        padding: 30px;
+        background: firebrick;
+      }
+      .inner{
+        padding: 40px;
+        background: gold;
+      }
+    </style>
+</head>
+<body>
+    <div id="app">
+      <!-- 模板中的变量： 小胡子中的    指令 后跟的 -->
+        <h1>{{name}}</h1>
+        <button v-on:click='fn(100,200,300)'>按钮1</button>
+        <button @click='fn'>按钮2</button>
+        <button @click='fn()'>按钮3</button>
+        <button @click='fn(1,2,$event)'>按钮4</button>
+
+        <a href="http://baidu.com" v-on:click.passive='fn2'>百度一下</a>
+        <a href="http://baidu.com" @click.prevent='fn3'>百度一下2</a>
+        <!-- 一般先执行绑定的函数 在执行默认行为； scroll touchmove ... 先执行了默认 -->
+
+        <div class="outer" @click='outer'>
+          <div class="inner" @click.stop='inner'></div>
+        </div>
+
+        <button @click.once='onceFn'>once</button>
+
+        <div @click.self='selfFn'>
+          <h1>6666</h1>
+        </div>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    /* 
+      事件修饰符
+      @click.prevent='函数名' 就是阻止了默认行为   （preventDefault）
+      @click.stop = '函数名'  就是阻止冒泡         (stopPropergation)
+      @click.once = '函数名'  后边的函数只会执行一次
+      @click.self = '函数名'  只有点击元素本身才会触发这个函数
+      @click.capture = '函数名' 控制函数在捕获阶段执行  ele.addEventListener('click',cb,{capture:false})
+      @click.passive = '函数名' 先执行默认 后执行函数  ele.addEventListener('click',cb,{capture:false,passive:true})//passive:true 优先执行默认
+      */
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        methods: {
+          fn(a,b,c){
+            console.log(a,b,c)
+          },
+          fn2(e){
+            e.preventDefault();
+            alert('点了百度')
+          },
+          fn3(){
+            alert('点了百度')
+          },
+          inner(e){
+            // e.stopPropagation();
+            console.log('inner')
+          },
+          outer(){
+            console.log('outer')
+          },
+          onceFn(){
+            console.log('once')
+          },
+          selfFn(){
+            console.log('self')
+          }
+        },
+    });
+</script>

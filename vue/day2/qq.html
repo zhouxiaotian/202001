@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1 v-show="button">hahhahahahha</h1>
+        <button @click="fn()">{{name}}</button>
+    </div>
+</body>
+
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el: '#app',
+        data: {
+            name: "显示",
+            button: false
+        },
+        methods: {
+            fn() {
+                if (this.name == "显示") {
+                    this.name = "隐藏"
+                }else if (this.name == "隐藏") {
+                    this.name = "显示"
+                }
+                this.button = !this.button;
+            }
+        }
+    });
+</script>
