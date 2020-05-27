@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+</head>
+
+<body>
+  <div id="app">
+    <h1>{{name}}</h1>
+    <el-input v-model="name" style='width:300px' placeholder="请输入姓名"></el-input>
+    <div>
+      <el-radio v-model="radio" label="0">男</el-radio>
+      <el-radio v-model="radio" label="1">女</el-radio>
+    </div>
+    <h1>选择课程</h1>
+    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+    <div style="margin: 15px 0;"></div>
+    <el-checkbox-group v-model="checkedCities"  fill='ff9840' @change="handleCheckedCitiesChange" >
+      <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+    </el-checkbox-group>
+
+    <h2>爱好</h2>
+    <el-select v-model="value" placeholder="请选择">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select>
+    <div>
+      <el-button type="primary" @click='fn'>提交</el-button>
+    </div>
+    
+  </div>
+</body>
+
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+  // const cityOptions = ['上海', '北京', '广州', '深圳'];
+  let vm = new Vue({
+    el: '#app',
+    data: {
+      name: "珠峰",
+      radio: '0',
+      checkAll: false,
+      checkedCities: ['css'],
+      cities: ['css', 'js', 'html'],
+      isIndeterminate: true,
+      options: [{
+          value: '111',
+          label: '吃'
+        }, {
+          value: '222',
+          label: '喝'
+        }, {
+          value: '333',
+          label: '玩'
+        }, {
+          value: '444',
+          label: '乐'
+        }],
+        value: ''
+    },
+    methods: {
+      fn(){
+        let hobby = this.options.filter(item=>item.value == this.value)[0].label
+        console.log(`
+          姓名：${this.name};
+          性别：${this.radio==1 ? '女' : '男'};
+          选择课程：${this.checkedCities},
+          爱好：${ this.value}
+        `)
+      },
+      handleCheckAllChange(val) {
+        this.checkedCities = val ? this.cities.map(item=>item) : [];
+        this.isIndeterminate = false;
+      },
+      handleCheckedCitiesChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.cities.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      }
+    }
+  });
+</script>

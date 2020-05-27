@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <!--IMPORT CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body>
+  <div id="app">
+    <h1>姓名</h1>
+    <el-input v-model="name" style="width: 200px ;" placeholder="请输入姓名"></el-input>
+    <h1>性别</h1>
+    <div style="margin-top: 20px;">
+      <el-radio v-model="radio" label="0">男</el-radio>
+      <el-radio v-model="radio" label="1">女</el-radio>
+    </div>
+    <h1>课程选择</h1>
+    <div style="margin-top: 20px;">
+      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选
+      </el-checkbox>
+      <div style="margin: 15px 0;"></div>
+      <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+        <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+      </el-checkbox-group>
+    </div>
+    <h1>爱好</h1>
+    <div style="margin-top: 20px;">
+      <el-select v-model="value" placeholder="请选择">
+        <el-option 
+        v-for="item in options" 
+        :key="item.value" 
+        :label="item.label" 
+        :value="item.value">
+        </el-option>
+      </el-select>
+    </div>
+    <h1>手机号</h1>
+    <el-input v-model="phone" style="width: 200px ;" placeholder="请输入手机号码"></el-input>
+
+    <div style="margin-top: 20px;">
+      <el-button type="primary" @click='fn'>提交</el-button>
+    </div>
+
+
+  </div>
+  <!--IMPORT JS -->
+  <script src="../node_modules/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        name: "陈磊",
+        phone: '',
+        radio: '0',
+        checkAll: false,
+        checkedCities: ['html'],
+        cities: ['html', 'css', 'js'],
+        isIndeterminate: true,
+        options: [{
+          value: '1',
+          label: '黄金糕'
+        }, {
+          value: '2',
+          label: '双皮奶'
+        }, {
+          value: '3',
+          label: '蚵仔煎'
+        }, {
+          value: '4',
+          label: '龙须面'
+        }],
+        value: ''
+      },
+      methods: {
+        handleCheckAllChange(val) {
+          this.checkedCities = val ? this.cities.map(item => item) : [];
+          this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+          let checkedCount = value.length;
+          this.checkAll = checkedCount === this.cities.length;
+          this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        },
+        fn() {
+          let hobby = this.options.filter(item => item.value == this.value)[0].label;
+          console.log(`
+                    姓名:${this.name},
+                    性别:${this.radio == 1 ? '女' : '男'},
+                    课程:${this.checkedCities},
+                    爱好:${hobby},
+                    手机号:${this.phone}
+                    `)
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

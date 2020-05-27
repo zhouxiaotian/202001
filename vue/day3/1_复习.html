@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <input type="text" v-model.lazy='name' >
+        <!-- Vue.config.ketCode.enter = 13   Vue.config.ketCode.wenhao = 112 -->
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    /* 
+      v-model  v-text  v-html  v-show  v-for   v-if  v-bind(:)  v-on(@)
+      v-once  v-cloak  v-pre
+
+      data: vue 变量
+      
+      methods  存储的是 各种方法 ；方法中的this都是当前实例
+      el
+      template
+
+      事件修饰符： .prevent .stop  .once .self   .capture .passive 
+      按键修饰符： .enter
+      v-model 的修饰符  
+        .trim  
+        .number(吧对应的值使用parseFloat转成数字 能转成功的就转，不能成功 就不转了)  
+        .lazy  没有lazy的时候 vue使用的 input事件更新数据； 加上之后 用的change事件更新的数据
+    */
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        }
+    });
+</script>
