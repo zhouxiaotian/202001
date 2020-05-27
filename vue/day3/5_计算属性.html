@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <input type="text" v-model='name'/>
+        <input type="text" v-model='age'>
+        <h1>{{name.split('').reverse().join('')}}</h1>
+        <h1>{{name|reverse}}</h1>
+        <h1>{{reverse()}}</h1>
+        <h1>{{name2}}</h1>
+        <!-- 下边的h1展示的 输入框的倒序 -->
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    Vue.filter('reverse',function(val){
+      console.log('filter')
+      return val.split('').reverse().join('')
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            age:10
+        },
+        methods: {
+          reverse(){
+            console.log('methods')
+            return this.name.split('').reverse().join('')
+          }
+        },
+        computed: {
+          name2(){
+            console.log('computed')
+            return this.name.split('').reverse().join('')
+          }
+        },
+    });
+</script>

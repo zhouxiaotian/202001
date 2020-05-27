@@ -13,6 +13,7 @@
         <input type="text" v-model='age'>
         <h1>{{name}} 是 {{age >=18 ? "成年人" : "未成年人"}}</h1>
         <h1>{{age|myshow(1,2,3,name)}}</h1>
+        <h2>{{personType}}</h2>
     </div>
 </body>
 </html>
@@ -29,6 +30,19 @@
         data:{
             name:"珠峰",
             age:0
-        }
+        },
+        computed: {
+          personType(){
+            // 除了过滤器 中的this不是当前实例 其他的你见到的函数中的this都是当前实例；
+            // 函数中的this 就是当前实例，methods
+            // 计算属性的特点 就是 只要依赖不发生改变，这个函数就不会执行；
+            // 依赖 ===》 就是你在这个函数中使用的 this上的属性,必须是同步使用
+            // setTimeout(() => {
+            //   console.log(this.name)
+            // }, 10);
+            console.log(this.name)
+            return this.age >= 18 ? "成年人" : '未成年人'
+          }
+        },
     });
 </script>

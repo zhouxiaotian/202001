@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <input type="text" v-model='firstName'>
+        <input type="text" v-model='middleName'>
+        <input type="text" v-model='lastName'>
+        <h2>这个人的全名是{{fullName}}</h2>
+        <h2>这个人的全名是{{fullName2}}</h2>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            firstName:'',
+            middleName:'',
+            lastName:'',
+            fullName2:''
+        },
+        computed: {
+          // computed中的属性最终也是被挂在到了当前的实例上了，给的值不是函数体 而是函数的返回结果
+          // data  methods computed 这里边的属性 都会被挂在到实例上 （props）
+          fullName(){
+            return this.firstName + '-' + this.middleName + '-'+this.lastName
+          },
+          // name(){
+          //   return this.firstName
+          // }
+        },
+        watch: {
+          // 这里边放的都是已经存在的属性名
+          // 就是 监听这个属性的变化 ，这要属性发生改变 这里边对应的函数就会执行
+          // watch 可以编写异步操作；
+          firstName(newV,oldV){
+            
+            console.log(arguments);
+            setTimeout(() => {
+              this.fullName2 = newV + '-' + this.middleName + '-'+this.lastName
+            }, 1000);
+          },
+          middleName(newV){
+            this.fullName2 = this.firstName + '-' + newV + '-'+this.lastName
+          },
+          lastName(newV){
+            this.fullName2 = this.firstName + '-' + this.middleName + '-'+newV
+          },
+          fullName(){
+            console.log(666)
+          }
+        },
+    });
+</script>
