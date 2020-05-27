@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <input type="text" v-model='money'>
+        <h1>商品价格是{{(money/100).toFixed(2)}}元</h1>
+        <h1>商品价格是{{money | qqq | myname}}元</h1>
+        <!--   相当于 把 money对应的值传给 qqq  ;这个位置展示的是 qqq对应回调函数的返回结果   -->
+        <!--   qqq是我们自己创造的一个全局过滤器   -->
+      </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    //创造了一个全局过滤器 过滤器的名字是qqq 
+    Vue.filter('qqq',function(val){
+      console.log(val)
+      return (val/100).toFixed(2)
+    })
+    Vue.filter('myname',function(val){
+      // val  对应的就是管道符| 前边的值
+      // 这个val  拿到的是 qqq的返回值；
+      return '珠峰培训 '+val + ' 珠峰培训'
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            money:0
+        }
+    });
+</script>
