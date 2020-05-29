@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- <div id="app">
+		</!-- 
+			在VUE视图中调用组件需要采用双闭合的方式，因为单闭合的方式调用，会导致下面的代码不再进行渲染  <base-info/>
+
+			我们可以在双闭合标签内在编写一些其它的内容，把这些内容作为组件的扩充内容（SLOT插槽的概念）
+			<base-info>
+				<p>价格：￥198</p>
+			</base-info>
+		 --/>
+		<base-info></base-info>
+		<base-info></base-info>
+		<base-info></base-info>
+		<base-info></base-info>
+	</div> -->
+
+	<div id="app">
+		<h3>我正在学习组件化开发</h3>
+		<base-info></base-info>
+	</div>
+
+	<!-- 创建TEMPLATE模板 -->
+	<template id="baseInfoTemplate">
+		<div class="box">
+			<img :src="img" alt="">
+			<p v-html="content"></p>
+		</div>
+	</template>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.min.js"></script>
+	<script>
+		Vue.component('base-info', {
+			template: '#baseInfoTemplate',
+			data() {
+				return {
+					img: 'https://img30.360buyimg.com/jdcms/s150x150_jfs/t1/106951/11/15544/149802/5e7193ceEbd65c57d/7237ec53de7a9200.jpg.webp',
+					content: '法国VICKI BROWN品牌春夏新款潮鞋韩版软底户外运动商务百搭飞织透气休闲鞋 黑色 44'
+				};
+			}
+		});
+		
+		let vm = new Vue({
+			el: '#app',
+			data: {}
+		});
+	</script>
+
+	<script>
+		/*Vue.component('BtnList', {
+			// 只能有一个根元素
+			template: `<div>
+				<button>确定</button>
+				<button>取消</button>
+			</div>`
+		});
+		// 在其它的TEMPLATE语法中，基于  <BtnList></BtnList> 或者 <btn-list></btn-list> 都可以正常的调用，只有在new Vue基于el指定的视图中，才只能用<btn-list></btn-list> 这种模式 */
+	</script>
+
+	<script>
+		/*
+		 * VUE中的组件分为两种：全局组件/私有组件
+		 *   全局组件：创建组件后直接在页面中调取使用即可
+		 *   私有组件：需要在页面渲染的时候(new Vue)基于components注册一下才能使用 
+		 */
+		// Vue.component([name],[options])：
+		// [name]是组件的名字：
+		//    命名规范遵循两种模式
+		//    kebab-case：base-info  调用 <base-info></base-info>
+		//    PasalCase：BaseInfo  调用 <baseinfo></baseinfo> 【页面在VUE中渲染的时候，所有组件大写的名字都会变为小写】  <base-info></base-info>
+		// [options]是组件的配置项：每一个组件都是一个单独vm实例，所以配置项中可以设置的就是vm实例中配置的data/methods/computed...信息
+
+		/* Vue.component('base-info', {
+			// 基于TEMPLATE指定组件渲染的视图
+			template: `<div class="box">
+				<img :src="img" alt="">
+				<p>{{content}}</p>
+			</div>`,
+			// 指定响应的数据（为了保证每个组件中的DATA是独立的，我们需要让每个组件的DATA是一个闭包函数，只有这样最后把N多组件放在一起渲染，相互之间的DATA才不会冲突的）  data:function(){...} => data(){...}
+			data() {
+				// RETURN 的对象中包含指定的响应数据
+				return {
+					img: 'https://img30.360buyimg.com/jdcms/s150x150_jfs/t1/106951/11/15544/149802/5e7193ceEbd65c57d/7237ec53de7a9200.jpg.webp',
+					content: '法国VICKI BROWN品牌春夏新款潮鞋韩版软底户外运动商务百搭飞织透气休闲鞋 黑色 44'
+				};
+			}
+		});
+
+		let vm = new Vue({
+			el: '#app',
+			data: {}
+		}); */
+	</script>
+</body>
+
+</html>
