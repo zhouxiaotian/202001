@@ -27,14 +27,26 @@
 
 	<div id="app">
 		<h3>我正在学习组件化开发</h3>
+		<!-- 
+			双闭合调用组件，可以在组件的内部扩展其它的内容
+		 -->
+		<base-info>
+			<div class="handle">
+				<span>价格：￥198</span>
+				<button>立即购买</button>
+			</div>
+		</base-info>
+
 		<base-info></base-info>
 	</div>
-
+	
 	<!-- 创建TEMPLATE模板 -->
 	<template id="baseInfoTemplate">
 		<div class="box">
 			<img :src="img" alt="">
 			<p v-html="content"></p>
+			<!-- 预留插槽：可以让组件可以自定义扩展内容 -->
+			<slot></slot>
 		</div>
 	</template>
 
@@ -50,7 +62,7 @@
 				};
 			}
 		});
-		
+
 		let vm = new Vue({
 			el: '#app',
 			data: {}
