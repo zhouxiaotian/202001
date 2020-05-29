@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<style>
+		.box {
+			width: 200px;
+			height: 200px;
+			line-height: 200px;
+			text-align: center;
+			background: lightblue;
+		}
+
+		.active {
+			color: red;
+			font-size: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- 
+		在项目中基于业务需求动态控制元素样式的时候，需要一些特殊的处理
+		    静态样式直接编写即可：<div class="box" style="margin: 20px auto;">
+			属性名：样式类名
+			属性值：TRUE/FALSE控制是否有
+	 -->
+	<div id="app">
+		<!-- <div :class="{box:true,active:isActive}">
+			{{msg}}
+		</div> -->
+		<!-- <div :class="[box,isActive?active:null]">
+			{{msg}}
+		</div> -->
+		
+		<!-- 
+			在动态的STYLE中，基于对象方式处理
+			   属性名：修改的样式属性名  驼峰命名法 fontSize zIndex ...
+			   属性值：设置的样式“值”
+		 -->
+		<div class="box" :style="{color:isActive?'red':'black'}">
+			{{msg}}
+		</div>
+		<br>
+		<button @click="handle">点我切换样式</button>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.min.js"></script>
+	<script>
+		let vm = new Vue({
+			el: '#app',
+			data: {
+				msg: '珠峰培训',
+				isActive: false,
+				// 数组方法中使用的样式类变量
+				// box: 'box',
+				// active: 'active'
+			},
+			methods: {
+				handle() {
+					this.isActive = !this.isActive;
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>
