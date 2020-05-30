@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+		.container {
+			margin: 20px auto;
+			padding: 10px;
+			width: 400px;
+			border: 1px solid #AAA;
+		}
+
+		.headerBox {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			line-height: 40px;
+		}
+
+		.headerBox h3,
+		.headerBox span {
+			font-size: 22px;
+			margin: 0;
+		}
+
+		.mainBox {
+			margin: 10px auto;
+		}
+
+		.mainBox p {
+			line-height: 35px;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<my-vote title="支持张硕是男孩!"></my-vote>
+		<my-vote title="支持陈晨是女孩!"></my-vote>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.js"></script>
+	<script>
+		const VoteFooter = {
+			template: `<footer class="footerBox">
+				<button type="button" class="btn btn-primary" @click="handle('SUP')">支持</button>
+				<button type="button" class="btn btn-warning" @click="handle('OPP')">反对</button>
+			</footer>`,
+			inject: ["handle"]
+		};
+
+		const VoteMain = {
+			template: `<main class="mainBox">
+				<p>支持人数：{{obj.supNum}} 人</p>
+				<p>反对人数：{{obj.oppNum}} 人</p>
+			</main>`,
+			// 想用哪些公共信息，直接注册即可（而且直接挂载到实例上）
+			inject: ["obj"]
+		};
+
+		const MyVote = {
+			template: `<div class="container">
+				<header class="headerBox">
+					<h3>{{title}}</h3>
+					<span>【{{obj.supNum+obj.oppNum}}】</span>
+				</header>
+				<vote-main></vote-main>
+				<vote-footer></vote-footer>
+			</div>`,
+			components: {
+				VoteFooter,
+				VoteMain
+			},
+			props: ["title"],
+			// =>我们会创建响应式状态信息先存储公共信息，让PROVIDE中存储的是状态信息：以后只要我们把状态信息修改了，存储在祖先PROVIDE中的信息也会跟着修改；而且比较变态的地方是，我们需要保证PROVIDE中存储的数据是可被监控的，这样DATA中存储的数据需要以对象的方式存储，这样才能保证对象中的每个数据也是被监控的
+			data() {
+				return {
+					obj: {
+						supNum: 0,
+						oppNum: 0
+					}
+				};
+			},
+			provide() {
+				// 此方法只有第一次加载组件的时候执行一次 
+				return {
+					obj: this.obj,
+					handle: this.handle
+				};
+			},
+			methods: {
+				handle(type) {
+					type === "SUP" ? this.obj.supNum++ : this.obj.oppNum++;
+				}
+			},
+			created() {
+				console.log(this);
+			}
+		};
+
+		// 渲染页面
+		let vm = new Vue({
+			el: '#app',
+			components: {
+				MyVote
+			}
+		});
+	</script>
+
+	<script>
+		/* const MyVote = {
+			template: `<div class="container">
+				{{_provided.supNum}}
+				<header class="headerBox">
+					<h3>{{title}}</h3>
+					<span>【0】</span>
+				</header>
+				<vote-main></vote-main>
+				<vote-footer></vote-footer>
+			</div>`,
+			components: {
+				VoteFooter,
+				VoteMain
+			},
+			props: ["title"],
+			// 把每一个VOTE作为祖先组件，在这里注册后代组件需要的公共信息（provide中的信息没有放在vm实例上，不是响应式数据；数据存在在this._provided属性中；）
+			provide: {
+				supNum: 0,
+				oppNum: 0
+			},
+			mounted() {
+				setTimeout(_ => {
+					this._provided.supNum = 1000;
+					this.$forceUpdate();
+				}, 1000);
+			}
+		}; */
+	</script>
+</body>
+
+</html>

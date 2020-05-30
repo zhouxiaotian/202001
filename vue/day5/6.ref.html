@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+		.container {
+			margin: 20px auto;
+			padding: 10px;
+			width: 400px;
+			border: 1px solid #AAA;
+		}
+
+		.headerBox {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			line-height: 40px;
+		}
+
+		.headerBox h3,
+		.headerBox span {
+			font-size: 22px;
+			margin: 0;
+		}
+
+		.mainBox {
+			margin: 10px auto;
+		}
+
+		.mainBox p {
+			line-height: 35px;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<my-vote title="支持张硕是男孩!"></my-vote>
+		<my-vote title="支持陈晨是女孩!"></my-vote>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.js"></script>
+	<script>
+		const VoteFooter = {
+			template: `<footer class="footerBox">
+				<button type="button" class="btn btn-primary" ref="supBtn" @click="handle(1)">
+					支持
+				</button>
+				<button type="button" class="btn btn-warning" ref="oppBtn" @click="handle(0)">
+					反对
+				</button>
+			</footer>`,
+			methods: {
+				handle(type) {
+					type == 1 ? this.$parent.supNum++ : this.$parent.oppNum++;
+				}
+			},
+			mounted() {
+				// this.$refs是一个对象，对象中存储了所有页面中设定的ref和对应的元素对象（ref帮助我们获取指定的DOM元素对象）
+				// { supBtn:DOM元素对象, oppBtn:DOM元素对象 ....}
+				// console.log(this.$refs);
+
+				// this.$parent获取其所在父组件的实例
+				// console.log(this.$parent);
+			}
+		};
+
+		const VoteMain = {
+			template: `<main class="mainBox">
+				<p>支持人数：{{$parent.supNum}} 人</p>
+				<p>反对人数：{{$parent.oppNum}}人</p>
+			</main>`,
+		};
+
+		const MyVote = {
+			template: `<div class="container">
+				<header class="headerBox">
+					<h3>{{title}}</h3>
+					<span>【{{supNum+oppNum}}】</span>
+				</header>
+				<vote-main></vote-main>
+				<vote-footer></vote-footer>
+			</div>`,
+			components: {
+				VoteFooter,
+				VoteMain
+			},
+			props: ["title"],
+			data() {
+				return {
+					supNum: 0,
+					oppNum: 0
+				};
+			},
+			mounted() {
+				// 给子组件设置REF，最后存储的结果是当前子组件的实例（这样我们就可以修改其中的数据信息了）
+				// console.log(this.$refs.AAA);
+
+				// =>this.$children 存储了当前父组件中用到的所有子组件的实例（顺序自己去记住即可）
+				// console.log(this.$children);
+			}
+		};
+
+		// 渲染页面
+		let vm = new Vue({
+			el: '#app',
+			components: {
+				MyVote
+			}
+		});
+	</script>
+</body>
+
+</html>
