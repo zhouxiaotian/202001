@@ -1,7 +1,7 @@
 .container {
 	position: relative;
 	box-sizing: border-box;
-	margin: 0 auto;
+	margin: 20px auto;
 	width: 800px;
 	height: 240px;
 	overflow: hidden;
