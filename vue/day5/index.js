@@ -1,11 +1,20 @@
 // 轮播图局部组件
 const BannerPagination = {
 	template: '#paginationTemplate',
-	props: ["len"]
+	props: ["len", "activeIndex"]
 };
 
 const BannerArrow = {
-	template: '#arrowTemplate'
+	template: '#arrowTemplate',
+	methods: {
+		handle(lx) {
+			if (lx === 0) {
+				this.$emit('left');
+				return;
+			}
+			this.$emit('right');
+		}
+	}
 };
 
 const MyBanner = {
@@ -66,9 +75,18 @@ const MyBanner = {
 	// 第一次加载完成后，我们需要让轮播图运动起来（自动轮播）
 	mounted() {
 		this.autoTimer = setInterval(this.autoMove, this.interval);
+
+		// 监听WRAPPER的TRANSITIO-END事件
+		this.$refs.wrapper.addEventListener('transitionend', () => {
+			// 回调函数：切换动画结束
+			this.$emit('changeend', this);
+		});
 	},
 	methods: {
 		autoMove() {
+			// 回调函数：动画开始之前
+			this.$emit('changestart', this);
+
 			this.activeIndex++;
 			if (this.activeIndex > (this.bannerDataClone.length - 1)) {
 				// 右边界
@@ -85,6 +103,32 @@ const MyBanner = {
 			}
 			this.wrapperSty.left = `${-this.activeIndex*800}px`;
 			this.wrapperSty.transition = `left ${this.speed}ms linear 0ms`;
+		},
+		changeLeft() {
+			// 回调函数：动画开始之前
+			this.$emit('changestart', this);
+
+			this.activeIndex--;
+			if (this.activeIndex < 0) {
+				// 左边界
+				this.wrapperSty.left = `${-(this.bannerDataClone.length-1)*800}px`;
+				this.wrapperSty.transition = `left 0ms linear 0ms`;
+				this.$nextTick(() => {
+					this.$refs.wrapper.offsetLeft;
+					this.activeIndex = this.bannerDataClone.length - 2;
+					this.wrapperSty.left = `${-this.activeIndex*800}px`;
+					this.wrapperSty.transition = `left ${this.speed}ms linear 0ms`;
+				});
+				return;
+			}
+			this.wrapperSty.left = `${-this.activeIndex*800}px`;
+			this.wrapperSty.transition = `left ${this.speed}ms linear 0ms`;
+		},
+		mouseenter() {
+			clearInterval(this.autoTimer);
+		},
+		mouseleave() {
+			this.autoTimer = setInterval(this.autoMove, this.interval);
 		}
 	}
 };
@@ -106,6 +150,14 @@ new Vue({
 
 		result = await queryData('./data2.json');
 		this.bannerData2 = result;
+	},
+	methods: {
+		A() {
+			console.log('开始切换了~~');
+		},
+		B() {
+			console.log('切换结束了~~');
+		}
 	}
 });
 

@@ -14,14 +14,15 @@
 		<!-- 
 			在数据渲染的时候，如果数据需要从服务器异步获取，那么在第一次加载页面的时候是没有数据的，此时我们可以把一些需要这些数据的元素先不渲染；等待我们从服务器端获取数据之后再去渲染；v-if
 		 -->
-		<my-banner v-if="bannerData1.length" :banner-data="bannerData1" :interval="1000"></my-banner>
+		<my-banner v-if="bannerData1.length" :banner-data="bannerData1" :interval="1000" @changestart="A"
+			@changeend="B"></my-banner>
 
 		<my-banner v-if="bannerData2.length" :banner-data="bannerData2" :initialize="1"></my-banner>
 	</div>
 
 	<!-- 构建轮播图组件的视图 -->
 	<template id="bannerTemplate">
-		<div class="container">
+		<div class="container" @mouseenter="mouseenter" @mouseleave="mouseleave">
 			<!-- 轮播图 -->
 			<div class="wrapper" :style="wrapperSty" ref="wrapper">
 				<div class="slider" v-for="(item,index) in bannerDataClone" :key="index">
@@ -30,23 +31,24 @@
 			</div>
 
 			<!-- 分页器 -->
-			<banner-pagination v-if="pagination" :len="bannerData.length"></banner-pagination>
+			<banner-pagination v-if="pagination" :len="bannerData.length" :active-index="activeIndex">
+			</banner-pagination>
 
 			<!-- 导航按钮 -->
-			<banner-arrow v-if="arrow"></banner-arrow>
+			<banner-arrow v-if="arrow" @right="autoMove" @left="changeLeft"></banner-arrow>
 		</div>
 	</template>
 
 	<template id="paginationTemplate">
 		<ul class="pagination">
-			<li v-for="item in len"></li>
+			<li v-for="(item,index) in len" :class="{active:activeIndex===len?(index===0):(index===activeIndex)}"></li>
 		</ul>
 	</template>
 
 	<template id="arrowTemplate">
 		<div>
-			<a href="javascript:;" class="arrow changeLeft"></a>
-			<a href="javascript:;" class="arrow changeRight"></a>
+			<a href="javascript:;" class="arrow changeLeft" @click="handle(0)"></a>
+			<a href="javascript:;" class="arrow changeRight" @click="handle(1)"></a>
 		</div>
 	</template>
 
