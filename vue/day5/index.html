@@ -14,46 +14,32 @@
 		<!-- 
 			在数据渲染的时候，如果数据需要从服务器异步获取，那么在第一次加载页面的时候是没有数据的，此时我们可以把一些需要这些数据的元素先不渲染；等待我们从服务器端获取数据之后再去渲染；v-if
 		 -->
-		<my-banner v-if="bannerData1.length" :banner-data="bannerData1"></my-banner>
-		<my-banner v-if="bannerData2.length" :banner-data="bannerData2"></my-banner>
+		<my-banner v-if="bannerData1.length" :banner-data="bannerData1" :interval="1000"></my-banner>
+
+		<my-banner v-if="bannerData2.length" :banner-data="bannerData2" :initialize="1"></my-banner>
 	</div>
 
 	<!-- 构建轮播图组件的视图 -->
 	<template id="bannerTemplate">
 		<div class="container">
 			<!-- 轮播图 -->
-			<div class="wrapper">
-				<div class="slider">
-					<img src="images/banner01.png" alt="">
-				</div>
-				<div class="slider">
-					<img src="images/banner02.png" alt="">
-				</div>
-				<div class="slider">
-					<img src="images/banner03.jpg" alt="">
-				</div>
-				<div class="slider">
-					<img src="images/banner04.png" alt="">
-				</div>
-				<div class="slider">
-					<img src="images/banner01.png" alt="">
+			<div class="wrapper" :style="wrapperSty" ref="wrapper">
+				<div class="slider" v-for="(item,index) in bannerDataClone" :key="index">
+					<img :src="item.pic" alt="">
 				</div>
 			</div>
 
 			<!-- 分页器 -->
-			<banner-pagination></banner-pagination>
+			<banner-pagination v-if="pagination" :len="bannerData.length"></banner-pagination>
 
 			<!-- 导航按钮 -->
-			<banner-arrow></banner-arrow>
+			<banner-arrow v-if="arrow"></banner-arrow>
 		</div>
 	</template>
 
 	<template id="paginationTemplate">
 		<ul class="pagination">
-			<li class="active"></li>
-			<li></li>
-			<li></li>
-			<li></li>
+			<li v-for="item in len"></li>
 		</ul>
 	</template>
 
