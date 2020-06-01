@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<div id="app">
+		<div class="baseInfoBox">
+			<h3>姓名：{{obj.name}}</h3>
+			<p>年龄：{{obj.age}}</p>
+			<p>性别：{{obj.sex===0?'男':'女'}}</p>
+			<p>{{arr}}</p>
+		</div>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.min.js"></script>
+	<script>
+		let vm = new Vue({
+			el: '#app',
+			data: {
+				// DATA中设置的响应式是数组，会默认挂载到实例上  vm.obj
+				obj: {
+					name: '珠峰',
+					sex: 0,
+					score: {
+						chinese: '95',
+						math: '100'
+					}
+				},
+				arr: [10, 20]
+			}
+		});
+	</script>
+
+	<script>
+		// 观察者：把数据进行劫持 对对象的深层次处理
+		function observer(obj) {
+			if (obj && typeof obj === "object") {
+				for (let key in obj) {
+					if (!obj.hasOwnProperty(key)) break;
+					defineReactive(obj, key, obj[key]);
+				}
+			}
+		}
+
+		// 数据劫持
+		function defineReactive(obj, attr, value) {
+			observer(value);
+			Object.defineProperty(obj, attr, {
+				get() {
+					return value;
+				},
+				set(newValue) {
+					observer(newValue);
+					if (newValue === value) return;
+					value = newValue;
+				}
+			});
+		}
+
+		// 基于$set处理数据：也会进行数据劫持
+		function $set(obj, attr, value) {
+			defineReactive(obj, attr, value);
+		}
+	</script>
+
+	
+</body>
+
+</html>

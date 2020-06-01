@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<div id="app">
+		<h3 id="title">{{name}}</h3>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.min.js"></script>
+	<script>
+		let vm = new Vue({
+			el: '#app',
+			data: {
+				name: "珠峰培训",
+				age: 11
+			},
+			beforeCreate() {
+				// 创建实例之前：实例还没有创建出来呢
+				// console.log("BEFORE CREATE", this.name);
+				// => 此时实例都没有（或者数据都没有挂载呢），做啥事都没用，所以项目中我们一般也就在这里：根据一些信息的判断，决定是否继续向下渲染，如果不需要向下，则跳转到其它的组件 （可能会做一些组件是否渲染的权限校验：路由中的导航守卫可能更适合干这个事情）
+			},
+			created() {
+				// 实例创建完成：DATA/METHODS等已经挂载到实例上了
+				// console.log("CREATED", this.name);
+				// =>对于页面中的数据需要从服务器获取动态绑定，因为获取数据是异步的，在没有获取数据之前，我们就会下渲染组件，这样导致第一次渲染组件其实是没有拿到数据的；拿到数据后通过修改数据控制组件重新渲染；为了让页面展示数据的速度更快一些，我们尽可能把获取数据提前（一般都是在created发送异步请求数据）
+			},
+			beforeMount() {
+				// 第一次渲染DOM之前：此时页面中还没有DOM元素呢
+				// console.log("BEFORE MOUNT", document.getElementById('title')); //里面内容还是 {{name}}
+				// =>有的人也会在这里发送异步数据
+			},
+			mounted() {
+				// 第一次渲染DOM之后：真实DOM渲染完了
+				// console.log("MOUNTED", document.getElementById('title')); //里面内容还是 "珠峰培训"
+				// =>第一次页面已经渲染完，页面中已经有我们想要的DOM信息，所以我们经常在这里做一些DOM的处理或者监听工作的
+			},
+			beforeUpdate() {
+				// 修改新的DOM之前
+				// console.log("BEFORE UPDATE");
+			},
+			updated() {
+				// 修改新的DOM之后 
+				// console.log("UPDATED");
+				// =>和mounted类似，但是这里不能做一件事：修改响应数据（这样会导致修改操作的死循环）
+			},
+			beforeDestroy() {
+				// 销毁之前
+				// console.log("BEFORE DESTORY");
+				// =>该保存保存，该提示提示，一些事此时不处理以后就没机会了
+			},
+			destroyed() {
+				// 销毁之后
+				// console.log("DESTORYED", this);
+			}
+		});
+	</script>
+</body>
+
+</html>

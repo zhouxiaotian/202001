@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <list :data='ary'>
+          <template slot-scope="myscope" >
+            <!-- v-slot:default="myscope" -->
+            <h1>姓名：</h1>{{myscope.qqq.name}}
+            <h2>年龄：</h2>{{myscope.qqq.age}}
+          </template>
+        </list>
+    </div>
+</body>
+</html>
+<template id='list'>
+  <ul>
+    <li v-for='item in data' :key='item.age'>
+      <!-- 姓名：{{item.name}}
+      年龄：{{item.age}} -->
+      <slot :qqq='item' :www='data'>
+        姓名：{{item.name}}
+        年龄：{{item.age}}
+      </slot>
+      <!-- <h1>姓名：</h1>{{item.name}}
+      <h2>年龄：</h2>{{item.age}} -->
+    </li>
+  </ul>
+</template>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    Vue.component('list',{
+      template:'#list',
+      props:['data']
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            ary:[{name:'小明',age:10},{name:'小明2',age:20},{name:'小明3',age:30}]
+        }
+    });
+</script>

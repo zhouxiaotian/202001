@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+		.container {
+			margin: 20px auto;
+			padding: 10px;
+			width: 400px;
+			border: 1px solid #AAA;
+		}
+
+		.headerBox {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			line-height: 40px;
+		}
+
+		.headerBox h3,
+		.headerBox span {
+			font-size: 22px;
+			margin: 0;
+		}
+
+		.mainBox {
+			margin: 10px auto;
+		}
+
+		.mainBox p {
+			line-height: 35px;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<my-vote title="支持张硕是男孩!"></my-vote>
+		<my-vote title="支持陈晨是女孩!"></my-vote>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.js"></script>
+	<script>
+		const VoteFooter = {
+			template: `<footer class="footerBox">
+				<button type="button" class="btn btn-primary" @click="func('SUP')">支持</button>
+				<button type="button" class="btn btn-warning" @click="func('OPP')">反对</button>
+			</footer>`,
+			methods: {
+				func(type) {
+					// 通知子组件事件池中的HANDLE自定义事件执行
+					this.$emit('xxx', type);
+				}
+			}
+		};
+
+		const VoteMain = {
+			template: `<main class="mainBox">
+				<p>支持人数：{{supnum}} 人</p>
+				<p>反对人数：{{oppnum}} 人</p>
+				<p>支持率：{{ratio}}</p>
+			</main>`,
+			props: ['supnum', 'oppnum'],
+			computed: {
+				ratio() {
+					let {
+						supnum,
+						oppnum
+					} = this;
+					let total = supnum + oppnum;
+					if (total === 0) return '--';
+					return (supnum / total * 100).toFixed(2) + '%';
+				}
+			}
+		};
+
+		const MyVote = {
+			template: `<div class="container">
+				<header class="headerBox">
+					<h3>{{title}}</h3>
+					<span>【{{supNum+oppNum}}】</span>
+				</header>
+				<vote-main :supnum="supNum" :oppnum="oppNum"></vote-main>
+				<vote-footer @xxx="handle"></vote-footer>
+			</div>`,
+			// @xxx="handle"  调用子组件的时候，我们这样写，就相当于创建一个自定义事件xxx，并且向事件池中追加一个叫做handle的方法，而且是把方法放入到vote-footer的事件池中，类似于：footer实例.$on('xxx',handle)
+			components: {
+				VoteFooter,
+				VoteMain
+			},
+			props: ["title"],
+			data() {
+				return {
+					supNum: 0,
+					oppNum: 0
+				};
+			},
+			methods: {
+				// 设置子组件能够触发执行的方法（为了修改状态的）
+				handle(type) {
+					type === "SUP" ? this.supNum++ : this.oppNum++;
+				}
+			}
+		};
+
+
+		// 渲染页面
+		let vm = new Vue({
+			el: '#app',
+			components: {
+				MyVote
+			}
+		});
+	</script>
+</body>
+
+</html>

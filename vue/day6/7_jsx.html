@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <mylevel :level='4'>
+          珠峰
+          <i slot='px'>培训</i>
+        </mylevel>
+        
+        <mylevel :level='1'>
+          珠峰
+          <i slot='px'>培训</i>
+        </mylevel>
+        
+        <mylevel :level='2'>
+          珠峰
+          <i slot='px'>培训</i>
+        </mylevel>
+        
+        <mylevel :level='6'>
+          珠峰
+          <i slot='px'>培训</i>
+        </mylevel>
+    </div>
+</body>
+</html>
+<!-- <template id='level'>
+  <div>
+    <h1 v-if='level == 1'><slot></slot></h1>
+    <h2 v-if='level == 2'><slot></slot></h2>
+    <h3 v-if='level == 3'><slot></slot></h3>
+    <h4 v-if='level == 4'><slot></slot></h4>
+    <h5 v-if='level == 5'><slot></slot></h5>
+    <h6 v-if='level == 6'><slot></slot></h6>
+  </div>
+</template> -->
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let mylevel = {
+      // template:"#level",\
+      // render(h) {
+        
+      // },
+      render:function(h){
+        // h 是一个函数 其实就i是 createElement
+        // 第一个参数是标签名 第二个参数是行内属性  第三个参数是内容(多个子节点用数组抱起来)
+        // return h('i',null,['hello china','哈哈',h('span',null,'hehehe')])
+        console.log(this.$slots)
+        return h('h'+this.level,null,this.$slots.default)
+      },
+      props:['level']
+    }
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        components:{
+          mylevel
+        }
+    });
+
+    /* 
+      JSX  可以让我们不用编写template模板了 改写成 render属性
+      template:'#qqq'   写了那个模板就渲染那个模板
+      render(h){
+        return h(标签名，行内属性，[子元素])   返回了什么内容 渲染的结果就是什么内容
+      }
+    
+    
+    
+     */
+</script>

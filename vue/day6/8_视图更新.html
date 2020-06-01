@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1 v-for='item in ary' ref='h1'>{{name}}</h1>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            ary:[1,2,3,4,5]
+        },
+        mounted() {
+          // ref是用来获取DOM或者组件的
+          console.log(this.$refs.h1.length);
+          this.ary.pop();
+          // DOM 更新是异步操作
+          // 异步的好处 就是会把所有的更新合并成一个 最后只更新一下视图即可
+          console.log(this.$refs.h1.length);
+          this.$nextTick(()=>{
+            // 这个函数会在DOM 更新完成之后触发
+            console.log(this.$refs.h1.length);
+          })
+        },
+    });
+</script>

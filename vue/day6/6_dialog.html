@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <mydialog>
+          <template v-slot:myheader>
+            <h1>这是用户设置的头部</h1>
+          </template>
+          <h2 slot='myfooter'>这是用户设置的尾部</h2>
+        </mydialog>
+    </div>
+</body>
+</html>
+<template id='dialog'>
+  <div>
+    模态框
+    <header>
+      <slot name='myheader'>默认头部</slot>
+    </header>
+    <main>默认身体</main>
+    <footer>
+      <slot name='myfooter'>默认尾部</slot>
+    </footer>
+  </div>
+</template>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let mydialog = {
+      template:'#dialog'
+    }
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        components:{
+          mydialog
+        }
+    });
+</script>

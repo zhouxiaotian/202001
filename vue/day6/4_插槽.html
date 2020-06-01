@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <my-button @click='fn'>自定义文案<div>dddd</div></my-button>
+        <div>---------------------</div>
+        <my-button>
+          <h2>66666</h2>
+        </my-button>
+    </div>
+</body>
+</html>
+
+<template id='mybutton'>
+  <div>
+    <!-- <slot></slot>  这个标签就代表了 当前组件包含的结构 -->
+    <slot></slot>
+    <i>我自己的button组件</i>
+    <button @click='hahaha'>
+      <slot>默认文案</slot>
+    </button>
+    <slot></slot>
+  </div>
+</template>
+
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    Vue.component('my-button',{
+      template:'#mybutton',
+      methods: {
+        hahaha(e){
+          console.log('哈哈哈')
+          this.$emit('click',e)
+        }
+      },
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        methods: {
+          fn(){
+            console.log(arguments)
+          }
+        },
+    });
+</script>

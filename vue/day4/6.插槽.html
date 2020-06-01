@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<div id="app">
+		<h3>我正在学习插槽</h3>
+		<!-- 
+			在组件调用指定的插槽区域，所处作用域依然是外层公共作用域，而不是组件的私有组用域，所以不能直接用组件中的响应式数据
+			<p>{{context}}</p> 现在这样是不行的
+		-->
+		<page>
+			<!-- default是默认插槽的名字（插槽不设置名字，默认就是他） v-slot:default="zhufeng" => v-slot="zhufeng" -->
+			<template v-slot="zhufeng">
+				<p>SLOT: {{zhufeng.context}}</p>
+				<p>SLOT: {{zhufeng.age}}</p>
+			</template>
+		</page>
+	</div>
+	
+	<template id="pageTemplate">
+		<div class="box">
+			<p>{{context}}</p>
+
+			<!-- 给插槽中的信息提供数据 -->
+			<slot :context="context" :age="age"></slot>
+		</div>
+	</template>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.min.js"></script>
+	<script>
+		Vue.component('page', {
+			template: '#pageTemplate',
+			data() {
+				return {
+					context: '珠峰培训',
+					age: 11
+				};
+			}
+		});
+
+		let vm = new Vue({
+			el: '#app'
+		});
+	</script>
+</body>
+
+</html>

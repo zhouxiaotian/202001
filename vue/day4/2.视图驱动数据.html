@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- <div id="app"> -->
+	<!-- 
+			 v-model：首先可以把响应数据绑定在文本框中，并且可以监听文本框内容的改变，内容改变后会修改响应数据，响应数据一更改，视图还会重新渲染
+		 -->
+	<!-- <input type="text" v-model="text">
+		<p v-text="text"></p>
+	</div> -->
+	<!-- IMPORT JS -->
+	<!-- <script src="node_modules/vue/dist/vue.min.js"></script>
+	<script>
+		let vm = new Vue({
+			data: {
+				text: '你好世界~~'
+			}
+		});
+		// 等价于设置的EL
+		vm.$mount('#app');
+	</script> -->
+
+
+
+	<div id="app">
+		<input type="text" id="inpBox">
+		<p id="conBox"></p>
+	</div>
+	<!-- IMPORT JS -->
+	<script>
+		let data = {
+			text: '你好世界~~'
+		};
+		let temp = {
+			...data
+		};
+		Object.defineProperty(data, 'text', {
+			set(newValue) {
+				temp.text = newValue;
+				render();
+			}
+		});
+
+		// 根据数据去渲染视图
+		function render() {
+			inpBox.value = temp.text;
+			conBox.innerHTML = temp.text;
+		}
+		render();
+
+		// 视图更新控制数据的更新
+		inpBox.addEventListener('input', function () {
+			let val = inpBox.value;
+			data.text = val;
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../node_modules/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+    <div id="app">
+        <el-button type="primary" @click='myname'>主要按钮</el-button>
+        <!-- this.$emit('click',...) -->
+
+
+
+        <h1>{{name}}</h1>
+        <!-- 把 珠峰 两个字 通过 自定义属性myqqq这个属性传给了 my-com1这个组件 -->
+        <my-com1 :myqqq='name' @myqqfn='myname'></my-com1>
+        <!-- 把myname这个函数 通过自定义事件myqqfn 传给了子组件my-com1 -->
+        <my-com2/>
+        <!--  单标签会阻塞 下边组件的渲染 -->
+        <!-- <my-com1></my-com1> -->
+    </div>
+</body>
+</html>
+<template id='my-com1'>
+  <div>
+    <h1>组件1 {{myqqq}}</h1>
+    <my-com2></my-com2>
+    <button @click='fn'>改变</button>
+  </div>
+</template>
+<template id='my-com2'>
+  <div>
+    <h1>组件2</h1>
+  </div>
+</template>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src='../node_modules/element-ui/lib/index.js'></script>
+<script>
+    /* 
+      父子组件是一个相对概念
+      A组件使用了B组件 那么 A 就是B的父组件 B就是A的子组件
+      B组件使用了A组件 那么 B 就是A的父组件 A就是B的子组件
+
+      组件名不能是已经存在的html标签
+
+      父传子  其实就是通过自定义属性  子组件通过props接收
+      子传父  其实就是通过自定义事件  子组件通过$emit触发父组件定义的事件 并且把子组件的数据
+              通过参数的方式给了父组件；
+     */
+    Vue.component('my-com1',{
+      template:'#my-com1',
+      created() {
+        console.log(this)
+      },
+      props:['myqqq'],// data  methods  computed props 这四个属性中的属性名不能重复
+      methods: {
+        fn(){
+          // this.myqqq = '珠峰培训'
+          // 触发父组件定义的事件 myqqfn  并且把参数1，2，3，4，。。。传给这个函数
+          // 子传父 其实就是把子组件的数据 通过参数的方式传给了父组件
+          // this.$emit('myqqfn',1,2,3,4,'珠峰培训')
+          this.$emit('myqqfn','珠峰培训')
+        }
+      },
+    })
+    Vue.component('my-com2',{
+      template:'#my-com2'
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        methods: {
+          myname(val){
+            this.name = val;
+            console.log(arguments)
+          }
+        },
+    });
+</script>

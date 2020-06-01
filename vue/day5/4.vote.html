@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+		.container {
+			margin: 20px auto;
+			padding: 10px;
+			width: 400px;
+			border: 1px solid #AAA;
+		}
+
+		.headerBox {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			line-height: 40px;
+		}
+
+		.headerBox h3,
+		.headerBox span {
+			font-size: 22px;
+			margin: 0;
+		}
+
+		.mainBox {
+			margin: 10px auto;
+		}
+
+		.mainBox p {
+			line-height: 35px;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<my-vote title="支持张硕是男孩!"></my-vote>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.js"></script>
+	<script>
+		let EventBus = new Vue;
+
+		const VoteFooter = {
+			template: `<footer class="footerBox">
+				<button type="button" class="btn btn-primary" @click="handle('SUP')">支持</button>
+				<button type="button" class="btn btn-warning" @click="handle('OPP')">反对</button>
+			</footer>`,
+			methods: {
+				handle(type) {
+					// 通知事件池中的方法执行
+					EventBus.$emit('xxx', type);
+				}
+			}
+		};
+
+		const VoteMain = {
+			template: `<main class="mainBox">
+				<p>支持人数：{{supNum}} 人</p>
+				<p>反对人数：{{oppNum}} 人</p>
+				<p>支持率：{{ratio}}</p>
+			</main>`,
+			data() {
+				return {
+					supNum: 0,
+					oppNum: 0
+				};
+			},
+			computed: {
+				ratio() {
+					let {
+						supNum,
+						oppNum
+					} = this;
+					let total = supNum + oppNum;
+					if (total === 0) return '--';
+					return (supNum / total * 100).toFixed(2) + '%';
+				}
+			},
+			methods: {
+				handleMain(type) {
+					type === "SUP" ? this.supNum++ : this.oppNum++;
+				}
+			},
+			created() {
+				// 创建完实例，把方法加入到事件池中
+				EventBus.$on('xxx', this.handleMain);
+			}
+		};
+
+		const MyVote = {
+			template: `<div class="container">
+				<header class="headerBox">
+					<h3>{{title}}</h3>
+					<span>【{{count}}】</span>
+				</header>
+				<vote-main></vote-main>
+				<vote-footer></vote-footer>
+			</div>`,
+			components: {
+				VoteFooter,
+				VoteMain
+			},
+			props: ["title"],
+			data() {
+				return {
+					count: 0
+				};
+			},
+			methods: {
+				handleVote() {
+					this.count++;
+				}
+			},
+			created() {
+				// 创建完实例，把方法加入到事件池中
+				EventBus.$on('xxx', this.handleVote);
+			}
+		};
+
+
+		// 渲染页面
+		let vm = new Vue({
+			el: '#app',
+			components: {
+				MyVote
+			}
+		});
+	</script>
+</body>
+
+</html>

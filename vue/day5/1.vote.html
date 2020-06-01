@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+		.container {
+			margin: 20px auto;
+			padding: 10px;
+			width: 400px;
+			border: 1px solid #AAA;
+		}
+
+		.headerBox {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			line-height: 40px;
+		}
+
+		.headerBox h3,
+		.headerBox span {
+			font-size: 22px;
+			margin: 0;
+		}
+
+		.mainBox {
+			margin: 10px auto;
+		}
+
+		.mainBox p {
+			line-height: 35px;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<!-- 
+			在父组件中调用子组件，想让子组件中具备不同的信息（每个子组件都是单独的实例）
+			=>“父传子”：基于PROP属性来完成的
+			1.属性传递的时候，属性名尽可能不要出现大写（因为你设置为大写，最后也是基于小写传递的） supNum => supnum
+			2.属性名设置为kabab-case模式，在子组件注册的时候用的是 camalCase/PasalCase 来注册接收 sup-num => supNum/SupNum
+
+			3.传递的属性值默认都是字符串，如果需要传递其它数据类型值，我们需要基于v-bind处理 => :supnum="10" 这样传递过去的就是Number类型
+		 -->
+		<my-vote title="支持张硕是女孩？" :supnum="10" :oppnum="15"></my-vote>
+
+		<my-vote title="支持陈晨是男孩？"></my-vote>
+	</div>
+
+	<!-- VOTE的TEMPLATE模板 -->
+	<template id="voteTemplate">
+		<div class="container">
+			<header class="headerBox">
+				<h3>{{title}}</h3>
+				<span>【{{supnum+oppnum}}】</span>
+			</header>
+			<main class="mainBox">
+				<p>支持人数：{{supnum}}人</p>
+				<p>反对人数：{{oppnum}}人</p>
+				<p>支持率：--</p>
+			</main>
+			<footer class="footerBox">
+				<button type="button" class="btn btn-primary">支持</button>
+				<button type="button" class="btn btn-warning">反对</button>
+			</footer>
+		</div>
+	</template>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.js"></script>
+	<script>
+		// 创建一个VOTE组件
+		const MyVote = {
+			template: '#voteTemplate',
+			// 子组件想要用父组件传递的属性，需要注册一下（注册完成后，会把当前属性挂载到实例上 {{title}} / this.title ）
+			// props: ["title", "supnum", "oppnum"],
+			// 属性注册时候的校验规则（即使校验失败，组件还会正常的渲染，只不过控制台会有错误信息提示）
+			props: {
+				// 设定传递属性的数据格式类型
+				// title: String,
+				title: {
+					type: String,
+					// 设置为必传
+					required: true
+				},
+				// 这样设定就是属性值可以是多种类型皆可
+				// title: [String, Number...]
+				supnum: {
+					// 传递就要传递NUMBER类型
+					type: Number,
+					// 指定默认值
+					default: 0
+				},
+				oppnum: {
+					type: Number,
+					default: 0,
+					// 自定义校验的规则
+					// validator(val) {
+					// 	return val <= 10;
+					// }
+				}
+			},
+			created() {}
+		};
+
+		// 渲染页面
+		let vm = new Vue({
+			el: '#app',
+			components: {
+				MyVote
+			}
+		});
+	</script>
+</body>
+
+</html>

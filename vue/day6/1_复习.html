@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <input type="text" v-model='name'>
+        <h2>{{name2}}</h2>
+    <img :src="name" alt="" class='qqq' :class='{current:false}'  :style="{color:name}">
+
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    /* 
+      计算属性 computed:{} 这里的属性名不能跟data和methods中的属性名重复
+    
+    
+     */
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            obj:{
+              a:123
+            }
+        },
+        computed: {
+          name2(){
+            // console.log(this.name)
+            return this.name.split('').reverse().join('')
+          },
+          // name2:{
+          //   get(){
+
+          //   },
+          //   set(){
+
+          //   }
+          // }
+        },
+        watch: {
+          name2(newV,oldV){
+            // 监听name2 
+            console.log(newV,oldV)
+          },
+          // obj(newV,oldV){
+          //   // 只有obj这个变量对应的值改变的时候 才会触发这个函数
+          //   // obj里边的内容改变的时候  这个函数没反应
+          //   console.log(newV,oldV)
+          // }
+          obj:{
+            deep:true,//深度监听
+            immediate:true,// 刚进来时 先执行一次handler回调函数
+            handler(newV,oldV){
+              // 深度监听一个对象的时候 这两个形参对应的都是新值；
+              console.log(newV,oldV)
+            }
+          }
+        },
+    });
+</script>

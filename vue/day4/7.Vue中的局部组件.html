@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<div id="app">
+		<h3>我正在学习组件化开发</h3>
+		<base-info></base-info>
+		<base-info></base-info>
+	</div>
+
+	<template id="baseInfoTemplate">
+		<div class="box">
+			<img :src="img" alt="">
+			<p v-html="content"></p>
+		</div>
+	</template>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.min.js"></script>
+	<script>
+		// 创建局部组件
+		// const [name]=[options];
+		const BaseInfo = {
+			template: '#baseInfoTemplate',
+			data() {
+				return {
+					img: 'https://img30.360buyimg.com/jdcms/s150x150_jfs/t1/106951/11/15544/149802/5e7193ceEbd65c57d/7237ec53de7a9200.jpg.webp',
+					content: '法国VICKI BROWN品牌春夏新款潮鞋韩版软底户外运动商务百搭飞织透气休闲鞋 黑色 44'
+				};
+			}
+		};
+
+		let vm = new Vue({
+			el: '#app',
+			// 局部组件需要注册一下才能在视图中使用
+			components: {
+				// "base-info": BaseInfo
+				BaseInfo
+			},
+			data: {}
+		});
+	</script>
+
+
+</body>
+
+</html>

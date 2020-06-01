@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <qqq></qqq>
+        <qqq></qqq>
+        <qqq></qqq>
+        <qqq></qqq>
+        <www></www>
+    </div>
+
+    <template id='www'>
+      <div class="www_box">
+        哈啊哈哈
+      </div>
+    </template>
+
+</body>
+
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    /* 
+      组件 在vue中就是指的一个单独的模块
+       复用性
+      功能型组件
+      页面级组件 
+
+      全局组件和局部组件
+    
+     */
+    // 组件名 最安全的写法就是烤串(el-button)命名 
+    var obj = {qqqname:'100'}
+    Vue.component('qqq',{
+      template:'<div><h1>hello zhufeng{{qqqname}}</h1><button @click="fn">+</button></div>',// 就是用来渲染的模板
+      data() {
+        // 组件中的data必须函数 用的是函数返回的那个对象；
+        // 子组件模板中使用的变量 或 函数 只会在当前组件中查找，没有的话就报错，不会找到
+        // 父组件中；
+
+        // data为啥时函数？ 为了保证每个组件的数据的独立性；
+        return {
+          qqqname:'100'
+        }
+      },
+      methods: {
+        fn(){
+          // this指向当前实例；
+          this.qqqname++;
+        }
+      },
+    }) 
+    // Vue.filter()
+    Vue.component('www',{
+      template:'#www'
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        methods: {
+          fn(){}
+        },
+    });
+</script>

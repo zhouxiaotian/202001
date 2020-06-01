@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+		.container {
+			margin: 20px auto;
+			padding: 10px;
+			width: 400px;
+			border: 1px solid #AAA;
+		}
+
+		.headerBox {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			line-height: 40px;
+		}
+
+		.headerBox h3,
+		.headerBox span {
+			font-size: 22px;
+			margin: 0;
+		}
+
+		.mainBox {
+			margin: 10px auto;
+		}
+
+		.mainBox p {
+			line-height: 35px;
+			margin: 0;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<my-vote title="支持张硕是女孩？" :supnum="10" :oppnum="5"></my-vote>
+
+		<!-- 
+			调用组件的时候如果设置的属性是class/style这类样式属性，VUE会默认帮我们把样式和组件的样式进行合并处理
+		 -->
+		<my-vote title="支持陈晨是男孩？"></my-vote>
+	</div>
+
+	<!-- VOTE的TEMPLATE模板 -->
+	<template id="voteTemplate">
+		<!-- title属性 supNum/oppNum是DATA中的状态(初始值是属性值) -->
+		<div class="container">
+			<header class="headerBox">
+				<h3>{{title}}</h3>
+				<span>【{{supNum+oppNum}}】</span>
+			</header>
+			<main class="mainBox">
+				<p>支持人数：{{supNum}}人</p>
+				<p>反对人数：{{oppNum}}人</p>
+				<p>支持率：{{ratio}}</p>
+			</main>
+			<footer class="footerBox">
+				<button type="button" class="btn btn-primary" @click="handle('SUP')">支持</button>
+				<button type="button" class="btn btn-warning" @click="handle('OPP')">反对</button>
+			</footer>
+		</div>
+	</template>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.js"></script>
+	<script>
+		// 创建一个VOTE组件
+		// 基于父组件传递给子组件的属性值是不建议去直接修改操作的（项目中我们可以把获取的属性值再赋值给组件的 DATA/COMPUTED，操作都是按照DATA来操作）
+		const MyVote = {
+			template: '#voteTemplate',
+			props: {
+				title: {
+					type: String,
+					required: true
+				},
+				supnum: {
+					type: Number,
+					default: 0
+				},
+				oppnum: {
+					type: Number,
+					default: 0
+				}
+			},
+			data() {
+				return {
+					// 把属性信息挂载到DATA上，一定要记住属性信息此时也在实例上挂载了，DATA信息也会挂载到实例上，所以名字不能一致
+					supNum: this.supnum,
+					oppNum: this.oppnum
+				};
+			},
+			computed: {
+				ratio() {
+					let {
+						supNum,
+						oppNum
+					} = this;
+					let total = supNum + oppNum;
+					if (total === 0) return '--';
+					return (supNum / total * 100).toFixed(2) + '%';
+				}
+			},
+			methods: {
+				handle(type) {
+					if (type === "SUP") {
+						// 支持
+						this.supNum++;
+						return;
+					}
+					// 反对
+					this.oppNum++;
+				}
+			}
+		};
+
+		// 渲染页面
+		let vm = new Vue({
+			el: '#app',
+			components: {
+				MyVote
+			}
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{name}}
+        <h1>{{name}}</h1>
+        <h2>{{age}}</h2>
+        <input type="text" v-model='name'>
+    </div>
+</body>
+</html>
+<script>
+    function nodeToFragment($el,vm){
+      // 这个函数 就是把页面上的节点挨个挪到了 文档碎片上；
+
+      // 创造一个文档碎片 用来存储页面结构
+      let fragment = document.createDocumentFragment();
+      // 把$el 中的节点一个一个的挪到碎片上
+      // let child = null;
+      // while(child = $el.firstChild){
+      //   debugger
+      //   fragment.appendChild(child)
+      // }
+      let child = $el.firstChild;
+      while(child){
+        // 每过一个节点 都要处理一下vue的语法
+        compile(child,vm)
+        fragment.appendChild(child);
+        child = $el.firstChild;
+      }
+      $el.appendChild(fragment);
+    }
+    function compile(node,vm){
+      // 该函数就是为了编译vue语法
+      // node 要编译的节点  vm是当前实例 有我们要用的数据_data
+      // node 有可能是 文本节点 也有可能是 元素节点
+      if(node.nodeType == 1){
+        // 证明 node对应的是一个 元素节点
+        let attrs = node.attributes;// 可以获取元素所有的行内属性
+        // console.log(attrs);
+        [...attrs].forEach(item=>{
+          // 只有v-开头的行内属性才是我们要去处理的部分
+          if(/^v\-/.test(item.nodeName)){
+            // 说明这个行内属性是一个vue指令
+            let valName = item.value;// 'name'
+            // 获取 name 这个属性名 对应的属性值
+            new Watcher(node,vm,valName);//谁用了谁家的什么属性；
+            let val = vm._data[valName];
+            node.value = val;// 把 珠峰  这个属性值 给 input框
+            node.addEventListener('input',function(e){
+              // 当input框输入新的内容时 我们要把数据源的数据更新
+              vm._data[valName] = e.target.value;
+            })
+          }
+        });
+        // d对当前元素的子节点接着进行编译
+        [...node.childNodes].forEach(item=>{
+          compile(item,vm)
+        })
+      }else{
+        // 说明是文本节点
+        // 若是文本节点 我们要把小胡子语法给替换成真实的内容
+        console.log(node.textContent)// 对应就是文本节点的内容
+        // {{name}}
+        let reg = /\{\{(\w+)\}\}/;
+        if(reg.test(node.textContent)){
+          let str = node.textContent.replace(reg,(a,b)=>{
+            // a  {{name}};  b  name;
+            new Watcher(node,vm,b)
+            return vm._data[b]
+          })
+          node.textContent = str;
+        }
+      }
+    }
+    
+    function observe(obj){
+      let keys = Object.keys(obj);//获取了obj中的所有属性名
+      keys.forEach(item=>{
+        // 对每一个属性进行劫持
+        defineReactive(obj,item,obj[item])
+      })
+    }
+    function defineReactive(obj,key,value){
+      // 对于每一个属性 我们各自创造一个事件池；
+      let dep = new Dep();
+      Object.defineProperty(obj,key,{
+        get(){
+          console.log(key,'被调用了')
+          if(Dep.target123){
+            dep.addSub(Dep.target123)// 凡是用到这个属性地方 都会把这个位置对应的watcher放到池子里
+          }
+          return value
+        },
+        set(newValue){
+          console.log(key,'被设置了')
+          value = newValue;
+          dep.notify();
+        }
+      })
+    }
+
+    class Dep{
+      // 订阅器
+      constructor(){
+        this.subs = [];
+      }
+      addSub(sub){
+        // 向事件池中添加事件
+        this.subs.push(sub)
+      }
+      notify(){
+        // debugger
+        this.subs.forEach(item=>{
+          //让每一个事件执行对应的操作
+          item.update();
+        })
+      }
+    }
+    /* 
+      我们怎么实现 某个数据更新之后 让所有用到这个数据的视图位置对应更新呢？
+      需要使用一个订阅者，就是说 在用到对应数据的视图的位置添加一个订阅者，把这些订阅者
+      存到对应的订阅器中，那当数据更新的时候 我们只要让订阅器中的所有订阅者执行操作即可
+    
+    */
+    class Watcher{
+      // 订阅者
+      constructor(node,vm,key){
+        Dep.target123 = this;// 把watcher实例 （订阅者） 放到了dep的一个属性上了
+        this.node = node;
+        this.vm = vm;
+        this.key = key;
+        this.myget();// 会触发对应的get函数， get函数一执行 就会存储订阅者
+        Dep.target123 = null;
+      }
+      update(){
+        // 根据新的数据更新对应的视图部分
+        this.myget();
+        // debugger
+        if(this.node.nodeType==1){//input
+          this.node.value = this.newV;
+        }else{
+          this.node.textContent = this.newV
+        }
+      }
+      myget(){
+        this.newV = this.vm._data[this.key];
+      }
+    }
+
+    function Vue(options){
+      // $el 就射我们渲染的模板
+      this.$el = document.querySelector(options.el);
+
+      this._data = options.data || {};// 存储的就是data中的属性；
+      // 数据劫持
+      observe(this._data);// 对data中的数据进行劫持
+
+      // 把模板进行渲染
+      nodeToFragment(this.$el,this)
+
+    }
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰666",
+            age:100
+        }
+    });
+</script>

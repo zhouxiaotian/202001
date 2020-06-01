@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<div id="app">
+		<h3>我正在学习插槽</h3>
+		<page>
+			<!-- 具名插槽指定内容的时候需要用TEMPLATE把内容包起来：v-slot:[name] 把模板中的内容放置到指定的命名插槽下  剩余不指定的都是插入到默认的插槽中<slot> -->
+			<template v-slot:header>
+				<div>我是页眉</div>
+			</template>
+			<p>哈哈哈~~~</p>
+			<template v-slot:footer>
+				<div>我是页尾</div>
+			</template>
+		</page>
+	</div>
+	
+	<!-- 具名插槽：在模板中给预留的插槽设置名字 -->
+	<template id="pageTemplate">
+		<div class="box">
+			<slot name="header"></slot>
+			<slot></slot>
+			<p>法国VICKI BROWN品牌春夏新款潮鞋韩版软底户外运动商务百搭飞织透气休闲鞋</p>
+			<slot name="footer"></slot>
+		</div>
+	</template>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.min.js"></script>
+	<script>
+		Vue.component('page', {
+			template: '#pageTemplate',
+			data() {
+				return {
+
+				};
+			}
+		});
+
+		let vm = new Vue({
+			el: '#app'
+		});
+	</script>
+</body>
+
+</html>
