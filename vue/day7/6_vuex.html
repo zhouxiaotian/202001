@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        {{$store.state.color}}
+        <bro1></bro1>
+        <bro2></bro2>
+    </div>
+</body>
+</html>
+
+<template id='bro1'>
+  <div>
+    <h1 :style='{color:$store.state.bro1Color}'>这是一个bro1组件</h1>
+    {{$store.state.color}}
+    <button @click='fn1'>按钮1</button>
+  </div>
+</template>
+
+<template id='bro2'>
+  <div>
+    <h1 :style='{color:$store.state.bro2Color}'>这是一个bro2组件</h1>
+    {{$store.state.color}}
+    <button @click='fn2'>按钮2</button>
+  </div>
+</template>
+
+
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="../node_modules/vuex/dist/vuex.js"></script>
+<script>
+    /* 
+      vuex 是为了解决兄弟组件之间的数据交互
+      使用vuex第一步 先去产生一个vuex实例
+      下一步  把产生的实例 注入到 根实例中
+      注册完成之后 发现 每一个组件（实例） 中都有$store这个属性了
+    */
+    let store123 = new Vuex.Store({
+      // 配置项
+      state:{
+        // 这里存放的都是公用数据
+        color:'red',
+        bro1Color:'blue',
+        bro2Color:'green'
+      },
+      mutations:{
+        // 函数名自定义的
+        // 这里存放的都是用来修改上边state中的属性的方法
+        changeBro1Color(state,option){
+          // state就是vuex中的那个state; option 是调用这个函数时传递的参数；
+          // 这里的函数最多只有两个参数，第二个参数使用调用时传递的，若需要多个参数的时候
+          // 只能在调用的时候 把第二个参数转成引用数据类型包起来 传递进来
+          console.log(arguments)
+          state.bro1Color = option;
+        },
+        changeBro2Color(state,option){
+          state.bro2Color = option
+        }
+      }
+    })
+
+    let bro1 = {
+      template:'#bro1',
+      created() {
+        console.log(this)
+      },
+      methods: {
+        fn1(){
+          this.$store.commit('changeBro2Color','red');
+          // this.$store.state.bro2Color = 'red'
+        }
+      },
+    };
+    let bro2 = {
+      template:'#bro2',
+      created() {
+        console.log(this)
+      },
+      methods: {
+        fn2(){
+          this.$store.commit('changeBro1Color','gold');
+          // commit('mutations中的函数名',传给mutations中的对应函数的参数)
+          // this.$store.state.bro1Color = 'gold'
+        }
+      },
+    }
+    let vm = new Vue({
+        el:'#app',
+        store:store123,// 这个store属性名是vue规定的
+        data:{
+            name:"珠峰"
+        },
+        components:{
+          bro1,bro2
+        }
+    });
+</script>

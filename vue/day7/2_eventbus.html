@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <bro1></bro1>
+        <h2>-----------------------------------------------</h2>
+        <bro2></bro2>
+    </div>
+</body>
+</html>
+
+
+<template id='bro1'>
+  <div :style="{color:color}">
+    <h1>兄弟组件1</h1>
+    <button @click='fn1'>bro2变色</button>
+  </div>
+</template>
+
+
+
+
+<template id='bro2'>
+  <div :style="{color:color}">
+    <h1>兄弟组件2</h1>
+    <button @click='fn2'>bro1变色</button>
+  </div>
+</template>
+
+
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let bus = new Vue();
+    let bro1 = {
+      template:'#bro1',
+      data() {
+        return {
+          color:'gold'
+        }
+      },
+      created() {
+        bus.$on('改变1的颜色',(val)=>{
+          this.color = val;
+        })
+      },
+      methods: {
+        fn1(){
+          bus.$emit('改变2的颜色','red')
+        }
+      },
+    };
+    let bro2 = {
+      template:'#bro2',
+      data() {
+        return {
+          color:'blue'
+        }
+      },
+      created() {
+        bus.$on('改变2的颜色',(val)=>{
+          debugger
+          this.color = val
+        })
+      },
+      methods: {
+        fn2(){
+          bus.$emit('改变1的颜色','green')
+        }
+      },
+    };
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        components:{
+          bro1,bro2
+        }
+    });
+</script>

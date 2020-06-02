@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1 v-color123='col' v-permission='1'>{{name}}</h1>
+        <div v-color123>{{name|money}}</div>
+        <qqq></qqq>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    // 我们自己定义了一个全局的 指令  v-color
+    // 过滤器和自定义指令对应的回调函数中的this不是当前实例；
+    Vue.directive('color123',function(el,obj){
+      // 模板中只要使用一次 v-color  这个函数就会执行一次； 
+      console.log(arguments)
+      el.style.color = obj.value || 'blue'
+    })
+    Vue.directive('permission',function(el,obj){
+      if(obj.value>10){
+        el.style.display = 'block'
+      }else{
+        el.style.display = 'none'
+      }
+    })
+    Vue.filter('money',function(val){
+      // 全局的  任何组件都能调用
+      return val + 666
+    })
+    Vue.component('qqq',{
+      template:'<h1 v-color123>{{"hahahaha"|money}}</h1>',
+      filters:{
+        // 局部过滤器 只有当前组件能够使用
+        money(val){
+          // console.log(this);// 不是当前实例
+          return '哈哈哈'
+        }
+      },
+      directives:{
+        color123(el,obj){
+          // 局部自定义指令 只有当前组件能够使用
+          // el.style.color = obj.value || 'blue'
+          el.style.color = 'green';
+        }
+      }
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+            col:'red'
+        }
+    });
+</script>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+
+        <my-show></my-show>
+        <my-button></my-button>
+    </div>
+</body>
+</html>
+
+<template id='show'>
+  <div>
+    <h1>当前的数字是{{$store.state.count}}</h1>
+    <h1 :style='{color:color}'>当前的数字是{{count}}</h1>
+  </div>
+</template>
+<template id='button'>
+  <div>
+    <button @click='f1'>+</button>
+    <button @click='f2'>-</button>
+  </div>
+</template>
+
+
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="../node_modules/vuex/dist/vuex.js"></script>
+<script>
+    let store = new Vuex.Store({
+      state:{
+        count:100,
+        color:'red'
+      },
+      mutations:{
+        add(state,option){
+          state.count ++
+        },
+        minus(state,option){
+          state.count --
+        },
+        changeCount(state,option){
+          state.count += option
+        }
+      }
+    })
+    Vue.component('my-show',{
+      template:'#show',
+      data() {
+        return {
+          // count:this.$store.state.count
+        }
+      },
+      computed: {
+        // count(){
+        //   return this.$store.state.count
+        // }
+        // color(){
+        //   return this.$store.state.color
+        // }
+        ...Vuex.mapState(['count','color'])// 效果等同于上边，mapState辅助函数
+      },
+    })
+    Vue.component('my-button',{
+      template:'#button',
+      methods: {
+        f1(){
+          // this.$store.commit('add')
+          this.$store.commit('changeCount',10)
+        },
+        f2(){
+          // this.$store.commit('minus');
+          this.$store.commit('changeCount',-20)
+        }
+      },
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        store:store
+    });
+</script>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <my-child :mydata='name'></my-child>
+    </div>
+</body>
+</html>
+<template id='child'>
+  <div>
+    <h1>
+      wertyufdsdfghjhgfdsdfghj
+      {{mydata}}
+    </h1>
+  </div>
+</template>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    let child = {
+      template:'#child',
+      // props:['mydata']
+      props:{
+        mydata:{
+          default:666,// 默认值
+          type:[Number,String],// 限制传进来的数据类型
+          required:true,
+          validator(val){
+            // 自定义规则使用的属性
+            // 传进来的参数的长度必须大于5
+
+            // console.log(val)
+            // return false
+            return val.length > 5
+          }
+        }
+      }
+    }
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        components:{
+          'my-child':child
+        }
+    });
+</script>

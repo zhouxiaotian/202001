@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <!-- <input type="text" v-model='name'> -->
+        <!-- v-model ： :value=name  @input name=e.target.value -->
+        <!-- <el-input :value='name' @input='(val)=>name=val'></el-input> -->
+        <!-- <el-input v-model='name'></el-input> -->
+        <my-input v-model='name'></my-input>
+        <my-input2 v-model='name'></my-input2>
+    </div>
+</body>
+</html>
+
+<template id='el-input'>
+  <div>
+    自己的input
+    <input type="text" :value='value' @input='www'>
+    <input type="text" v-model='aaa'>
+    <!-- {{qqq}} -->
+  </div>
+</template>
+
+
+<template id='my-input'>
+  <div>
+    <input type="text" v-model='val1'>
+    <input type="text" v-model='val2'>
+  </div>
+</template>
+
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script>
+    Vue.component('el-input',{
+      template:'#el-input',
+      props:['value'],
+      methods: {
+        www(e){
+          this.$emit('input',e.target.value)
+        }
+      },
+      computed: {
+        aaa:{
+          get(){
+            return this.value
+          },
+          set(val){
+            this.$emit('input',val)
+          }
+        },
+        qqq(){
+          return this.value + 666
+        }
+      },
+    })
+    let myInput = {
+      template:'#my-input',
+      props:['value'],// value : '珠峰 培训'
+      computed: {
+        // val1(){
+        //   return this.value.split(' ')[0]
+        // },
+        // val2(){
+        //   return this.value.split(' ')[1]
+        // }
+        val1:{
+          get(){
+            return this.value.split(' ')[0]
+          },
+          set(val){
+            // 当第一个input框放生改变的时候 会触发这个函数
+            // 当设置第一个框的值的时候 我们让触发 传进来的input的事件
+            this.$emit('input',val + ' ' + this.val2)
+          }
+        },
+        val2:{
+          get(){
+            return this.value.split(' ')[1]
+          },
+          set(val){
+            // 当第2个input框放生改变的时候 会触发这个函数
+            this.$emit('input',this.val1 + ' ' + val)
+          }
+        }
+      },
+    }
+
+    let myInput2 = {
+      template:'#my-input',
+      props:['value'],// value : '珠峰 培训'
+      data() {
+        return {
+          val1:this.value.split(' ')[0],
+          val2:this.value.split(' ')[1]
+        }
+      },
+      watch: {
+        val1(val){
+          this.$emit('input',val + ' ' + this.val2)
+        },
+        val2(val){
+          this.$emit('input',this.val1 + ' ' + val)
+        }
+      },
+    }
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰 培训"
+        },
+        components:{
+          myInput,
+          myInput2
+        }
+    });
+</script>
