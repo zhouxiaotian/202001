@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <router-link to="/homeqqq" tag='button'>首页</router-link>
+        <router-link to="/listqqq">列表页</router-link>
+        <keep-alive include='www'>
+          <router-view></router-view>
+        </keep-alive>
+
+        <button @click='fn'>按钮</button>
+        <component :is="aaa"></component>
+        <!-- component 称为动态组件  is行内属性后跟的就是对应的组件名 -->
+        
+    </div>
+</body>
+</html>
+
+<template id='list'>
+  <div>
+    <h1>列表页</h1>
+    <input type="text" v-model='name'>
+  </div>
+</template>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="../node_modules/vue-router/dist/vue-router.js"></script>
+<script>
+    let home = {
+      name:'qqq',
+      template:'<h1>这是首页哈哈哈</h1>',
+      destroyed() {
+        console.log('首页销毁了')
+      },
+      activated() {
+        console.log('home展示出来了')
+      },
+      deactivated() {
+        console.log('home隐藏了')
+      },
+    }
+    let list = {
+      name:'www',
+      template:'#list',
+      data(){
+        return {
+          name:666
+        }
+      },
+      destroyed() {
+        console.log('列表页销毁了')
+      },
+    }
+    let page404 = {
+      template:'<h1>你写错路径了 现在跑到了404页了</h1>'
+    }
+    let router = new VueRouter({
+      routes:[
+        // 路由映射表
+        {
+          path:'/',
+          redirect:'/homeqqq'
+          // 当 浏览器的路由是 / 时。 我们让他重定向到 /homeqqq
+        },
+        {
+          // path 是页面走的路径  component 对应的是当前页面走到这个path时 我们要展示的组件
+          //  组件展示到写 router-view 的位置；
+          path:'/homeqqq',
+          component:home
+        },
+        {
+          path:'/listqqq',
+          component:list
+        },
+        {
+          path:'/404',
+          component:page404
+        },
+        {
+          // 当上边的路径都没有匹配到的时候  就会走到这个对象
+          // 一匹配当前对象 那么 就重定向到了/listqqq了；
+          // 处理 404 这个对象 要放到数组的末尾；
+          path:'*',
+          redirect:'/404'
+        },
+        
+      ]
+    })
+    let vm = new Vue({
+        el:'#app',
+        router:router,
+
+        data:{
+            name:"珠峰",
+            aaa:home
+        },
+        methods: {
+          fn(){
+            this.aaa = this.aaa == home ? list : home;
+          }
+        },
+    });
+</script>

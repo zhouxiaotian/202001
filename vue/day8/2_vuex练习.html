@@ -54,16 +54,45 @@
 <script src="../node_modules/vue/dist/vue.js"></script>
 <script src="../node_modules/vuex/dist/vuex.js"></script>
 <script>
-    let store = new Vuex.Store({
+    let myqqq = {
+      namespaced:true,
       state:{
-        list:[]
+        my:123
       },
       mutations:{
+        qqqfn(state,option){
+          console.log(arguments)
+        }
+      },
+      actions:{
+        
+      },
+      getters:{
+
+      }
+    }
+
+    let store = new Vuex.Store({
+      state:{
+        list:JSON.parse(localStorage.getItem('listData'))||[]
+      },
+      mutations:{
+        /* 
+          这里的函数必须都是同步函数(它是认为约定不是技术规定) 为什么呢？
+          是为了方便状态可控，修改状态 有迹可循；
+        */
         add(state,option){
+          // setTimeout(() => {
+          //   state.list.push(option)
+          // }, 1000);
           state.list.push(option)
+          // 想在数据更新之后 存储到localStorage中
+          localStorage.setItem('listData',JSON.stringify(state.list))
         },
+        qqqfn(){console.log(6666)},
         remove(state,option){
           state.list = state.list.filter(item=>item.id!==option)
+          localStorage.setItem('listData',JSON.stringify(state.list))
         }
       },
       getters:{
@@ -76,6 +105,22 @@
         child(state){
           return state.list.filter(item=>item.age<18)
         }
+      },
+      actions:{
+        // 这里边也都是一些函数
+        // mutations中的函数 需要通过 commit触发
+        // actions中的函数 需要通过 dispatch触发
+        // actions中的函数 一般都会再去触发mutations中的方法
+        asyncAdd(store,option){
+          setTimeout(() => {
+            // 请求成功之后 再去触发mutations中的方法
+            store.commit('add',option)
+          }, 1000);
+          console.log(arguments)
+        }
+      },
+      modules:{
+        qqq:myqqq
       }
     })
 
@@ -96,11 +141,15 @@
             sex:this.sex,
             id:Math.random()
           }
-          this.$store.commit('add',obj)
+          // this.$store.commit('add',obj)
+          // this.$store.dispatch('asyncAdd',obj);// 我们也是只能给asyncAdd传一个参数
+          // this.asyncAdd(obj);
+          this.$store.commit('qqq/qqqfn',100)
           this.name = '';
           this.age = '';
           this.sex = '';
         },
+        ...Vuex.mapActions(['asyncAdd'])
       },
     }
     let listcom = {
@@ -108,7 +157,8 @@
       methods: {
         del(id){
           this.$store.commit('remove',id)
-        }
+        },
+        
       },
       computed: {
         person(){

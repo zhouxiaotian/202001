@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <h1>根{{$store.state.count}}</h1>
+        <h1>login{{$store.state.login.count}}</h1>
+        <button @click='rootAdd'>根</button>
+        <button @click='loginAdd'>login</button>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="../node_modules/vuex/dist/vuex.js"></script>
+<script>
+    let loginModule = {
+      namespaced:true,
+      state:{
+        count:10000
+      },
+      mutations:{
+        changeCount(state,option){
+          state.count += option
+        }
+      },
+      actions:{},
+      getters:{}
+    }
+
+    let store = new Vuex.Store({
+      state:{
+        count:100
+      },
+      mutations:{
+        changeCount(state,option){
+          state.count += option
+        }
+      },
+      modules:{
+        login:loginModule
+      }
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰",
+        },
+        methods: {
+          rootAdd(){
+            this.$store.commit('changeCount',10)
+          },
+          loginAdd(){
+            this.$store.commit('login/changeCount',10)
+          }
+        },
+        store
+    });
+</script>
+
+<script>
+  /* 
+    vuex 是为了解决 组件间的数据交互；专门针对vue的一种数据管理模式
+    1-创造一个vuex实例 创造时传递的参数 就是我们的配置项
+    state
+    mutations
+    actions
+    getters
+    modules
+
+    2- 把创造的实例 注入到根组件中 store: 实例；
+        注入完成之后  每一个组件中 都多了一个$store的属性，$store中的state中的存储的就是我们的数据源 
+
+    配置项中的 state
+      是存储了 我们需要用到的公用数据，更改这里边的数据 可以流氓更改(不建议)；最好是用官方推荐的mutations
+    配置项中的 mutations
+      这个属性中存储的都是用来更改 state中的数据的 方法，这些方法都至少有一个参数state,最多两个
+      第一个参数是vuex默认传的 state(数据源)  第二个参数 是我们通过 commit调用mutations中的对应方法的时候
+      传递的参数(this.$store.commit('mutations中的方法名',传过去的参数))   
+      官方规定 mutations中的函数必须都是同步函数（为了数据变化可追踪）  
+      异步需要写actions中；
+    配置项中的 actions
+      这个属性中存储的 一般都是一些异步执行的方法， 为了在异步执行完成之后 再去通过 commit触发mutations中的对应函数
+      这些函数参数： 第一个 是默认穿的store  第二个参数是我们在通过dispatch调用时传递的参数；
+      this.$store.dispatch('actions中的方法名'，传给他的参数)
+
+    配置项中的 getters 就是vuex的计算属性 
+  
+  */
+
+</script>
