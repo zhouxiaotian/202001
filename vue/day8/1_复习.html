@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <h2>数字是{{$store.state.count}}---{{count}} ----- {{count123}}</h2>
+        <button @click='add'>+</button>
+        <button @click='minus'>-</button>
+    </div>
+</body>
+</html>
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="../node_modules/vuex/dist/vuex.js"></script>
+<script>
+    let store = new Vuex.Store({
+      state:{
+        count:100
+      },
+      mutations:{
+        // 都是为了修改 state中的状态
+        changeCount(state,option){
+          state.count += option.num
+        }
+      }
+    })
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        computed: {
+          // count(){
+          //   return this.$store.state.count
+          // },
+          ...Vuex.mapState(['count']),// mapState 理解起来 就是把 vuex中的state中的属性 挪到组件的计算属性中
+          ...Vuex.mapState({
+            count123:'count'
+          })
+        },
+        store, // 每一个组件中的 都会有 $store这个属性
+        methods: {
+          add(){
+            // this.$store.commit('changeCount',{num:10})
+            this.changeCount({num:10})
+          },
+          minus(){
+            // this.$store.commit('changeCount',{num:-10}),
+            this.changeCount({num:-10})
+          },
+          // changeCount(obj){
+          //   this.$store.commit('changeCount',obj)
+          // },
+          ...Vuex.mapMutations(['changeCount'])// 相当于把mutations中的方法移到了 本组件的methods中；
+        },
+    });
+</script>

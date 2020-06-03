@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <h1>{{name}}</h1>
+        <formcom></formcom>
+        <listcom></listcom>
+    </div>
+</body>
+</html>
+
+<template id='formcom'>
+  <div>
+    <input type="text" v-model='name' placeholder="请输入姓名">
+    <input type="text" v-model='age' placeholder="请输入年龄">
+    <input type="text" v-model='sex' placeholder="请输入性别">
+    <button @click='submit'>提交</button>
+  </div>
+</template>
+
+<template id='listcom'>
+  <div style='display: flex;'>
+    <div style='flex:1'>
+      <h2>成年人</h2>
+      <ul class="person">
+        <li v-for='(item,index) in person' :key='index'>
+          姓名：{{item.name}}
+          年龄：{{item.age}}
+          性别：{{item.sex}}
+          <button @click='del(item.id)'>X</button>
+        </li>
+      </ul>
+    </div>
+    <div style='flex:1'>
+      <h2>未成年人</h2>
+      <ul class="child">
+        <li v-for='(item,index) in child' :key='index'>
+          姓名：{{item.name}}
+          年龄：{{item.age}}
+          性别：{{item.sex}}
+          <button @click='del(item.id)'>X</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+
+<script src="../node_modules/vue/dist/vue.js"></script>
+<script src="../node_modules/vuex/dist/vuex.js"></script>
+<script>
+    let store = new Vuex.Store({
+      state:{
+        list:[]
+      },
+      mutations:{
+        add(state,option){
+          state.list.push(option)
+        },
+        remove(state,option){
+          state.list = state.list.filter(item=>item.id!==option)
+        }
+      },
+      getters:{
+        // 理解成vuex的计算属性即可
+        // 什么时候才会选择使用getters   当多个组件共用一套处理逻辑的时候选择使用
+        // 若这个逻辑只在一个组件使用 不建议写getters中，因这个增大vuex的体积；
+        person(state){
+          return state.list.filter(item=>item.age>=18)
+        },
+        child(state){
+          return state.list.filter(item=>item.age<18)
+        }
+      }
+    })
+
+    let formcom = {
+      template:'#formcom',
+      data() {
+        return {
+          name:'',
+          age:'',
+          sex:''
+        }
+      },
+      methods: {
+        submit(){
+          let obj = {
+            name:this.name,
+            age:this.age,
+            sex:this.sex,
+            id:Math.random()
+          }
+          this.$store.commit('add',obj)
+          this.name = '';
+          this.age = '';
+          this.sex = '';
+        },
+      },
+    }
+    let listcom = {
+      template:'#listcom',
+      methods: {
+        del(id){
+          this.$store.commit('remove',id)
+        }
+      },
+      computed: {
+        person(){
+          // person 就是成年人数组
+          // debugger
+          return this.$store.getters.person
+          // return this.$store.state.list.filter(item=>item.age>=18)
+        },
+        child(){
+          // child就是未成年人数组
+          // debugger
+          return this.$store.getters.child
+          // return this.$store.state.list.filter(item=>item.age<18)
+        }
+        // ...Vuex.mapGetters(['person','child'])
+      },
+    }
+    let vm = new Vue({
+        el:'#app',
+        data:{
+            name:"珠峰"
+        },
+        store,
+        components:{
+          formcom,listcom
+        }
+    });
+</script>
