@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Vote></Vote>
-    <Vote></Vote>
+    <Vote title="VUE是一款优秀的框架！"></Vote>
+    <Vote title="学习VUE其实很简单！"></Vote>
   </div>
 </template>
 

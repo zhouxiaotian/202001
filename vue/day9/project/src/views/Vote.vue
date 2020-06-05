@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <header class="headerBox">
-      <h3>标题：xxxx</h3>
-      <span>【0】</span>
+      <h3>{{title}}</h3>
+      <span>【{{supNum+oppNum}}】</span>
     </header>
 
-    <vote-main></vote-main>
-    <vote-footer></vote-footer>
+    <vote-main :supnum="supNum" :oppnum="oppNum"></vote-main>
+    <vote-footer @callback="handle"></vote-footer>
   </div>
 </template>
 
@@ -18,6 +18,18 @@ export default {
   components: {
     VoteMain,
     VoteFooter
+  },
+  props: ["title"],
+  data() {
+    return {
+      supNum: 0,
+      oppNum: 0
+    };
+  },
+  methods: {
+    handle(lx) {
+      lx === 0 ? this.supNum++ : this.oppNum++;
+    }
   }
 };
 </script>

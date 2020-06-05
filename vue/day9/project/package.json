@@ -42,8 +42,8 @@
     "rules": {}
   },
   "browserslist": [
-    "> 1%",
+    "> 0.5%",
     "last 2 versions",
-    "not dead"
+    "ie 10-11"
   ]
 }
