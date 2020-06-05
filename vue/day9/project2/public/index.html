@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>珠峰培训</title>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+
+</html>
+<!-- 
+  在webpack打包编译的时候，页面模板也会跟着进行编译
+    1. 把HTML压缩
+    2. 把编译后的CSS和JS插入到页面模板中
+  
+  注意事项：
+    1. 单独自己导入一些资源信息，把资源信息放置到当前目录下(public)，基于<%= BASE_URL %>指定相对引入的地址
+    2. 我们需要在页面中留一个#APP容器，因为最后编译的时候，会把所有的内容插入到这个容器中
+    3. 对于不需要打包合并在一起的资源，我们可以单独在模板中自己导入
+      1）有一些公共资源，这些公共资源我们不想最后根据webpack都打包在一起，我们想单独导入
+      2）还有一些模块不支持CommonJS/ES6Module模块规范，这样无法在项目中进行导入导出，此时我们需要单独导入到模板页面中（一般此处导入进来的模块，对应的方法都会暴露到window上）
+      3）因为模板页面中的东西很少，我们完全可以先自己写一个Loadding等待的效果（防止移动端资源加载过慢导致的白屏）
+      4）包括一些特殊需要先执行的JS或者样式，最好也是单独写在这里（这样不要最后合并打包到一起），例如：REM等比缩放的计算
+      ......
+ -->
