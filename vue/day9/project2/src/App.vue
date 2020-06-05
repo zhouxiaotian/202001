@@ -1,23 +1,30 @@
 <template>
-  <!-- 组件的视图模板 -->
-  <div id="app">{{text}}</div>
+  <div id="app">
+    <!-- 导航 -->
+    <nav class="navBox">
+      <a href>首页</a>
+      <a href>客户管理</a>
+      <a href>系统设置</a>
+    </nav>
+
+    <!-- 内容 -->
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-/* 当前组件的JS管控 */
-export default {
-  data() {
-    return {
-      text: "珠峰培训哈哈哈呵呵"
-    };
-  }
-};
+export default {};
 </script>
 
-<style scoped>
-/* 
- * 当前组件的样式 
- *   1.直接这样写，最后所有组件中的样式合并打包的时候容易产生冲突（手动避免冲突：基于less/sass中的嵌套，指定很长的前缀可以避免，但是生成的CSS性能不好）
- *   2. 直接设置scoped，代表当前组件中的样式是私有的（webpack帮助我们重新命名），最后打包在一起的时候就不会冲突了
- */
+<style lang="less">
+.navBox {
+  background: #000;
+  line-height: 50px;
+
+  a {
+    margin: 0 10px;
+    font-size: 20px;
+    color: #fff;
+  }
+}
 </style>
