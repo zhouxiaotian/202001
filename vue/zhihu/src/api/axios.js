@@ -9,7 +9,7 @@ axios.defaults.transformRequest = data => qs.stringify(data);
 axios.interceptors.request.use(config => {
 	return config;
 });
-axios.defaults.response.use(response => {
+axios.interceptors.response.use(response => {
 	return response.data;
 }, reason => {
 	let response = reason.response;

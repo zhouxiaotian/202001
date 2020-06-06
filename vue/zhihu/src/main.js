@@ -4,6 +4,7 @@ import router from './router/router';
 
 /* 导入公共的样式 && VANT */
 import './assets/reset.min.css';
+import './assets/common.less';
 import Vant from 'vant';
 import 'vant/lib/index.css';
 Vue.use(Vant);
