@@ -10,7 +10,7 @@
       <router-link :to="{
         name:'nhome'
       }">首页</router-link>
-      
+
       <!-- 
         基于query显示传参（传递的参数信息会以问号的方式显示在URL地址中）
           1. path或者name实现路由跳转都可以基于这个方式处理
@@ -60,8 +60,9 @@
       <router-link to="/system">系统设置</router-link>-->
     </nav>
 
-    <!-- 内容 -->
+    <!-- 内容  容器不设置名字，默认名字default -->
     <router-view></router-view>
+    <router-view name="AAA"></router-view>
   </div>
 </template>
 

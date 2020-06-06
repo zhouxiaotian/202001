@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		html {
+			/* 1REM = 100PX 【750PX】*/
+			font-size: 100px;
+		}
+
+		.box {
+			/* 编写样式的时候把所有的PX改为REM */
+			box-sizing: border-box;
+			margin-bottom: .4rem;
+			width: 2rem;
+			height: 2rem;
+			background: red;
+		}
+
+		.box.box2 {
+			width: 3rem;
+			height: 3rem;
+		}
+
+		.box.box3 {
+			width: 4rem;
+			height: 4rem;
+		}
+
+		/*
+		 * PX是固定单位：设置具体的PX样式，不论页面大小如何变化，元素的大小始终是这样大（无法实现响应式的布局开发：在不同的设备中[尺寸不同]，我们换页面中的元素位置以及大小应该根据设备的尺寸自动缩放，从而实现响应式的效果）
+		 * 
+		 * REM相对单位：相对于HTML字体大小设置的单位
+		 *   1. 参考着设计稿中的尺寸（750），进行页面样式开发，只不过所有样式单位从PX转到REM（REM是相对单位  => 首先给HTML设置FONT-SIZE   750设计稿，html{font-size:100px;}  方便计算 ）  750   1REM=100PX
+		 *   2. 当页面在不同设备的尺寸中进行渲染，我们首先获取当前设备的宽度 
+		        375   1REM=50PX 
+				此时如果我们HTML的字体大小一改（改变换算的比例），那么之前以REM为单位的样式都会跟着自动缩放
+		 */
+	</style>
+
+	<!-- 计算REM -->
+	<script>
+		function computed() {
+			let HTML = document.documentElement,
+				winW = HTML.clientWidth,
+				desW = 750;
+			HTML.style.fontSize = `${winW/desW*100}px`;
+		}
+		computed();
+		window.addEventListener('resize', computed);
+	</script>
+</head>
+
+<body>
+	<div class="box box1"></div>
+	<div class="box box2"></div>
+	<div class="box box3"></div>
+
+	<!-- IMPORT JS -->
+</body>
+
+</html>
