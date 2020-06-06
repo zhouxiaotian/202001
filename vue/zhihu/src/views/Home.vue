@@ -70,6 +70,7 @@ import { formatTime, delay } from "../assets/utils";
 import { API_LATEST, API_BEFORE } from "../api/index";
 
 export default {
+  name: "Home",
   data() {
     return {
       time: formatTime(new Date()),
