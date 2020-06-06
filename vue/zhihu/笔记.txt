@@ -1,0 +1,7 @@
+技术栈：
+	1. vue/vue-cli/vue-router
+	2. less/rem
+	3. vant（移动端vue组件库） cubeUI
+	4. axios  调取知乎的接口（跨域  proxy）
+	.......
+
