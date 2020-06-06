@@ -7,7 +7,12 @@ import './assets/reset.min.css';
 import './assets/common.less';
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import {
+  Lazyload
+} from 'vant';
+
 Vue.use(Vant);
+Vue.use(Lazyload);
 
 Vue.config.productionTip = false;
 new Vue({

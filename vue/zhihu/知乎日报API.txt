@@ -46,7 +46,7 @@ http://news-at.zhihu.com/api/4/news/9717858
 }
 
 3.过往消息
-http://news.at.zhihu.com/api/4/news/before/20191203
+http://news-at.zhihu.com/api/4/news/before/20191203
 {
 	"date": "20191201",
 	"stories": [{

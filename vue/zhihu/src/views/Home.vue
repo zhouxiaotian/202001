@@ -4,102 +4,145 @@
     <header class="headerBox">
       <div class="base">
         <span class="time">
-          6
-          <em>六月</em>
+          {{handleTime(time,0)}}
+          <em>{{handleTime(time,1)}}月</em>
         </span>
         <h1 class="title">知乎日报</h1>
       </div>
-      <div class="user">
-        <img src alt />
-      </div>
+      <div class="user"></div>
     </header>
 
     <!-- 轮播图区域 -->
     <div class="bannerBox">
-      <van-swipe :loop="true" :autoplay="3000">
-        <van-swipe-item>
-          <div class="item">
-            <img src="http://img.zhufengpeixun.cn/zhufengquanzhan.jpg" alt />
+      <van-swipe :loop="true" :autoplay="3000" v-if="bannerData.length">
+        <van-swipe-item v-for="item in bannerData" :key="item.id">
+          <router-link
+            class="item"
+            :to="{
+                path:`/detail/${item.id}`
+              }"
+          >
+            <img :src="item.image" alt />
             <div class="desc">
-              <p>标题</p>
-              <p>xxxx</p>
+              <p>{{item.title}}</p>
+              <p>{{item.hint}}</p>
             </div>
-          </div>
+          </router-link>
         </van-swipe-item>
       </van-swipe>
     </div>
 
     <!-- 列表区域 -->
-    <div class="newsBox">
-      <div class="itemBox">
-        <h4 class="time">
-          <span>06月05日</span>
-          <i></i>
-        </h4>
-        <ul class="content">
-          <li class="item">
-            <a href>
-              <div class="con">
-                <h4>标题标题标题标题标题标题标题标题标题标题标题标题标题</h4>
-                <span>知乎用户 ▪ 3分钟阅读</span>
-              </div>
-              <div class="img">
-                <img src alt />
-              </div>
-            </a>
-          </li>
+    <van-skeleton title :row="4" v-if="newsData.length===0"></van-skeleton>
+    <div class="newsBox" v-else>
+      <van-list v-model="loading" :finished="finished" finished-text="没有更多数据了" @load="handleLoad">
+        <!-- START -->
+        <div class="itemBox" v-for="item in newsData" :key="item.date">
+          <h4 class="time" v-if="item.date!==time">
+            <span>{{item.date | filterTime}}</span>
+            <i></i>
+          </h4>
 
-          <li class="item">
-            <a href>
-              <div class="con">
-                <h4>标题标题标题标题标题标题标题标题标题标题标题标题标题</h4>
-                <span>知乎用户 ▪ 3分钟阅读</span>
-              </div>
-              <div class="img">
-                <img src alt />
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="itemBox">
-        <h4 class="time">
-          <span>06月05日</span>
-          <i></i>
-        </h4>
-        <ul class="content">
-          <li class="item">
-            <a href>
-              <div class="con">
-                <h4>标题标题标题标题标题标题标题标题标题标题标题标题标题</h4>
-                <span>知乎用户 ▪ 3分钟阅读</span>
-              </div>
-              <div class="img">
-                <img src alt />
-              </div>
-            </a>
-          </li>
-
-          <li class="item">
-            <a href>
-              <div class="con">
-                <h4>标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</h4>
-                <span>知乎用户 ▪ 3分钟阅读</span>
-              </div>
-              <div class="img">
-                <img src alt />
-              </div>
-            </a>
-          </li>
-        </ul>
-      </div>
+          <ul class="content">
+            <li class="item" v-for="news in item.stories" :key="news.id">
+              <router-link :to="{
+                path:`/detail/${news.id}`
+              }">
+                <div class="con">
+                  <h4>{{news.title}}</h4>
+                  <span>{{news.hint}}</span>
+                </div>
+                <div class="img">
+                  <img alt v-lazy="news.images[0]" />
+                </div>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+        <!-- END -->
+      </van-list>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { formatTime, delay } from "../assets/utils";
+import { API_LATEST, API_BEFORE } from "../api/index";
+
+export default {
+  data() {
+    return {
+      time: formatTime(new Date()),
+      bannerData: [],
+      newsData: [],
+      // 下拉刷新
+      time2: "",
+      loading: false,
+      finished: false
+    };
+  },
+  async created() {
+    // 实例创建完成，我们就从服务获取数据
+    let { date, stories, top_stories } = await API_LATEST();
+    this.time = date;
+    this.time2 = date;
+    this.bannerData = top_stories;
+    this.newsData.push({
+      date,
+      stories
+    });
+  },
+  methods: {
+    // 处理时间的
+    handleTime(time, index = 0) {
+      let month = parseInt(time.substr(4, 2)),
+        day = parseInt(time.substr(6)),
+        arr = [
+          "",
+          "一",
+          "二",
+          "三",
+          "四",
+          "五",
+          "六",
+          "七",
+          "八",
+          "九",
+          "十",
+          "十一",
+          "十二"
+        ];
+      return [day, arr[month]][index];
+    },
+    // 加载更多数据
+    async handleLoad() {
+      this.loading = true;
+      await delay();
+      let time2 = this.time2 || formatTime(new Date());
+      time2 = time2.match(/^(\d{4})(\d{2})(\d{2})$/);
+      time2 = formatTime(
+        new Date(
+          new Date(`${time2[1]}/${time2[2]}/${time2[3]}`).getTime() - 86400000
+        )
+      );
+      let { date, stories } = await API_BEFORE(time2);
+      this.newsData.push({
+        date,
+        stories
+      });
+      this.loading = false;
+      this.time2 = time2;
+    }
+  },
+  filters: {
+    // 格式化时间
+    filterTime(time) {
+      let month = time.substr(4, 2),
+        day = time.substr(6);
+      return month + "月" + day + "日";
+    }
+  }
+};
 </script>
 
 <style lang="less" scoped>
@@ -170,6 +213,7 @@ export default {};
   }
 
   .item {
+    display: block;
     position: relative;
     height: 100%;
     overflow: hidden;
@@ -215,6 +259,10 @@ export default {};
       }
     }
   }
+}
+
+.van-skeleton {
+  margin-top: 0.4rem;
 }
 
 .newsBox {
