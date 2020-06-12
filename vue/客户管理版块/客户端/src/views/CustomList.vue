@@ -1,11 +1,125 @@
 <template>
-  <div>客户列表</div>
+  <div class="customListBox">
+    <!-- 搜索区域 -->
+    <div class="searchBox">
+      <el-input v-model="searchText" placeholder="请输入内容"></el-input>
+      <el-select v-model="type">
+        <el-option label="全部客户" value></el-option>
+        <el-option label="重点客户" value="重点客户"></el-option>
+        <el-option label="一般客户" value="一般客户"></el-option>
+        <el-option label="放弃客户" value="放弃客户"></el-option>
+      </el-select>
+      <el-button type="primary">搜索</el-button>
+      <el-button type="success">导出EXCEL</el-button>
+    </div>
+
+    <!-- 表格区域 -->
+    <el-table
+      :data="tableList"
+      stripe
+      height="78vh"
+      size="small"
+      @selection-change="selectionChange"
+    >
+      <el-table-column type="selection" min-width="5%" header-align="center" align="center"></el-table-column>
+      <el-table-column prop="id" label="编号" min-width="5%"></el-table-column>
+      <el-table-column prop="name" label="姓名" min-width="10%"></el-table-column>
+      <el-table-column prop="sex" label="性别" min-width="8%" :formatter="formatterSex"></el-table-column>
+      <el-table-column prop="phone" label="电话" min-width="15%"></el-table-column>
+      <el-table-column prop="weixin" label="微信" min-width="15%"></el-table-column>
+      <el-table-column prop="type" label="类别" min-width="10%"></el-table-column>
+      <el-table-column prop="userName" label="业务员" min-width="10%"></el-table-column>
+      <el-table-column label="操作" min-width="20%">
+        <template slot-scope="scope">
+          <el-button type="text" size="small">查看</el-button>
+          <el-button type="text" size="small">编辑</el-button>
+          <el-button type="text" size="small" @click="goToVisit(scope)">回访</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 分页区域 -->
+    <div class="pageBox" v-if="tableList.length">
+      <el-pagination
+        background
+        layout="total, prev, pager, next"
+        :small="true"
+        :total="total"
+        :page-size.sync="limit"
+        :current-page.sync="page"
+        @current-change="changePage"
+        @prev-click="changePage"
+        @next-click="changePage"
+      ></el-pagination>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "CustomList"
+  name: "CustomList",
+  data() {
+    return {
+      searchText: "",
+      type: "",
+      tableList: [],
+      selectionData: [],
+      // 分页控制
+      limit: 15,
+      total: 0,
+      page: 1
+    };
+  },
+  methods: {
+    formatterSex(row, column, cellValue) {
+      return row.sex == 0 ? "男" : "女";
+    },
+    selectionChange(val) {
+      // val存储是选中的值
+      this.selectionData = val;
+    },
+    // 跳转到回访详情
+    goToVisit(scope) {
+      this.$router.push(`/visit/${scope.row.id}`);
+    },
+    // 分页处理
+    changePage(num) {}
+  }
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.searchBox {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 60px;
+  height: 12vh;
+
+  .el-input,
+  .el-select,
+  .el-button {
+    margin-right: 10px;
+    margin-left: 0 !important;
+  }
+
+  .el-input {
+    width: 30% !important;
+  }
+
+  .el-select {
+    width: 20% !important;
+    .el-input {
+      width: 100% !important;
+    }
+  }
+}
+
+.pageBox {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10px;
+  height: 10vh;
+}
+</style>
