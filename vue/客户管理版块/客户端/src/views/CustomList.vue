@@ -9,7 +9,7 @@
         <el-option label="一般客户" value="一般客户"></el-option>
         <el-option label="放弃客户" value="放弃客户"></el-option>
       </el-select>
-      <el-button type="primary">搜索</el-button>
+      <el-button type="primary" @click="searchHandle">搜索</el-button>
       <el-button type="success">导出EXCEL</el-button>
     </div>
 
@@ -19,6 +19,8 @@
       stripe
       height="78vh"
       size="small"
+      v-loading="loading"
+      element-loading-text="小主，奴家正在努力加载中"
       @selection-change="selectionChange"
     >
       <el-table-column type="selection" min-width="5%" header-align="center" align="center"></el-table-column>
@@ -26,7 +28,7 @@
       <el-table-column prop="name" label="姓名" min-width="10%"></el-table-column>
       <el-table-column prop="sex" label="性别" min-width="8%" :formatter="formatterSex"></el-table-column>
       <el-table-column prop="phone" label="电话" min-width="15%"></el-table-column>
-      <el-table-column prop="weixin" label="微信" min-width="15%"></el-table-column>
+      <el-table-column prop="weixin" label="微信" min-width="15%" show-overflow-tooltip></el-table-column>
       <el-table-column prop="type" label="类别" min-width="10%"></el-table-column>
       <el-table-column prop="userName" label="业务员" min-width="10%"></el-table-column>
       <el-table-column label="操作" min-width="20%">
@@ -64,16 +66,22 @@ export default {
       type: "",
       tableList: [],
       selectionData: [],
+      loading: false,
       // 分页控制
       limit: 15,
       total: 0,
       page: 1
     };
   },
+  created() {
+    this.queryData();
+  },
   methods: {
+    // 性别格式化
     formatterSex(row, column, cellValue) {
       return row.sex == 0 ? "男" : "女";
     },
+    // 选择多个数据
     selectionChange(val) {
       // val存储是选中的值
       this.selectionData = val;
@@ -82,8 +90,40 @@ export default {
     goToVisit(scope) {
       this.$router.push(`/visit/${scope.row.id}`);
     },
+    // 获取数据
+    async queryData() {
+      this.loading = true;
+      await this.$utils.delay(500);
+
+      let { limit, page, searchText: search, type } = this;
+      let result = await this.$api.custom.queryCustomList({
+        limit,
+        page,
+        type,
+        search
+      });
+      this.selectionData = [];
+      if (result.code != 0) {
+        this.tableList = [];
+        return;
+      }
+      this.tableList = result.data;
+      this.total = +result.total;
+      this.page = +result.page;
+      this.limit = +result.limit;
+
+      this.loading = false;
+    },
+    // 搜索操作
+    searchHandle() {
+      this.page = 1;
+      this.queryData();
+    },
     // 分页处理
-    changePage(num) {}
+    changePage(num) {
+      this.page = num;
+      this.queryData();
+    }
   }
 };
 </script>

@@ -11,6 +11,8 @@
         :visible.sync="drawerVisible"
         :withHeader="false"
       >
+        <el-link type="info" @click="returnBack">返回</el-link>
+
         <el-menu :router="true" default-active="/">
           <el-menu-item index="/">
             <i class="el-icon-document"></i>
@@ -29,7 +31,9 @@
     </div>
 
     <!-- 视图容器 -->
-    <router-view></router-view>
+    <keep-alive include="CustomList">
+      <router-view></router-view>
+    </keep-alive>
   </div>
 </template>
 
@@ -44,6 +48,9 @@ export default {
   methods: {
     handleDrawer() {
       this.drawerVisible = !this.drawerVisible;
+    },
+    returnBack() {
+      this.$router.go(-1);
     }
   }
 };
@@ -55,7 +62,6 @@ body,
 #app {
   height: 100%;
   overflow: hidden;
-  -webkit-user-select: none;
 }
 
 .menu {
@@ -77,6 +83,11 @@ body,
     top: 10px;
     left: 10px;
     z-index: 100;
+  }
+
+  .el-link {
+    padding: 0 20px;
+    line-height: 40px !important;
   }
 }
 </style>
