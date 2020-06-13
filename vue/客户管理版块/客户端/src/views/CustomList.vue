@@ -10,18 +10,19 @@
         <el-option label="放弃客户" value="放弃客户"></el-option>
       </el-select>
       <el-button type="primary" @click="searchHandle">搜索</el-button>
-      <el-button type="success">导出EXCEL</el-button>
+      <el-button type="success" @click="exportExcel">导出EXCEL</el-button>
     </div>
 
     <!-- 表格区域 -->
     <el-table
-      :data="tableList"
       stripe
       height="78vh"
       size="small"
+      ref="table"
       v-loading="loading"
       element-loading-text="小主，奴家正在努力加载中"
       @selection-change="selectionChange"
+      :data="tableList"
     >
       <el-table-column type="selection" min-width="5%" header-align="center" align="center"></el-table-column>
       <el-table-column prop="id" label="编号" min-width="5%"></el-table-column>
@@ -58,6 +59,8 @@
 </template>
 
 <script>
+import xlsx from "xlsx";
+
 export default {
   name: "CustomList",
   data() {
@@ -123,6 +126,42 @@ export default {
     changePage(num) {
       this.page = num;
       this.queryData();
+    },
+    // 批量导出EXCEL
+    async exportExcel() {
+      let selectionData = this.selectionData;
+      if (selectionData.length === 0) {
+        this.$utils.message(this, {
+          message: "小主，请您先选择要导出的数据~~"
+        });
+        return;
+      }
+      let loading = this.$loading({
+        text: "小主，请您稍后，奴家正在玩命为您处理中...",
+        background: "rgba(0,0,0,.5)"
+      });
+      await this.$utils.delay();
+
+      selectionData = this.$utils.formatJSONWeet(selectionData);
+      let sheet = xlsx.utils.json_to_sheet(selectionData),
+        book = xlsx.utils.book_new();
+      xlsx.utils.book_append_sheet(book, sheet, "客户列表");
+      xlsx.writeFile(book, `customlist${new Date().getTime()}.xlsx`);
+
+      loading.close();
+      this.selectionData = [];
+      this.$refs.table.clearSelection();
+    }
+  },
+  watch: {
+    $route(to, from) {
+      if (from.path === "/upload") {
+        // 从批量上传页面回来的
+        this.page = 1;
+        this.searchText = "";
+        this.type = "";
+        this.queryData();
+      }
     }
   }
 };

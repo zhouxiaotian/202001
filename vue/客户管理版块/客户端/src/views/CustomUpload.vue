@@ -44,7 +44,7 @@ export default {
       let index = -1;
       let complete = flag => {
         loading.close();
-        this.$message({
+        this.$utils.message(this, {
           message: `总共需要导入 ${result.length} 条数据，已经成功导入 ${index +
             1} 条数据！${
             flag
@@ -52,7 +52,6 @@ export default {
               : "小主很遗憾，导入过程中遇到问题，已经结束导入~~"
           }`,
           type: flag ? "success" : "warning",
-          showClose: true,
           onClose: () => {
             this.$router.push("/");
           }

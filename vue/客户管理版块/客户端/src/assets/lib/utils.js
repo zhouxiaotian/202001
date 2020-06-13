@@ -81,8 +81,89 @@ function formatWeetJSON(result) {
 	});
 }
 
+function formatJSONWeet(result) {
+	let propertyMap = {
+		'编号': {
+			key: 'id',
+			type: 'number'
+		},
+		'姓名': {
+			key: 'name',
+			type: 'string'
+		},
+		'性别': {
+			key: 'sex',
+			type: 'string',
+			rule: val => {
+				return val == 0 ? '男' : '女';
+			}
+		},
+		'邮箱': {
+			key: 'email',
+			type: 'string'
+		},
+		'电话': {
+			key: 'phone',
+			type: 'string'
+		},
+		"QQ": {
+			key: 'QQ',
+			type: 'string'
+		},
+		'微信': {
+			key: 'weixin',
+			type: 'string'
+		},
+		'类型': {
+			key: 'type',
+			type: 'string'
+		},
+		'地址': {
+			key: 'address',
+			type: 'string'
+		}
+	};
+
+	return result.map(item => {
+		let obj = {};
+		Object.keys(propertyMap).forEach(key => {
+			let {
+				type,
+				key: keyMap,
+				rule
+			} = propertyMap[key];
+			let value = item[keyMap];
+			typeof rule === "function" ? value = rule(value) : null;
+			switch (type) {
+				case 'string':
+					value = String(value);
+					break;
+				case 'number':
+					value = Number(value);
+					break;
+			}
+			obj[key] = value;
+		});
+		return obj;
+	});
+}
+
+// 对组件的二次封装
+function message(_this, options) {
+	options = Object.assign({
+		message: '',
+		type: 'info',
+		showClose: true,
+		duration: 1500,
+		onClose: Function.prototype
+	}, options);
+	_this.$message(options);
+}
+
 export default {
 	delay,
 	readFile,
-	formatWeetJSON
+	formatWeetJSON,
+	formatJSONWeet,
+	message
 };

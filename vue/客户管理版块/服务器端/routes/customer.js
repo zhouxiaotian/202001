@@ -126,7 +126,7 @@ route.get('/info', (req, res) => {
 
 //=>获取客户列表信息
 route.get('/list', (req, res) => {
-	let data = req.$customerDATA;
+	let data = req.$customerDATA.reverse();
 	//=>筛选处理
 	let {
 		type = '',
@@ -151,7 +151,7 @@ route.get('/list', (req, res) => {
 			return parseFloat(item.userId) === parseFloat(userID);
 		});
 	}
-	
+
 	//=>分页处理
 	let {
 		limit = 10,
