@@ -80,6 +80,7 @@ export default {
     this.queryData();
   },
   methods: {
+    // qq:()=>{},
     // 性别格式化
     formatterSex(row, column, cellValue) {
       return row.sex == 0 ? "男" : "女";

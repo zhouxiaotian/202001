@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <ul>
+      <li v-for='i in 5'  v-if='false'></li>
+    </ul>
+    <ul>
+      <li v-for='i in 5'  v-if='i!=2'></li>
+    </ul>
+    {{name|money(2,3,4,5)}}
+  </div>
+</body>
+</html>
+<script>
+/* 
+ npm  i  @vue/cli -g   全局安装 安装一次
+ vue create  项目名
+
+ 打包项目  npm  run  build
+
+
+ vue指令
+      v-model:  组件上使用 v-model
+      v-text   innerText
+      v-html   innerHTML
+      v-once   只渲染一次
+      v-pre    有这个指令的元素 他本身及后代元素 vue在模板编译的时候 会直接忽略之一部分，直接应用；能够提高vue编译效率；
+      v-clock  控制小胡子的显示问题  需要配合css使用
+
+      v-if  v-else-if v-else 整个加载不加载的问题 有比较高的切换开销
+      v-show 简单控制了 display这个属性  右比较大的初始加载开销
+      v-for  v-for='(item,index) in 数组'  :key(可以提升新跟新模板的效率)
+              与v-if同时使用的时候   v-for的优先级高于 v-if
+
+      v-bind  专门用来处理行内属性的  :src='变量'
+              :class="{类名：布尔值}"     
+              :style="{css属性名：css属性值}" 
+      v-on   专门用来绑定事件的一个指令 @click.prevent = '函数名'  
+              @click='fn' 默认把事件对象传给 fn
+              @click='fn()' 啥参数都没有
+              @click='fn(1,2,3)'    传给了fn 1,2,3这三个参数   
+              @click='fn(1,2,3,$event)'    传给了fn 1,2,3 和事件对象 这四个参数   
+      
+      VUE 配置项：
+        el  $mount()     
+        template  render:h=>h(App)    
+        data 在根实例（new） 是个对象， 其他组件中都是一个函数 为了保证组件复用时数据的独立性
+        methods 这里边都是方法  方法中的this都是当前实例；不能写箭头函数 
+        filters 局部过滤器 这里边也是函数，在这些函数中的this不是当前实例；
+              Vue.filter('过滤器名字',function(val,其他参数){}) 
+        directives 局部自定义指令    这里边也是函数，在这些函数中的this不是当前实例；
+              Vue.directive('color',function(el,obj){})    
+
+        computed:{
+          revName(){
+            // 缓存： 不管是图更新多少次 只要依赖 name不改变  那么试图用的都是之前缓存的老值
+            return this.name+666
+          },
+          all:{
+            get(){},//简写只是相当于写一个get没写set
+            set(val){}
+          }
+        }  计算属性  依赖只能是同步的
+        
+        watch:{
+          已经存在的属性(新值，老值){
+
+          }
+        }
+
+        components:{
+
+        }
+        生命周期钩子函数
+        beforeCreate   created
+        beforeMount    mounted
+        beforeUpdate   updated
+        beforeDestroy  destroyed （一般用于清除事件或者一些定时器）
+       
+        actived      结合 keep-alive  保证组件不销毁的; include  exclude后跟的都是组件的名字（name）
+        deactived
+
+
+   组件  全局组件  局部组件  
+      父传子   自定义属性 + props
+      子传父   自定是事件 + $emit  
+                $parent  $children
+                eventBus  (provide/eject   $attrs/$listeners)
+      vuex  为了方便组件间的数据交互
+          state 存放共用数据
+          mutations   存放的时用来修改数据的方法
+          actions     存放的是用来调用mutaions方法的函数，mutaitions中不能写异步
+          getters  计算属性
+          modules   分模块
+
+      vue-router 
+         routes :路由映射表   [{path,name,component}] 
+         mode:hash(简单) history(需要后端配合)
+         linkActiveClass
+
+         <router-link to='/user?id=123'></router-link>
+         <router-link to='{path:'',name:'',query:{},params:{}}'></router-link>
+
+         this.$router.push() .replace()  .go() .back()
+         this.$route.params .query .meta  
+
+         router.beforeEach((to,from,next)=>{
+           // 前置守卫  登录校验
+         })
+
+
+
+*/
+
+</script>
