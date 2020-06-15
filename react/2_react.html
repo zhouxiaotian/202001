@@ -6,7 +6,7 @@
   <title>Document</title>
 </head>
 <body>
-  
+  <div id="root"></div>
 </body>
 </html>
 <script>
@@ -40,6 +40,25 @@
       怎么配置less? 
       需要运行一个名  npm run eject (这是一个暴露配置文件的命令 是一个不可逆命令；
       前提需要我们，把git提交到历史区)
+      //  若你们的 项目不再一个仓库 或者 本身也是不是一个仓库
+      //  那么需要你们 把这个项目初始化成一个git仓库   git init -y 
+      //  然后 运行  git add .    git commit -m '备注' 即可
+
+      暴露配置文件之后  找到 config下的 webpack.config.js 文件 ；照着里边的sass配置，
+      照抄一份对应的 less配置
+      然后 安装 less和less-loader
   
   */
+</script>
+<script src="./learn-react/node_modules/react/umd/react.development.js"></script>
+<script src="./learn-react/node_modules/react-dom/umd/react-dom.development.js"></script>
+<script>
+  let ele = React.createElement('div',{qqq:123,id:'box'},'hello world',
+React.createElement('span',null,'哈哈哈',React.createElement('i',null,'呵呵呵')));
+
+/* 
+  React.createElement(标签名，{行内属性}，。。。children(都是子元素))
+
+*/
+ReactDOM.render(ele,document.getElementById('root'));
 </script>
