@@ -1,42 +1,13 @@
 import SELFJSX from './selfjsx';
 const {
-  React
+  React,
+  ReactDOM
 } = SELFJSX;
-
-console.log(React.createElement("div", {
-  className: "box",
-  style: {
-    color: 'red'
-  },
-  key: "1",
-  ref: "AA"
-},
-  "\u73E0\u5CF0\u57F9\u8BAD",
-  React.createElement("i", null),
-  React.createElement("span", {
-    className: "text"
-  }, "\u54C8\u54C8")
-));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* import React from 'react';
 import ReactDOM from 'react-dom'; */
 
-/* let data = {
+let data = {
   title: '珠峰培训最新课程',
   list: [{
     id: 1,
@@ -64,7 +35,7 @@ ReactDOM.render(<div className="box">
       </li>;
     })}
   </ul>
-</div>, document.getElementById('root')); */
+</div>, document.getElementById('root'));
 
 /*
 ReactDOM.render(<div>

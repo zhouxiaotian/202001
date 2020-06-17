@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<div id="app">
+		<h2>{{title}}</h2>
+		<ul>
+			<li v-for="item in list" :key="item.id">
+				{{item.title}}
+			</li>
+		</ul>
+	</div>
+
+	<!-- IMPORT JS -->
+	<script src="node_modules/vue/dist/vue.js"></script>
+	<script>
+		let vm = new Vue({
+			el: '#app',
+			data: {
+				title: '珠峰培训最新课程',
+				list: [{
+					id: 1,
+					title: '两晚带你彻底掌握vue3.0核心知识与实战开发'
+				}, {
+					id: 2,
+					title: '2020年暑期面试题训练营'
+				}],
+				teacher: {
+					name: '周啸天',
+					sex: 0
+				}
+			}
+		});
+		console.log(vm);
+	</script>
+</body>
+
+</html>
