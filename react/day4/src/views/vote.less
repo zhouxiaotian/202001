@@ -1,0 +1,44 @@
+/*
+ * REACT中默认没有提供CSS的私有化
+ *   1.最后所有组件组合在一起的时候，可能会导致样式上的冲突
+ *   2.每个组件最外层的样式类，设置唯一的（手动比较笨的方式）
+ *   3.有webpack插件可以搞定这个事情
+ */
+.voteBox {
+	margin: 10px auto;
+	padding: 10px;
+	width: 60%;
+	background: lightblue;
+
+	.voteHeader {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		line-height: 50px;
+
+		h3 {
+			font-size: 20px;
+			font-weight: normal;
+		}
+	}
+
+	.voteMain {
+		p {
+			line-height: 35px;
+		}
+	}
+
+	.voteFooter {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+
+		line-height: 50px;
+
+		button {
+			margin-right: 10px;
+			width: 50px;
+			height: 35px;
+		}
+	}
+}
