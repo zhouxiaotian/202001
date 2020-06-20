@@ -144,5 +144,6 @@
   "devDependencies": {
     "less": "^3.11.3",
     "less-loader": "^6.1.1"
-  }
+  },
+  "proxy": "http://127.0.0.1:9999"
 }
