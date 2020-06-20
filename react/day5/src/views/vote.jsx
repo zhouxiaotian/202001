@@ -1,41 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import './vote.less';
-
-function ratio(state) {
-	let { supNum, oppNum } = state,
-		total = supNum + oppNum;
-	if (total === 0) return '--';
-	return (supNum / total * 100).toFixed(2) + '%';
-}
+import VoteMain from './VoteMain';
+import VoteFooter from './VoteFooter';
+import ThemeContext from './ThemeContext';
 
 export default function Vote(props) {
-	let { title, supNum = 0, oppNum = 0 } = props;
-
-	// 应用状态
+	// 使用状态
 	let [state, setState] = useState({
-		supNum,
-		oppNum
+		supNum: 0,
+		oppNum: 0
 	});
+	const handle = (lx = 0) => {
+		// 支持
+		if (lx === 0) {
+			setState({ ...state, supNum: state.supNum + 1 });
+			return;
+		}
+		// 反对
+		setState({ ...state, oppNum: state.oppNum + 1 });
+	};
 
-	return <div className="voteBox">
-		<header className="voteHeader">
-			<h3>{title}</h3>
-			<span>【{state.supNum + state.oppNum}】</span>
-		</header>
-		<main className="voteMain">
-			<p>支持数：{state.supNum}</p>
-			<p>反对数：{state.oppNum}</p>
-			<p>支持率：{ratio(state)}</p>
-		</main>
-		<footer className="voteFooter">
-			<button onClick={ev => {
-				setState({ ...state, supNum: ++state.supNum });
-			}}>支持</button>
-
-			<button onClick={ev => {
-				setState({ ...state, oppNum: ++state.oppNum });
-			}}>反对</button>
-		</footer>
-	</div>;
+	return <ThemeContext.Provider
+		value={{
+			// 需要提供的上下文信息
+			...state,
+			handle
+		}}>
+		<div className="voteBox">
+			<header className="voteHeader">
+				<h3>{props.title}</h3>
+				<span>【{state.supNum + state.oppNum}】</span>
+			</header>
+			<VoteMain></VoteMain>
+			<VoteFooter></VoteFooter>
+		</div>
+	</ThemeContext.Provider>;
 };
+
+/*
+ 【函数式组件  HOOKS】
+  1.创建上下文对象ThemeContext：React.createContext();
+  2.在祖先上创建上下文 ThemeContext.Provider value={...}
+  技巧：需要用到的上下文，我们一般设置为祖先元素的状态，这样后期只要修改状态，组件重新渲染，这样就会重新设置上下文中的信息（信息就是最新的状态）
+  3.在后代组件中使用上下文信息  context=React.useContext(ThemeContext)
+ */
