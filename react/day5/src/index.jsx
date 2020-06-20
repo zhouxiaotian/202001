@@ -1,11 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Vote from './views/vote';
+import App from './App';
 
 /* 导入公共的样式 */
 import './assets/css/reset.min.css';
 import './assets/css/common.less';
 
-ReactDOM.render(<React.StrictMode>
-  <Vote title="你更喜欢vue还是react" />
-</React.StrictMode>, document.getElementById('root'));
+/* 导入ANTD组件库 */
+import 'antd/dist/antd.css';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+
+ReactDOM.render(<ConfigProvider locale={zhCN}>
+  <App />
+</ConfigProvider>, document.getElementById('root'));
