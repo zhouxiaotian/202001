@@ -11,15 +11,17 @@ class Input extends React.PureComponent{
     </>
   }
 }
-class List extends React.PureComponent{
+class List extends React.Component{
   //  shouldComponentUpdate(){} // PureComponent 进行浅比较；新旧值 一样的生活 就不重新渲染
   render(){
-    let {list123=[]} = this.props;
+    let {list123=[],onDel} = this.props;
+    // onDel 什么时候执行？ 怎么传参数？？
+    // react中事件传参？？  箭头函数 or  bind
     return <>
       <ul>
         {
           list123.map((item,index)=>{
-            return <li key={index}>{item} <Button>删除</Button></li>
+            return <li key={index}>{index+1}:{item} <Button on123 = {()=>{onDel(index)}}>删除</Button></li>
           })
         }
         {/* <li>
@@ -32,8 +34,8 @@ class List extends React.PureComponent{
 class Button extends React.PureComponent{
   render(){
     //children 类似于 vue的插槽
-    let {children} = this.props;
-    return <button>{children}</button>
+    let {children,on123} = this.props;
+    return <button onClick={on123}>{children}</button>
   }
 }
 
@@ -41,7 +43,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          data:[1,2,3],// 这里存放 我们要去做的事情
+          data:[],// 这里存放 我们要去做的事情
           todo:''
         }
     }
@@ -57,18 +59,23 @@ class App extends React.Component {
         console.log(this.state.todo)
         // this.state.data.push(this.state.todo);
         this.state.data = this.state.data.concat(this.state.todo)
+        this.state.todo = '';
         this.setState({})
         // this.setState({
         //   data:this.state.data.concat(this.state.todo)
         // })
       }
     }
+    del = (n)=>{
+      this.state.data.splice(n,1);
+      this.setState({});
+    }
     render() {
         let {data,todo} = this.state;
         console.log(data)
         return <div className=''>
           <Input  value={todo} onChange={this.change} onKeydown123={this.keydown}/>
-          <List list123={data}/>
+          <List list123={data} onDel={this.del}/>
         </div>;
     }
 }
