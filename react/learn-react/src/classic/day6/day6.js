@@ -1,2 +1,5 @@
 // import './1_input'
-import './2_todo案例'
+// import './2_todo案例'
+// import './3_状态提升'
+// import './4_高阶组件'
+import './5_redux/index'
