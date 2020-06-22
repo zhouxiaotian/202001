@@ -21,4 +21,7 @@ redux 和  react-redux 这两者是为了 解决 组件之间的数据交互问�
   回调函数2===》 (dispatch)=>{return {dispatch:dispatch} 这个回调函数返回一个对象 这个对象中 只放了一个 dispatch属性， react-redux也把这对属性 传给 对应的组件
 
   也就是说 经过这个回调函数  我们对应的组件  会 收到两个回调函数的返回值合并起来的所有属性
+
+  若想更改 redux中的数据 需要 借助 dispatch
+  dispatch这个方法执行的时候 需要传一个对象 对象中 有 type和一个自定一的属性，我们一般把这个对象称为 action; 这个type对应的就是我们reducer里写的哪个 action.type
 ```
