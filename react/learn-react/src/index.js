@@ -16,4 +16,5 @@
 // // Learn more about service workers: https://bit.ly/CRA-PWA
 // serviceWorker.unregister();
 
-import './classic/day1/day1'; // 导入 day1JS文件
+// import './classic/day1/day1'; // 导入 day1JS文件
+import './classic/day2/day2.js'
