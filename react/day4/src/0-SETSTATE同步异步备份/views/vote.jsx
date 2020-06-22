@@ -20,7 +20,7 @@ export default class Vote extends React.Component {
 
 	componentWillMount() {
 		// 如果是在willMount中设置SET-STATE
-		// 1.本身是异步的，在WillMount没有执行完之前，状态是没有更新的
+		// 1.本身是异步的，在WillMount没有执行完之前，态是没有状更新的
 		// 2.按照我们的理解，应该接下里的RENDER/DidMount还都应该是0，等到第一次渲染完，setState再控制其重新渲染一次（相当于渲染了两次）；但是REACT为了避免没必要的重新渲染，在WillMount执行完成后，立即修改了状态，在第一次RENDER的时候就按照最新修改的状态去渲染，这样就没有必要再次重新渲染了
 		// this.setState({
 		// 	n: this.state.n + 1
