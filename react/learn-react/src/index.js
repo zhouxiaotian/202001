@@ -18,4 +18,5 @@
 
 // import './classic/day1/day1'; // 导入 day1JS文件
 // import './classic/day2/day2.js'
-import './classic/day6/day6'
+// import './classic/day6/day6'
+import './classic/day7/day7'
