@@ -15,10 +15,10 @@ import 'moment/locale/zh-cn';
 
 /* 导入STORE */
 import store from './store/index';
-import ThemeContext from './ThemeContext';
+import { Provider } from 'react-redux';
 
 ReactDOM.render(<ConfigProvider locale={zhCN}>
-  <ThemeContext.Provider value={{ store }}>
+  <Provider store={store}>
     <App />
-  </ThemeContext.Provider>
+  </Provider>
 </ConfigProvider>, document.getElementById('root'));

@@ -1,13 +1,15 @@
-import React, { useContext } from 'react';
-import ThemeContext from '../ThemeContext';
+import React from 'react';
 import action from '../store/actions/action';
+import { connect } from 'react-redux';
 
-export default function Plus(props) {
-	const context = useContext(ThemeContext);
-
+function Plus(props) {
 	return <>
 		<button onClick={ev => {
-			context.store.dispatch(action.computed.plus(20));
+			props.plus(20);
 		}}>+</button>
 	</>;
 };
+export default connect(
+	state => state.computed,
+	action.computed
+)(Plus);

@@ -41,7 +41,7 @@ export default class Task extends React.Component {
 		// TABLE
 		source: [],
 		page: 1,
-		limit: 5,
+		limit: 10000,
 		total: 0,
 		type: 0,
 		// MODAL
@@ -49,7 +49,7 @@ export default class Task extends React.Component {
 		taskText: '',
 		taskTime: ''
 	};
-	
+
 	render() {
 		let { source, page, limit, visible, taskText, taskTime, type, total } = this.state;
 
@@ -78,12 +78,7 @@ export default class Task extends React.Component {
 			<Table dataSource={source}
 				columns={this.columns}
 				rowKey="id"
-				pagination={{
-					current: page,
-					pageSize: limit,
-					total: total,
-					onChange: this.changePagination
-				}}>
+				pagination={false}>
 			</Table>
 
 			{/* DIALOG */}
@@ -130,10 +125,5 @@ export default class Task extends React.Component {
 	modalConfirm = () => {
 		// let { taskText, taskTime } = this.state;
 		// taskTime = taskTime ? taskTime.format('YYYY-MM-DD HH:mm:ss') : '';
-	};
-
-	// 控制分页的切换
-	changePagination = page => {
-
 	};
 };
