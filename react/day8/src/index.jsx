@@ -13,6 +13,12 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 
+/* 导入STORE */
+import store from './store/index';
+import ThemeContext from './ThemeContext';
+
 ReactDOM.render(<ConfigProvider locale={zhCN}>
-  <App />
+  <ThemeContext.Provider value={{ store }}>
+    <App />
+  </ThemeContext.Provider>
 </ConfigProvider>, document.getElementById('root'));

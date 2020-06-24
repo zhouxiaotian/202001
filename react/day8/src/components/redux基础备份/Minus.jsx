@@ -1,13 +1,16 @@
 import React, { useContext } from 'react';
-import ThemeContext from '../ThemeContext';
-import action from '../store/actions/action';
+import ThemeContext from './ThemeContext';
 
 export default function Minus(props) {
 	const context = useContext(ThemeContext);
 
 	return <>
 		<button onClick={ev => {
-			context.store.dispatch(action.computed.minus(10));
+			// 派发行为ACTION对象
+			context.store.dispatch({
+				type: 'MINUS',
+				payload: 10
+			});
 		}}>-</button>
 	</>;
 };
