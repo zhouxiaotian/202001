@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import action from '../store/actions/action';
 import './Task.less';
+import API from '../api/index';
+import utils from '../assets/lib/utils';
 import { Button, Tag, Table, Modal, DatePicker, Input, message } from 'antd';
 const { TextArea } = Input;
 const { confirm } = Modal;
@@ -33,8 +35,15 @@ class Task extends React.Component {
 		width: '20%',
 		render: (text, record) => {
 			return <>
-				<Button type="link">完成</Button>
-				<Button type="link">删除</Button>
+				<Button type="link"
+					onClick={this.handle.bind(null, 'complete', text)}>
+					完成
+				</Button>
+
+				<Button type="link"
+					onClick={this.handle.bind(null, 'delete', text)}>
+					删除
+				</Button>
 			</>;
 		}
 	}];
@@ -155,9 +164,52 @@ class Task extends React.Component {
 			taskTime: ''
 		});
 	};
-	modalConfirm = () => {
-		// let { taskText, taskTime } = this.state;
-		// taskTime = taskTime ? taskTime.format('YYYY-MM-DD HH:mm:ss') : '';
+	modalConfirm = async () => {
+		let { taskText, taskTime } = this.state;
+		taskTime = taskTime ? taskTime.format('YYYY-MM-DD HH:mm:ss') : '';
+
+		// 先把数据提交给服务器	
+		let result = await API.task.addTask({
+			task: taskText,
+			time: taskTime
+		});
+		this.modalCancel();
+		if (result.code == 0) {
+			message.success('非常棒，新增任务成功！');
+			// 服务器一旦全部任务改变，我们需要把REDUX中的任务信息和服务器保持一致
+			this.props.queryAllTask();
+			return;
+		}
+		message.error('很遗憾，新增失败！请稍后再试！');
+	};
+
+	// 实现删除或者完成的操作
+	handle = async (lx, text) => {
+		let id = text.id;
+		// 删除
+		if (lx === "delete") {
+			await utils.confirmAsync(confirm, `您确定要删除编号为 ${id} 的信息吗？`);
+			let result = await API.task.removeTask(id);
+			if (result.code == 0) {
+				message.success('非常棒，删除成功了！');
+				// DISPATCH更新REDUX中的数据
+				this.props.deleteTask(id);
+				return;
+			}
+			message.error('很遗憾，删除失败！');
+			return;
+		}
+
+		// 完成
+		await utils.confirmAsync(confirm, `您确定要把编号为 ${id} 的信息设置为完成任务吗？`);
+		let result = await API.task.completeTask(id);
+		if (result.code == 0) {
+			message.success('非常棒，设置成功了！');
+			// DISPATCH更新REDUX中的数据
+			this.props.completeTask(id);
+			return;
+		}
+		message.error('很遗憾，设置失败！');
 	};
 };
 

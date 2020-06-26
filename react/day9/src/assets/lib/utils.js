@@ -7,6 +7,18 @@ function delay(interval = 1000) {
 	});
 }
 
+function confirmAsync(confirm, content) {
+	return new Promise(resolve => {
+		confirm({
+			content,
+			onOk: () => {
+				resolve();
+			}
+		});
+	});
+};
+
 export default {
-	delay
+	delay,
+	confirmAsync
 };

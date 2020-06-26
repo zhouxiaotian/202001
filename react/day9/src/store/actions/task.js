@@ -15,6 +15,18 @@ const task = {
 			}
 			dispatch(action);
 		};
+	},
+	deleteTask(id) {
+		return {
+			type: TYPE.TASK_DELETE,
+			payload: id
+		};
+	},
+	completeTask(id) {
+		return {
+			type: TYPE.TASK_COMPLETE,
+			payload: id
+		};
 	}
 };
 export default task;
