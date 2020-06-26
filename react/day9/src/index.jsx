@@ -15,7 +15,8 @@ import 'moment/locale/zh-cn';
 
 /* 导入STORE */
 import store from './store/index';
-import { Provider } from 'react-redux';
+// import { Provider } from 'react-redux';
+import { Provider } from './myReactRedux.jsx';
 
 ReactDOM.render(<ConfigProvider locale={zhCN}>
   <Provider store={store}>

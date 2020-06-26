@@ -1,5 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
+import { connect } from '../myReactRedux.jsx';
+
 import action from '../store/actions/action';
 import './Task.less';
 import API from '../api/index';
