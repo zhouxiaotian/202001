@@ -1,10 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import action from '../store/actions/action';
 import './Task.less';
 import { Button, Tag, Table, Modal, DatePicker, Input, message } from 'antd';
 const { TextArea } = Input;
 const { confirm } = Modal;
 
-export default class Task extends React.Component {
+class Task extends React.Component {
 	// 表格的表头配置项
 	columns = [{
 		title: '编号',
@@ -40,9 +42,6 @@ export default class Task extends React.Component {
 	state = {
 		// TABLE
 		source: [],
-		page: 1,
-		limit: 10000,
-		total: 0,
 		type: 0,
 		// MODAL
 		visible: false,
@@ -51,7 +50,7 @@ export default class Task extends React.Component {
 	};
 
 	render() {
-		let { source, page, limit, visible, taskText, taskTime, type, total } = this.state;
+		let { source, visible, taskText, taskTime, type } = this.state;
 
 		return <div className="TaskBox">
 			{/* HEADER */}
@@ -68,7 +67,8 @@ export default class Task extends React.Component {
 			<div className="tagBox">
 				{["全部", "未完成", "已完成"].map((item, index) => {
 					return <Tag key={index}
-						color={index === type ? 'cyan' : ''}>
+						color={index === type ? 'cyan' : ''}
+						onClick={this.changeTag.bind(null, index)}>
 						{item}
 					</Tag>;
 				})}
@@ -114,6 +114,39 @@ export default class Task extends React.Component {
 		</div>;
 	}
 
+	// 第一次渲染之前，首先判断redux中是否有任务信息，没有任务，则派发方法，同步redux容器中的任务信息
+	componentWillMount() {
+		let { data, queryAllTask } = this.props;
+		if (data.length === 0) {
+			queryAllTask();
+		}
+	}
+
+	// 当REDUX容器中状态改变后，通知当前组件重新渲染（把REDUX中的最新信息基于属性传递给组件），此时我们需要获取最新的任务信息，并且同步给私有的状态source
+	componentWillReceiveProps(nextProps) {
+		this.filterData(nextProps);
+	}
+
+	// 根据筛选的类型，把从REDUX获取的全部任务信息筛选成为指定状态下的任务信息
+	filterData = props => {
+		props = props || this.props;
+		let data = props.data,
+			type = this.state.type;
+		this.setState({
+			source: data.filter(item => {
+				if (type == 0) return true;
+				return item.state == type;
+			})
+		});
+	};
+
+	// 页卡切换
+	changeTag = index => {
+		if (index == this.state.type) return;
+		this.state.type = index;
+		this.filterData();
+	};
+
 	// 控制MODAL的显示隐藏和数据提交
 	modalCancel = () => {
 		this.setState({
@@ -127,3 +160,5 @@ export default class Task extends React.Component {
 		// taskTime = taskTime ? taskTime.format('YYYY-MM-DD HH:mm:ss') : '';
 	};
 };
+
+export default connect(state => state.task, action.task)(Task);

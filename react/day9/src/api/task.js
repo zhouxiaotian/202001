@@ -2,7 +2,7 @@ import axios from './axios';
 
 function getTaskList(options = {}) {
 	options = Object.assign({
-		limit: 10,
+		limit: 10000,
 		page: 1,
 		state: 0
 	}, options);
