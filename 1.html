@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+</body>
+</html>
+<script>
+let q = fetch('./q.json').then(res=>res.json());
+let q2 = fetch('./q2.json').then(res=>res.json());
+let q3 = fetch('./q3.json').then(res=>res.json());
+let q4 = fetch('./q4.json').then(res=>res.json());
+let q5 = fetch('./q5.json').then(res=>res.json());
+let q6 = fetch('./q6.json').then(res=>res.json());
+let q7 = fetch('./q7.json').then(res=>res.json());
+let q8 = fetch('./q8.json').then(res=>res.json());
+Promise.all([q,q2,q3,q4,q5,q6,q7,q8]).then(data=>{
+  let t = {...data[0],...data[1],...data[2],...data[3],...data[4],...data[5],...data[6],...data[7]}
+  console.log(JSON.stringify(t))
+})
+</script>

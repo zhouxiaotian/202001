@@ -1,0 +1,33 @@
+<!--index.wxml-->
+<view class="container">
+  <swiper indicator-dots="{{indicatorDots}}"
+    autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+    <block wx:for="{{background}}" wx:key="*this" wx:for-item='myqqq'>
+    <!-- <h1 v-for=(item,index) in xxx> -->
+    <!-- 循环 默认的下标变量名 是 index 可以通过 wx:for-index='xxx'指定自己的变量名 -->
+    <!-- 循环 默认的项的变量名 是 item 可以通过 wx:for-item='xxx'指定自己的变量名 -->
+      <swiper-item>
+        <view class="swiper-item {{myqqq}}"></view>
+      </swiper-item>
+    </block>
+  </swiper>
+
+
+
+
+
+
+
+
+
+  <!-- <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <view class="usermotto">
+    <text class="user-motto">{{motto}}</text>
+  </view> -->
+</view>

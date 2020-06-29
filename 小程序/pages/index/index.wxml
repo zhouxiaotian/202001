@@ -1,0 +1,24 @@
+<!--index.wxml-->
+<!-- 这里都是内置组件 不是html标签 -->
+<view class="container">
+  <view class="userinfo">
+    <!-- wx:if  类似于vue的  v-if ; vue的行内属性不用小胡子， 用v-bind ; 小程序中都是小胡子 -->
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo123"> 获取头像昵称 </button>
+    <block wx:else>
+    <!-- block  类似于 vue的  template -->
+    <!--  bindtap  类似于 vue的 @click -->
+    <!--  catchtap  会默认阻止冒泡传播 -->
+      <image bindtap="qqq" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+  <dialog wx:if='{{isShow}}' bindclose='hide'>
+    我很帅
+    你很帅
+    帅帅
+  </dialog>
+  <view class="usermotto">
+    <text class="user-motto" bindtap='fn'>{{motto}}</text>
+    <button bindtap='show'>按钮</button>
+  </view>
+</view>

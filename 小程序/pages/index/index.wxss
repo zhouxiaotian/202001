@@ -1,0 +1,24 @@
+/**index.wxss**/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  /* rpx  是一个相对单位 ； 这个的单位是按照750的设计稿来设置的 */
+  /* 在750的设计稿上 量出 128px  ;在这设置的时候就 写 128rpx */
+  /* 在小程序中  类名 选择器 是 最安全的一种写法 */
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px;
+}

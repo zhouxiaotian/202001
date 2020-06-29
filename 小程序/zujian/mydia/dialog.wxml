@@ -1,0 +1,7 @@
+<view class='box' catchtap='fn'>
+  <view class='content'>
+    <slot></slot>
+  </view>
+    
+  
+</view>

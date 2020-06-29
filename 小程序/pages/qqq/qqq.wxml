@@ -1,0 +1,8 @@
+<!--pages/qqq.wxml-->
+<view>
+  <text>我的 qqq页面</text>
+  <!-- <h111 name='珠峰' @myqqq = 'fn'>我很帅</h111> -->
+  <h111 name='珠峰' bindmyqqq = 'fn'>我很帅</h111>
+</view>
+  
+

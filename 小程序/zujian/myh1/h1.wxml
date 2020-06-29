@@ -1,0 +1,6 @@
+<view class='h1' bindtap = 'www' mark='123'>{{name}}我自己的组件 <slot></slot></view>
+<!-- 小程序的插槽 跟 vue 类似  只是 在使用具名插槽的时候  需要配置
+options: {
+    multipleSlots: true // 在组件定义时的选项中启用多slot支持
+  },
+-->
