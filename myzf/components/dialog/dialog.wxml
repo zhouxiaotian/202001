@@ -1,0 +1,6 @@
+<view class='dialog_box' id='qq' bindtap='fn'>
+  <view class="content" catchtap='fn2'>
+    <!-- 是为了 解决 冒泡传播触发 fn -->
+    <slot></slot>
+  </view>
+</view>

@@ -14,7 +14,18 @@ Page({
     vertical: false,
     autoplay: false,
     interval: 2000,
-    duration: 500
+    duration: 500,
+    isShow:false
+  },
+  show(){
+    this.setData({
+      isShow:true
+    })
+  },
+  hide(){
+    this.setData({
+      isShow:false
+    })
   },
   getBanner(){
     http.get('/banner').then(data=>{

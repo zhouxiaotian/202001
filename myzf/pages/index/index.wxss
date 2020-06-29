@@ -7,3 +7,31 @@
   width: 100%;
   height: 100%;
 }
+.know_zf {
+  padding: 20rpx 10rpx;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+
+}
+.know_zf .til{
+  font-size: 60rpx;
+  margin: 20rpx;
+  text-align: center;
+}
+.know_zf .video_box{
+  width: 100%;
+  position: relative;
+}
+.know_zf .video_box .play_icon{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 100rpx;
+  height: 100rpx;
+}
+.know_zf .video_box .play_icon image{
+  width: 100%;
+  height: 100%;
+}

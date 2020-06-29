@@ -15,6 +15,31 @@
   </swiper>
 
 
+  <!-- 认识珠峰 -->
+  <view class='know_zf'>
+    <view class='til'>
+      认识珠峰
+    </view>
+    <image class='video_box' src='http://www.zhufengpeixun.cn/skin/20142/img/zfBg2.jpg'>
+      <view class="play_icon" bindtap='show'>
+        <image src='http://www.zhufengpeixun.cn/skin/20142/img/video.png'></image>
+      </view>
+    </image>
+    <dialog wx:if="{{isShow}}" bindclose123='hide'>
+      <video  src='http://img.zhufengpeixun.cn/zfcctv.mp4' object-fit="cover"></video>
+    </dialog>
+      
+  </view>
+  <!-- 
+    实现 下边的珠峰故事模块
+      公开课列表模块  对应接口/publicList
+
+
+
+   -->
+    
+
+
 
 
 
