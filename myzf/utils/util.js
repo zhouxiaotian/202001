@@ -14,6 +14,31 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+// 对 wx.request 进行二次封装
+const baseURL = 'http://localhost:3000';
+const http = function(option){
+  let {url,method='GET',data={}} = option;
+  return new Promise((res,rej)=>{
+    wx.request({
+      url:baseURL+url,
+      method:(method+'').toUpperCase(),
+      data:data,
+      success(data){
+        res(data.data)
+      },
+      fail(err){
+        rej(err)
+      }
+    })
+  })
+}
+http.get = function (url,data) {
+  return http({url,data,method:'GET'})
+}
+http.post = function (url,data) {
+  return http({url,data,method:'POST'})
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,http
 }

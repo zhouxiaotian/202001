@@ -1,5 +1,6 @@
 //index.js
 //获取应用实例
+import {http} from '../../utils/util.js'
 const app = getApp()
 
 Page({
@@ -8,12 +9,21 @@ Page({
     // userInfo: {},
     // hasUserInfo: false,
     // canIUse: wx.canIUse('button.open-type.getUserInfo')
-    background: ['demo-text-1', 'demo-text-2', 'demo-text-3'],
+    bannerList:[],
     indicatorDots: true,
     vertical: false,
     autoplay: false,
     interval: 2000,
     duration: 500
+  },
+  getBanner(){
+    http.get('/banner').then(data=>{
+      console.log(data)
+      // 请求成功之后 把后台给的数据 渲染到页面上
+      this.setData({
+        bannerList:data.data
+      })
+    })
   },
   //事件处理函数
   bindViewTap: function() {
@@ -22,6 +32,7 @@ Page({
     })
   },
   onLoad: function () {
+    this.getBanner();
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
