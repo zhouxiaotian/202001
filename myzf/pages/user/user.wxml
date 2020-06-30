@@ -1,1 +1,14 @@
-<view>New Page</view>
+<view>
+  <view wx:for="{{list}}">
+    <image src='{{item.img}}'></image>
+    <text>{{item.til}}</text>
+    <text>单价{{item.price}}</text>
+    <!-- 小程序中 给对应函数 传递参数 我们可以通过 dataset解决 -->
+    <input class="" value="{{item.count}}" bindinput="change" data-qq='123' data-aaa='666'  data-xxx="{{item}}" type="number" ></input>
+  </view>
+  
+  <view>
+    总价{{t}}
+  </view>
+    
+</view>

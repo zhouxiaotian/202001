@@ -30,17 +30,36 @@
     </dialog>
       
   </view>
+
+  <view class="list_box">
+    <view class="til">公开课</view>
+    <view class="box">
+      <view wx:for="{{classList}}" wx:key='index'>
+        <image src="{{item.img}}"></image>
+        <text>{{item.text}}</text>
+      </view>
+        
+    </view>
+  </view>
   <!-- 
     实现 下边的珠峰故事模块
       公开课列表模块  对应接口/publicList
 
-
-
    -->
+    <van-button type="primary">按钮</van-button>
+    <!-- <van-calendar show="{{ true }}" /> -->
+    <van-search value="{{ 123 }}" placeholder="请输入搜索关键词" />
+
+<van-goods-action>
+  <van-goods-action-icon icon="chat-o" text="客服"  />
+  <van-goods-action-icon icon="cart-o" text="购物车"  />
+  <van-goods-action-button
+    text="加入购物车"
+    type="warning"
     
-
-
-
+  />
+  <van-goods-action-button text="立即购买" />
+</van-goods-action>
 
 
 

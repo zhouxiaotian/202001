@@ -2,7 +2,7 @@
 //获取应用实例
 import {http} from '../../utils/util.js'
 const app = getApp()
-
+const bannerList = []
 Page({
   data: {
     // motto: 'Hello World',
@@ -10,6 +10,7 @@ Page({
     // hasUserInfo: false,
     // canIUse: wx.canIUse('button.open-type.getUserInfo')
     bannerList:[],
+    classList:[],
     indicatorDots: true,
     vertical: false,
     autoplay: false,
@@ -25,6 +26,14 @@ Page({
   hide(){
     this.setData({
       isShow:false
+    })
+  },
+  getClass(){
+    http.get('/publicList').then(data=>{
+      console.log(data)
+      this.setData({
+        classList:data.data
+      })
     })
   },
   getBanner(){
@@ -44,6 +53,7 @@ Page({
   },
   onLoad: function () {
     this.getBanner();
+    this.getClass();
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

@@ -1,9 +1,10 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/logs/logs",
     "pages/class/class",
-    "pages/user/user"
+    "pages/logs/logs",
+    "pages/user/user",
+    "pages/classInfo/classInfo"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -11,7 +12,6 @@
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
   },
-  "style": "v2",
   "sitemapLocation": "sitemap.json",
   "tabBar": {
     "color": "#333",

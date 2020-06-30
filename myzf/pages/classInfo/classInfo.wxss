@@ -1,0 +1,33 @@
+.class_info_box .h1{
+  font-size: 50rpx;
+  height: 50px;
+  line-height: 50px;
+  padding: 20rpx;
+  border-bottom: 1px solid #eee;
+}
+.h2{
+  font-size: 40rpx;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #eee;
+}
+.bot_box{
+  position: fixed;
+  width: 100%;
+  display: flex;
+  left: 0;
+  bottom: 0;
+
+}
+.bot_box view{
+  width: 150rpx;
+}
+.bot_box button{
+  flex:1
+}
+.cart_icon{
+  text-align: center;
+  font-size: 40rpx;
+  line-height: 2;
+
+}

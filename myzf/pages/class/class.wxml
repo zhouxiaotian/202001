@@ -1,1 +1,33 @@
-<view>New Page</view>
+<view class='class_box'>
+  <view class="h1">课程列表</view>
+  <view class="list_one" wx:for="{{list}}">
+    <view class="h2">{{item.til}}</view>
+    <!-- navigator 相当于我们的 router-link -->
+    <!-- 
+      open-type="navigate"  默认 navigate ；跳转的路径不不能是tabBar中配置的页面
+      switchTab 跳转的路径 必须是 tabBar中配置的页面
+
+     -->
+    <navigator 
+      wx:for='{{item.children}}' 
+      wx:for-item="val"
+      wx:for-index='i'
+      open-type="navigate" 
+      url="{{'/pages/classInfo/classInfo?til='+val.title+'&img='+val.img + '&id='+val.id +'&price='+val.price}}">
+      <view class="item">
+        <view class="img_box">
+          <image src="{{val.img}}"></image>
+        </view>
+        <view class="content_box">
+          <view class="til">{{val.title}}</view>
+          <view class="desc">猫叔{{val.title}}</view>
+          <view class="bot_box">
+            <view class="type">{{index == 0 ? '初级' : index==1?'中级':'高级'}}</view>
+            <view class="count">{{val.count}}份</view>
+            <view class="money">￥{{(val.price/100)}}</view>
+          </view>
+        </view>
+      </view>
+    </navigator>
+  </view>
+</view>

@@ -1,0 +1,14 @@
+<view class='class_info_box'>
+  <view class="h1">课程详情</view>
+  <view class="h2">{{til}}</view>
+  <image class="img" src="{{img}}" />
+    
+  <view class='bot_box'>
+    <view class='cart_icon iconfont icon-ziyuan'>
+      {{num}}
+    </view>
+    <button catchtap='add'>加入购物车</button> 
+    <button catchtap='buy'>立即购买</button> 
+  </view>
+      
+</view>
