@@ -110,23 +110,12 @@ let baseWebpackConfig = {
       context: 'src/'
     }),
     new CopyWebpackPlugin([
-      // 是把 src的兄弟的 static文件夹 生成一份 到 wx这个文件夹中
       {
         from: path.resolve(__dirname, '../static'),
         to: path.resolve(config.build.assetsRoot, './static'),
         ignore: ['.*']
       }
-    ]),
-    new CopyWebpackPlugin([
-      // 是把 node_modules 中的vant里边的所有 小程序组件 都复制一份到 
-      // wx的 path 下的weapp这个文件夹中
-      {
-        from: path.resolve(__dirname, '../node_modules/@vant/weapp/dist'),
-        // to: path.resolve(config.build.assetsRoot, './weapp'),
-        to: path.resolve(config.build.assetsRoot, './weapp'),
-        ignore: ['.*']
-      }
-    ]),
+    ])
   ]
 }
 

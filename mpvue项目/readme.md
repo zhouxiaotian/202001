@@ -22,3 +22,52 @@ wx文件夹一更新  开发者工具中的页面就会更新了；
 
 这里不能使用 element-ui等 vue的 UI组件库
 ajax 也需要使用 wx.request
+
+
+在mpvue 的项目中 ；怎么使用 vant-weapp;
+npm i ... 安装 ui组件库
+
+
+
+需要 我们 自己 在wx这个文件夹中生成 对应的vant的文件夹
+具体步骤：
+1 找到 build 下的 webpack.base.conf.js 这个文件
+在  
+    new CopyWebpackPlugin([
+      // 是把 src的兄弟的 static文件夹 生成一份 到 wx这个文件夹中
+      {
+        from: path.resolve(__dirname, '../static'),
+        to: path.resolve(config.build.assetsRoot, './static'),
+        ignore: ['.*']
+      }
+    ]),
+
+这几行代码的下边 抄一份
+
+new CopyWebpackPlugin([
+      // 是把 node_modules 中的vant里边的所有 小程序组件 都复制一份到 
+      // wx的 path 下的weapp这个文件夹中
+      {
+        from: path.resolve(__dirname, '../node_modules/@vant/weapp/dist'),
+        to: path.resolve(config.build.assetsRoot, './weapp'),
+        ignore: ['.*']
+      }
+    ]),
+
+2- 使用  在对应的main.json 中 配置 usingComponents这个配置项
+{
+ "van-button": "/weapp/button/index"
+}   
+3- 模板中直接使用 <van-button type="default">默认按钮</van-button> 
+
+
+
+
+
+在mpvue项目中的使用vant-weapp的第二种方式
+
+先正常构建  生成 wx 文件夹之后， 在这个文件夹里边 安装 vant-weapp
+
+安装完成之后i启动 开发者工具的 npm构建功能
+
+然后直接 using照抄即可

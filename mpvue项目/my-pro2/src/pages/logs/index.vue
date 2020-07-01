@@ -7,8 +7,13 @@
         </swiper-item>
       </block>
     </swiper>
+
     <van-button type="default">默认按钮</van-button>
-    <van-button type="primary">主要按钮</van-button>
+<van-button type="primary">主要按钮</van-button>
+<van-button type="info">信息按钮</van-button>
+<van-button type="warning">警告按钮</van-button>
+<van-button type="danger">危险按钮</van-button>
+
     <ul class="container log-list">
       <li v-for="(log, index) in logs" :class="{ red: aa }" :key="index" class="log-item">
         <card :text="(index + 1) + ' . ' + log"></card>

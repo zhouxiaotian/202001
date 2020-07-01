@@ -1,68 +1,55 @@
 <template>
-  <div @click="clickHandle">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <img class="userinfo-avatar" src="/static/images/user.png" background-size="cover" />
-
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
-      </div>
+  <div class='home_box'>
+    <div class='header'>
+      <van-icon name="location" />
+      <span>送至珠峰培训</span>
+      <van-icon name="arrow-down" />
+    </div>
+    <Bar>我很帅</Bar>
+    <div class="swiper_box">
+      <swiper :circular='true' :indicator-dots='true' indicator-active-color="#fff">
+        <block v-for='item in ary'>
+          <swiper-item class='item'>
+            {{item}}
+          </swiper-item>
+        </block>
+      </swiper>
     </div>
 
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" :value="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
+    <van-grid :gutter="10">
+      <van-grid-item use-slot  v-for="i in 8" >
+          <span>{{i}}</span>
+      </van-grid-item>
+    </van-grid>
 
 
-    <div class="all">
-        <div class="left">
-        </div>
-        <div class="right">
-        </div>
-    </div>
+    <van-tabs :active="active">
+      <van-tab title="标签 1">内容 1</van-tab>
+      <van-tab title="标签 2">内容 2</van-tab>
+      <van-tab title="标签 3">内容 3</van-tab>
+      <van-tab title="标签 4">内容 4</van-tab>
+      <van-tab title="标签 5">内容 5</van-tab>
+      <van-tab title="标签 6">内容 6</van-tab>
+    </van-tabs>
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
-
+import Bar from '../../components/searchBar'
 export default {
   data () {
     return {
-      motto: 'hello 珠峰',
-      userInfo: {
-        nickName: 'mpvue',
-        avatarUrl: 'http://zhufengpeixun.com/videoCourse/images/video_html.png'
-      }
+      ary:[1,2,3,4],
+      active:0
     }
   },
 
   components: {
-    card
+    Bar
   },
 
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      if (mpvuePlatform === 'wx') {
-        mpvue.switchTab({ url })
-      } else {
-        mpvue.navigateTo({ url })
-      }
-    },
-    clickHandle (ev) {
-      console.log('clickHandle:', ev)
-      // throw {message: 'custom test'}
-    }
+    
   },
 
   created () {
@@ -71,55 +58,22 @@ export default {
 }
 </script>
 
-<style scoped>
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+<style >
+.home_box{
+  padding: 20rpx;
+  box-sizing: border-box;
 }
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
+.swiper_box{
+  overflow: hidden;
+  border-radius: 5px;
 }
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-.all{
-  width:7.5rem;
-  height:1rem;
-  background-color:blue;
-}
-.all:after{
-  display:block;
-  content:'';
-  clear:both;
-}
-.left{
-  float:left;
-  width:3rem;
-  height:1rem;
-  background-color:red;
-}
-
-.right{
-  float:left;
-  width:4.5rem;
-  height:1rem;
-  background-color:green;
-}
+  .header{
+    text-align: center;
+  }
+  .item{
+    width: 100%;
+    height: 300rpx;
+    background: #333;
+    color:#fff
+  }
 </style>

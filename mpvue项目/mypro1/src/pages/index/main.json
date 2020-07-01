@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "首页",
+  "usingComponents": {
+    "van-icon": "/weapp/icon/index",
+    "van-grid": "/weapp/grid/index",
+    "van-grid-item": "/weapp/grid-item/index",
+    "van-tab": "/weapp/tab/index",
+    "van-tabs": "/weapp/tabs/index"
+  }
+}
