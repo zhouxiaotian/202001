@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+	<title>十年珠峰、专注前端</title>
+	<!-- IMPORT CSS -->
+</head>
+
+<body>
+	<!-- IMPORT JS -->
+	<script>
+		/* 
+		 * 函数的防抖和节流 
+		 *    场景一：点击一个按钮，处理相关事情，处理事情需要点时间，我们担心一个问题，就是用户点击，时间没处理完，用户以为每点击上，此时重复点击多次，这样事情重复做了很多次（这样肯定不好）
+		 *    场景二：下拉刷新中，滚动条即将滚动到底部的时候，我们需要加载更多数据，但是我们发现滚动条滚动会在很短的时间内触发多次scroll事件，导致下拉加载数据的操作，短时间内错了很多次
+		      .......
+
+		 * 需求：我们期望在一定时间内，即使操作频繁触发很多次，但是具体要做的事情只触发一次，或者在规定的时间内只触发指定次数
+		 *    防抖：再事件触发后的N秒后，再去执行需要执行的函数，如果在N秒内频繁触发了很多次，则重新开始计时（也是以最后一次触发的为主）
+		 *    节流：规定一个单位时间，触发执行函数一次；假如规定的时间是100MS，那么接下来事件频繁触发，而且坚持事件是1000MS，此时我们把方法执行10次
+		 */
+
+
+		/* function func() {
+			// ...
+
+			func.isHandle = false;
+		}
+
+		function debounce(func) {
+			return function anonymous(...args) {
+				if (func.isHandle) return;
+				func.isHandle = true;
+				return func.call(this, ...args);
+				// func.isHandle = false; //=>最好要求用户在func函数内部，在逻辑（包含异步）确定执行完之后再去修改属性值
+			}
+		}
+
+		document.body.onclick = debounce(func); */
+
+
+		/* function func() {
+			// ...
+		}
+
+		function debounce(func, wait = 100) {
+			let timer;
+			return function anonymous(...args) {
+				clearTimeout(timer);
+				timer = setTimeout(() => {
+					func.call(this, ...args);
+				}, wait);
+			}
+		}
+
+		document.body.onclick = debounce(func); */
+
+		
+		function throttle(func, frequency = 100) {
+			let timer,
+				last;
+			return function anonymous(...args) {
+				let now = +new Date();
+				if (last && now - last < frequency) {
+					// 距离上一次还不足一个频率间隔
+					clearTimeout(timer);
+					timer = setTimeout(() => {
+						last = now;
+						func.call(this, ...args);
+					}, frequency - (now - last));
+				} else {
+					// 第一次或者这一次距离上一次间隔时间超过频率：都把函数立即执行
+					last = now;
+					func.call(this, ...args);
+				}
+			};
+		}
+	</script>
+</body>
+
+</html>
